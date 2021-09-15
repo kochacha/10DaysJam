@@ -25,5 +25,12 @@ void KochaEngine::ItemManager::Initialize()
 
 void KochaEngine::ItemManager::Update()
 {
-
+	if (Input::TriggerKey(DIK_P))
+	{
+		gManager->AddObject(new EnhancementItem(camera, gManager, Vector3(20, 10, 0)));
+	}
+	if (Input::TriggerKey(DIK_O))
+	{
+		gManager->AddObject(new JammingSpine(camera, gManager, Vector3(-30, -20, 0)));
+	}
 }
