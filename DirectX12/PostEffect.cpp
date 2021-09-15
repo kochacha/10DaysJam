@@ -126,7 +126,10 @@ void KochaEngine::PostEffect::Draw()
 {
 	time++;
 	auto result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->color = color;
+	constMap->color1 = color[0];
+	constMap->color2 = color[1];
+	constMap->color3 = color[2];
+	constMap->color4 = color[3];
 	constMap->value = value;
 	constMap->time = time;
 	constBuff->Unmap(0, nullptr);
@@ -164,7 +167,10 @@ void KochaEngine::PostEffect::Draw(const ShaderType& arg_type)
 {
 	time++;
 	auto result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->color = color;
+	constMap->color1 = color[0];
+	constMap->color2 = color[1];
+	constMap->color3 = color[2];
+	constMap->color4 = color[3];
 	constMap->value = value;
 	constMap->time = time;
 	constBuff->Unmap(0, nullptr);
@@ -234,6 +240,21 @@ void KochaEngine::PostEffect::Draw(const ShaderType& arg_type)
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
 
+void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType)
+{
+	switch (arg_paletteType)
+	{
+	case KochaEngine::GAMEBOY:
+		color[0] = Vector4(0.06f, 0.22f, 0.06f, 1.0f);
+		color[1] = Vector4(0.19f, 0.38f, 0.19f, 1.0f);
+		color[2] = Vector4(0.60f, 0.74f, 0.06f, 1.0f);
+		color[3] = Vector4(0.54f, 0.67f, 0.06f, 1.0f);
+		break;
+	default:
+		break;
+	}
+}
+
 void KochaEngine::PostEffect::StaticInit(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const SIZE winSize)
 {
 	KochaEngine::PostEffect::winSize = winSize;
@@ -247,7 +268,8 @@ void KochaEngine::PostEffect::StaticInit(ID3D12Device* device, ID3D12GraphicsCom
 
 void KochaEngine::PostEffect::Initialize()
 {
-	color = Vector4(1, 1, 1, 1);
+	paletteType = KochaEngine::PaletteType::GAMEBOY;
+	SetColorPalette(paletteType);
 	time = 0;
 	value = 0;
 
