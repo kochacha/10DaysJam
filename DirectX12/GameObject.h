@@ -16,6 +16,7 @@ namespace KochaEngine
 		BLOCK,
 		COLLISION_BLOCK,
 		ENHANCEMENT_ITEM,
+		JAMMING_SPINE,
 	};
 
 	class GameObject
