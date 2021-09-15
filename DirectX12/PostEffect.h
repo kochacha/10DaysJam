@@ -26,6 +26,11 @@ namespace KochaEngine
 		DEPTH_OF_FIELD_SHADER,
 	};
 
+	enum PaletteType
+	{
+		GAMEBOY,
+	};
+
 	class PostEffect
 	{
 		struct PeraVartex
@@ -36,7 +41,10 @@ namespace KochaEngine
 
 		struct ConstBufferDataB0
 		{
-			Vector4 color;
+			Vector4 color1;
+			Vector4 color2;
+			Vector4 color3;
+			Vector4 color4;
 			float time;
 			float value;
 		};
@@ -52,7 +60,8 @@ namespace KochaEngine
 		void Draw(const ShaderType& arg_type);
 
 		void SetValue(const float arg_value) { value = arg_value; }
-		void SetColor(const Vector4& arg_color) { color = arg_color; }
+		void SetColorPalette(const PaletteType& arg_paletteType);
+		//void SetColor(const Vector4& arg_color) { color[0] = arg_color; }
 
 		static void StaticInit(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const SIZE winSize);
 	private:
@@ -69,9 +78,11 @@ namespace KochaEngine
 
 		ComPtr<ID3D12Resource> constBuff;
 		ConstBufferDataB0* constMap;
-		Vector4 color;
+		Vector4 color[4];
 		float value;
 		float time;
+
+		PaletteType paletteType;
 
 		static ID3D12Device* device;
 		static ID3D12GraphicsCommandList* cmdList;

@@ -68,6 +68,8 @@ void KochaEngine::Application::Run()
 
 		sceneManager->Update();
 
+		//peraEffect->SetColorPalette(KochaEngine::PaletteType::GAMEBOY);
+
 		////↑毎フレーム処理↑//
 		
 		//１パス
@@ -150,20 +152,6 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/PIEN.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/kaku4.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/number.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/stone.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tiling_grass.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tiling_grass1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tiling_rock1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tiling_rock2.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tiling_water1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tiling_water2.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/water_ball1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rock1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rock2.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rock3.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tree1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tree2.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/grass1.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/waku.png");
 
 	//.objのロード
@@ -305,7 +293,7 @@ void KochaEngine::Application::DrawGUI()
 	shaderColor.x = color[0];
 	shaderColor.y = color[1];
 	shaderColor.z = color[2];
-	peraEffect->SetColor(shaderColor);
+	//peraEffect->SetColor(shaderColor);
 
 	ImGui::End();
 }

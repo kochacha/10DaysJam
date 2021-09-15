@@ -8,7 +8,10 @@ SamplerState smp : register(s0);
 
 cbuffer cbuff0 : register(b0)
 {
-	float4 color;
+	float4 color1;
+    float4 color2;
+    float4 color3;
+    float4 color4;
 	float time;
 	float value;
 };
