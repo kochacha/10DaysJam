@@ -34,7 +34,7 @@ void KochaEngine::EnhancementItem::Initialize()
 
 	obj->SetRotate(Vector3(0, 0, 0));
 	obj->SetScale(Vector3(10, 10, 10));
-	obj->SetColor(Vector4(0.3f, 0.4f, 0.8f, 1.0f));
+	obj->SetTexture("Resources/tiling_grass1.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 }
 
