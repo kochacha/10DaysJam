@@ -9,9 +9,6 @@
 #include "Vector3.h"
 #include "Vector4.h"
 
-#define OBJ_COUNT 25
-#define FBX_COUNT 1
-
 namespace KochaEngine
 {
 	class Window;
@@ -23,10 +20,7 @@ namespace KochaEngine
 	class SceneManager;
 	class Texture2D;
 	class Object;
-	class PMDModel;
 	class Camera;
-	class FBXObject;
-	class FBXModel;
 	class EffectManager;
 	class LightManager;
 
@@ -46,9 +40,6 @@ namespace KochaEngine
 		SceneManager* sceneManager;
 
 		Texture2D* texture[1];
-
-		FBXModel* fbxModel = nullptr;
-		FBXObject* fbxObject[FBX_COUNT];
 
 		PostEffect* peraBloom;
 		PostEffect* peraEffect;
@@ -80,7 +71,6 @@ namespace KochaEngine
 		void LoadScene();
 		void InitFPS();
 		void DrawGUI();
-		void MeraMera();
 		bool UpdateFPS();
 
 		const double MIN_FRAME_TIME = 1.000000f / 60.000000f;
