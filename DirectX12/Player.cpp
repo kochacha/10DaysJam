@@ -25,7 +25,7 @@ void KochaEngine::Player::Initialize()
 	velocity.Zero();
 	speed = 0.5f;
 	smash = false;
-	
+	ResetPower();
 
 	wallPosX = -118;
 
@@ -66,6 +66,38 @@ KochaEngine::GameObjectType KochaEngine::Player::GetType()
 	return PLAYER;
 }
 
+const bool KochaEngine::Player::IsSmashing()
+{
+	return smash;
+}
+
+void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
+{
+	//上限値ならreturn
+	if (smashPower >= MAX_SMASHPOWER) return;
+
+	//強化アイテム取得時
+	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
+	{
+		smashPower++;
+	}
+	//スマッシュでおじゃまトゲを巻き込んだ時
+	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
+	{
+		smashPower += 3;
+
+		if (smashPower > MAX_SMASHPOWER)
+		{
+			smashPower = MAX_SMASHPOWER;
+		}
+	}
+}
+
+void KochaEngine::Player::PowerDown()
+{
+
+}
+
 void KochaEngine::Player::InputMove()
 {
 	
@@ -101,6 +133,9 @@ void KochaEngine::Player::InputMove()
 			smash = false;
 			speed = 0;
 			position.x = wallPosX;
+
+			//仮置き
+			ResetPower();
 		}
 	}
 	if (!smash)
@@ -163,4 +198,9 @@ void KochaEngine::Player::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
+}
+
+void KochaEngine::Player::ResetPower()
+{
+	smashPower = 0;
 }

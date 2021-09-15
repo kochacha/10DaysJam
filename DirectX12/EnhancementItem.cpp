@@ -47,6 +47,8 @@ void KochaEngine::EnhancementItem::Update()
 
 void KochaEngine::EnhancementItem::Hit()
 {	
+	gManager->GetPlayer()->PowerUp(GetType());
+	isDead = true;
 }
 
 void KochaEngine::EnhancementItem::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)

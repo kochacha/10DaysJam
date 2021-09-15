@@ -47,6 +47,20 @@ void KochaEngine::JammingSpine::Update()
 
 void KochaEngine::JammingSpine::Hit()
 {	
+	Player* player = gManager->GetPlayer();
+
+	//プレイヤーがスマッシュ中なら
+	if (player->IsSmashing())
+	{
+		player->PowerUp(GetType());
+
+		isDead = true;
+	}
+	//通常時なら
+	else
+	{
+		player->PowerDown();
+	}
 }
 
 void KochaEngine::JammingSpine::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)

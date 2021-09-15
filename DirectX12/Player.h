@@ -12,6 +12,9 @@ namespace KochaEngine
 		float speed;
 		bool smash;
 		int testCount;
+		//スマッシュのパワー
+		int smashPower;
+		const int MAX_SMASHPOWER = 10;
 
 		int wallPosX;
 
@@ -19,6 +22,8 @@ namespace KochaEngine
 		void MoveX();
 		void MoveY();
 		void SetObjParam();
+		//パワーのリセット
+		void ResetPower();
 
 	public:
 		Player(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position);
@@ -29,5 +34,12 @@ namespace KochaEngine
 		void Hit()override;
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
 		GameObjectType GetType();
+		//スマッシュしているかどうか
+		const bool IsSmashing();
+
+		//パワーアップ
+		void PowerUp(const GameObjectType arg_objectType);
+		//通常時のおじゃまトゲとの衝突時処理
+		void PowerDown();
 	};
 }
