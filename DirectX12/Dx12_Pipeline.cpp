@@ -78,6 +78,7 @@ void KochaEngine::Dx12_Pipeline::CreateSpriteGraphicsPipelineState()
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	// ブレンドステートの設定
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
 
 	// 深度バッファのフォーマット

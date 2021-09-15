@@ -18,9 +18,6 @@
 #include "Object.h"
 #include "Camera.h"
 #include "Util.h"
-#include "FBXModel.h"
-#include "FBXObject.h"
-#include "FBXLoader.h"
 #include "CustomGui.h"
 #include "EffectManager.h"
 #include "LightManager.h"
@@ -31,10 +28,9 @@
 
 #pragma comment(lib,"winmm.lib")
 
-
 using namespace DirectX;
 
-float KochaEngine::Application::clearColor[4] = { 0.1568f,0.1176f,0.1960f,1 };
+float KochaEngine::Application::clearColor[4] = { 1.0f,1.0f,1.0f,1 };
 
 KochaEngine::Application::Application()
 {
@@ -70,91 +66,13 @@ void KochaEngine::Application::Run()
 		////↓毎フレーム処理↓//
 		Input::Update();
 
-		//if (Input::CheckKey(DIK_A))
-		//{
-		//	camera->MoveEye(Vector3(-1, 0, 0));
-		//}
-		//if (Input::CheckKey(DIK_D))
-		//{
-		//	camera->MoveEye(Vector3(1, 0, 0));
-		//}
-		//if (Input::CheckKey(DIK_W))
-		//{
-		//	camera->MoveEye(Vector3(0, 1, 0));
-		//}
-		//if (Input::CheckKey(DIK_S))
-		//{
-		//	camera->MoveEye(Vector3(0, -1, 0));
-		//}
-		//if (Input::CheckKey(DIK_UP))
-		//{
-		//	camera->MoveEye(Vector3(0, 0, 1));
-		//}
-		//if (Input::CheckKey(DIK_DOWN))
-		//{
-		//	camera->MoveEye(Vector3(0, 0, -1));
-		//}
-		//if (Input::CheckKey(DIK_Q))
-		//{
-		//	camera->MoveTarget(Vector3(-1, 0, 0));
-		//}
-		//if (Input::CheckKey(DIK_E))
-		//{
-		//	camera->MoveTarget(Vector3(1, 0, 0));
-		//}
-
-		if (Input::TriggerKey(DIK_1))
-		{
-			effectManager->Play("light.efk", Vector3(0, 0, 0));
-		}
-		if (Input::TriggerKey(DIK_2))
-		{
-			effectManager->Play("hit.efk", Vector3(0, 0, 0));
-		}
-
 		sceneManager->Update();
-		/*camera->Update();
-		auto target = camera->GetTarget();
-		auto eye = camera->GetEye();
-		auto lightPos = XMLoadFloat3(&target) + XMVector3Normalize({1,1,1})
-			* XMVector3Length(XMVectorSubtract(XMLoadFloat3(&target), XMLoadFloat3(&eye))).m128_f32[0];
-		Vector3 lightPos2 = Vector3(lightPos.m128_f32[0], lightPos.m128_f32[1], lightPos.m128_f32[2]);
-		lightCamera->SetEye(lightPos2);
-		lightCamera->Update();
-		MeraMera();
-
-		lightManager->SetDirectionalLightColor(0, dirLightColor);
-		lightManager->SetDirectionalLightDirection(0, dirLightDirection);
-		lightManager->SetDirectionalLightIsActive(0, isActiveDirLight);
-		lightManager->SetPointLightPos(0, pointLightPosition);
-		lightManager->SetPointLightAtten(0, pointLightAtten);
-		lightManager->SetLightCamera(lightCamera);
-		lightManager->Update();*/
-
-		for (int i = 0; i < OBJ_COUNT; ++i)
-		{
-			//obj[i]->MoveRotate({ 0,1.5f,0 });
-		}
 
 		////↑毎フレーム処理↑//
 		
 		//１パス
 		{
-			//////////////////////////////
-
-			//////////////////////////////
-
 			peraDof->PreDrawScene(dx12->GetCmdList().Get());
-
-			//Object::BeginDrawFromLight(dx12->GetCmdList().Get());
-			////peraBloom->PreDrawShadow(dx12->GetCmdList().Get());
-			//floor->Draw(lightCamera);
-			//sceneManager->ObjDraw();
-			////for (int i = 0; i < OBJ_COUNT; ++i)
-			////{
-			////	obj[i]->Draw(lightCamera);
-			////}
-			//taimatu->Draw(lightCamera);
 
 			Object::BeginDraw(dx12->GetCmdList().Get());
 			//↓ObjDraw↓//
@@ -171,8 +89,14 @@ void KochaEngine::Application::Run()
 			//↑ObjDraw↑//
 			Object::EndDraw();
 
+			Texture2D::BeginDraw(dx12->GetCmdList().Get());
+			//↓SpriteDraw↓//
 
-			//effectManager->Update(camera);
+			sceneManager->SpriteDraw();
+			texture[0]->Draw();
+
+			//↑SpriteDraw↑//
+			Texture2D::EndDraw();
 
 			peraDof->PostDrawScene(dx12->GetCmdList().Get());
 		}
@@ -208,15 +132,6 @@ void KochaEngine::Application::Run()
 
 			peraEffect->Draw(peraEffectType);
 
-			Texture2D::BeginDraw(dx12->GetCmdList().Get());
-			//↓SpriteDraw↓//
-
-			sceneManager->SpriteDraw();
-			texture[0]->Draw();
-
-			//↑SpriteDraw↑//
-			Texture2D::EndDraw();
-
 			DrawGUI();
 
 			dx12->EndDraw();
@@ -249,6 +164,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tree1.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/tree2.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/grass1.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/waku.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "LowTree");
@@ -394,28 +310,6 @@ void KochaEngine::Application::DrawGUI()
 	ImGui::End();
 }
 
-void KochaEngine::Application::MeraMera()
-{
-	const float DELTA_VALUE = 0.0015f;
-	if (Util::GetRandInt() % 2)
-	{
-		pointLightAtten.y -= DELTA_VALUE;
-	}
-	else
-	{
-		pointLightAtten.y += DELTA_VALUE;
-	}
-
-	if (pointLightAtten.y > 0.06f)
-	{
-		pointLightAtten.y -= DELTA_VALUE;
-	}
-	if (pointLightAtten.y < 0.03f)
-	{
-		pointLightAtten.y += DELTA_VALUE;
-	}
-}
-
 bool KochaEngine::Application::UpdateFPS()
 {
 	// 今の時間を取得
@@ -433,9 +327,6 @@ bool KochaEngine::Application::UpdateFPS()
 		return true;
 	}
 	fps = 1.000000f / frameTime;
-	//std::wstringstream stream;
-	//stream << "FPS:" << fps << std::endl;
-	//OutputDebugString(stream.str().c_str());
 	timeStart = timeEnd;
 	return false;
 }
@@ -456,18 +347,10 @@ bool KochaEngine::Application::Initialize()
 	rootSignature = new Dx12_RootSignature(*dx12);
 	pipeline = new Dx12_Pipeline(*dx12, *blob);
 
-	/*camera = new Camera();
-	camera->Initialize(dx12->GetWinSize().cx, dx12->GetWinSize().cy, 90, 100, { 0,50,-150 }, { 0,0,0 }, { 0,1,0 });
-	lightCamera = new Camera();
-	lightCamera->Initialize(dx12->GetWinSize().cx, dx12->GetWinSize().cy, 90, 100, { -100,100,-100 }, { 0,0,0 }, { 0,1,0 });*/
-
 	Texture2D::StaticInit(dx12->GetDevice().Get(), dx12->GetWinSize());
 	PostEffect::StaticInit(dx12->GetDevice().Get(), dx12->GetCmdList().Get(), dx12->GetWinSize());
 	Object::StaticInit(dx12->GetDevice().Get(), dx12->GetWinSize());
-	//FBXLoader::GetInstance()->Initialize(dx12->GetDevice().Get());
 	LightManager::StaticInitialize(dx12->GetDevice().Get());
-	//FBXObject::SetDevice(dx12->GetDevice().Get());
-	//FBXObject::SetCamera(camera);
 
 	Load();
 
@@ -490,28 +373,20 @@ bool KochaEngine::Application::Initialize()
 	pointLightAtten = Vector3(1.000f, 0.050f, 0.001f);
 	isActiveDirLight = true;
 
-	texture[0] = new Texture2D("Resources/PIEN.png", Vector2(0, 0), Vector2(100, 100), 0);
+	texture[0] = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 720), 0);
 
 	peraBloom = new PostEffect();
 	peraEffect = new PostEffect();
 	peraDof = new PostEffect();
-	peraEffectType = ShaderType::PERA_SHADER;
+	peraEffectType = ShaderType::GAME_BOY_SHADER;
 	isDof = false;
 
 	effectManager = new EffectManager(*dx12);
 	effectManager->LoadEffect("light.efk", 10.0f);
 	effectManager->LoadEffect("hit.efk", 10.0f);
 
-	//lightManager = LightManager::Create();
-	//lightManager->SetLightCamera(lightCamera);
-	////Object::SetLightManager(lightManager);
-
-
-	/*lightManager->SetPointLightColor(0, pointLightColor);
-	lightManager->SetPointLightAtten(0, pointLightAtten);*/
-
 	vignetteScale = 0.2f;
-	gBoyPixelSize = 4.0f;
+	gBoyPixelSize = 5.81f;
 	mosaicSize = 4.0f;
 	sepiaScale = 0.2f;
 	blurScale = 2.0f;
@@ -535,21 +410,12 @@ void KochaEngine::Application::Terminate()
 	delete pipeline;
 	delete dx12;
 	delete window;
-	//delete camera;
-	//delete lightCamera;
-	delete fbxModel;
-	//for (int i = 0; i < FBX_COUNT; i++)
-	//{
-	//	delete fbxObject[i];
-	//}
 	delete peraBloom;
 	delete peraEffect;
 	delete peraDof;
 	delete effectManager;
-	//delete lightManager;
 
 	Input::Terminate();
-	//FBXLoader::GetInstance()->Finalize();
 }
 
 KochaEngine::Application& KochaEngine::Application::Instance()
