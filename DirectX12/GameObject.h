@@ -35,11 +35,6 @@ namespace KochaEngine
 		Vector3 velocity = { 0,0,0 };
 
 		_Sphere sphere;
-		_Box box;
-		CollisionFace faceX;
-		CollisionFace faceZ;
-		XMFLOAT3 maxPos = { 0,0,0 };
-		XMFLOAT3 minPos = { 0,0,0 };
 
 		bool hitFlag;
 		int hitCount;
@@ -70,11 +65,6 @@ namespace KochaEngine
 		Vector3 GetPosition() { return position; }
 		Vector3 GetVelocity() { return velocity; }
 		_Sphere GetSphere() { return sphere; }
-		_Box GetBox() { return box; }
-		void SetFaceX(CollisionFace arg_faceX) { this->faceX = arg_faceX; }
-		void SetFaceZ(CollisionFace arg_faceZ) { this->faceZ = arg_faceZ; }
 		void SetPosition(const Vector3& arg_position) { this->position = arg_position; }
-		void SetMaxPos(const Vector3& arg_position) { this->maxPos = arg_position; }
-		void SetMinPos(const Vector3& arg_position) { this->minPos = arg_position; }
 	};
 }

@@ -95,37 +95,37 @@ void KochaEngine::GameObjectManager::SpriteDraw()
 	}
 }
 
-void KochaEngine::GameObjectManager::CheckBlock(GameObject* arg_obj, const GameObjectType& arg_otherType)
+void KochaEngine::GameObjectManager::HitObject(GameObject* arg_gameObject, const GameObjectType& arg_objType)
 {
-	_Sphere objSphere = arg_obj->GetSphere();
-	GameObjectType objType = arg_obj->GetType();
-	XMFLOAT3 objPos = arg_obj->GetPosition();
+	if (arg_gameObject->IsDead()) return; //オブジェクトがそもそも死んでいたら判定を取らない
 
+	auto objType = arg_gameObject->GetType();
+	auto objSphere = arg_gameObject->GetSphere();
 	auto end = gameObjects.end();
 	for (auto it = gameObjects.begin(); it != end; ++it)
 	{
-		if ((*it)->GetType() == objType) continue; //自分と同じオブジェクトだったら無視
-		if ((*it)->GetType() != arg_otherType) continue; //指定のオブジェクト以外だったら無視
-		if ((*it)->IsDead()) continue; //オブジェクトが死んでいたら無視
+		if ((*it)->GetType() != arg_objType) continue; //指定したタイプ以外だったら無視する
+		if ((*it)->IsDead()) continue; //判定対象のオブジェクトが死んでいたら無視する
 
-		if (Collision::HitSphereToBox(objSphere,(*it)->GetBox()))
+		//円と円の当たり判定
+		if (Collision::HitSphereToSphere(objSphere, (*it)->GetSphere()))
 		{
-			arg_obj->HitBlock((*it)->GetBox());
+			arg_gameObject->Hit();
+			(*it)->Hit();
 		}
 	}
-
 }
 
-int KochaEngine::GameObjectManager::GetEnemyCount()
+int KochaEngine::GameObjectManager::GetTypeCount(const GameObjectType& arg_objType)
 {
 	int count = 0;
 	auto end = gameObjects.end();
 	for (auto it = gameObjects.begin(); it != end; ++it)
 	{
-		//if ((*it)->GetType() == ENEMY)
-		//{
-		//	count++;
-		//}
+		if ((*it)->GetType() == arg_objType)
+		{
+			count++;
+		}
 	}
 	return count;
 }

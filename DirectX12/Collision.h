@@ -57,7 +57,7 @@ namespace KochaEngine
 		static bool HitBoxToBox(_Box box1, _Box box2);                    //’¼•û‘Ì~’¼•û‘Ì
 
 		static CollisionFace CheckHitFaceX(const _Sphere& sphere, const _Box& aabb);
-		static CollisionFace CheckHitFaceZ(const _Sphere& sphere, const _Box& aabb);
+		static CollisionFace CheckHitFaceY(const _Sphere& sphere, const _Box& aabb);
 
 		//2DÕ“Ë”»’è
 		static bool HitCircleToCircle(_Circle circle1, _Circle circle2);  //‰~    ~‰~

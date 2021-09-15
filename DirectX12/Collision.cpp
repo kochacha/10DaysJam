@@ -53,14 +53,14 @@ KochaEngine::CollisionFace KochaEngine::Collision::CheckHitFaceX(const _Sphere &
 
 	XMFLOAT3 distance{};
 	distance.x = pos.x - center.x;
-	distance.z = pos.z - center.z;
-	float direction = abs(distance.z / distance.x);
+	distance.y = pos.y - center.y;
+	float direction = abs(distance.y / distance.x);
 
-	float tiltXZ = 0;
+	float tiltXY = 0;
 	XMFLOAT3 maxPosition = GetLeftUpFront(box.position, box.edgeLength);
-	tiltXZ = abs((maxPosition.z - box.position.z) / (maxPosition.x - box.position.x));
+	tiltXY = abs((maxPosition.y - box.position.y) / (maxPosition.x - box.position.x));
 
-	if (direction > tiltXZ)
+	if (direction > tiltXY)
 	{
 		return NONE;
 	}
@@ -77,28 +77,28 @@ KochaEngine::CollisionFace KochaEngine::Collision::CheckHitFaceX(const _Sphere &
 	}
 }
 
-KochaEngine::CollisionFace KochaEngine::Collision::CheckHitFaceZ(const _Sphere & sphere, const _Box & box)
+KochaEngine::CollisionFace KochaEngine::Collision::CheckHitFaceY(const _Sphere & sphere, const _Box & box)
 {
 	XMFLOAT3 center = box.position;
 	XMFLOAT3 pos = { sphere.position.x , sphere.position.y , sphere.position.z };
 
 	XMFLOAT3 distance{};
 	distance.x = pos.x - center.x;
-	distance.z = pos.z - center.z;
-	float direction = abs(distance.z / distance.x);
+	distance.y = pos.y - center.y;
+	float direction = abs(distance.y / distance.x);
 		
-	float tiltXZ = 0;
+	float tiltXY = 0;
 	XMFLOAT3 maxPosition = GetLeftUpFront(box.position, box.edgeLength);
-	tiltXZ = abs((maxPosition.z - box.position.z) / (maxPosition.x - box.position.x));
+	tiltXY = abs((maxPosition.y - box.position.y) / (maxPosition.x - box.position.x));
 
 
-	if (direction < tiltXZ)
+	if (direction < tiltXY)
 	{
 		return NONE;
 	}
 	else
 	{
-		if (distance.z > 0)
+		if (distance.y > 0)
 		{
 			return Face_Back;
 		}

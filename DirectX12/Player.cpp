@@ -9,8 +9,6 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	gManager = arg_gManager;
 	position = arg_position;
 
-	CameraTracking();
-
 	obj = new Object("plane");
 	Initialize();
 }
@@ -34,54 +32,23 @@ void KochaEngine::Player::Initialize()
 	obj->SetRotate(Vector3(0, 0, 0));
 	obj->SetScale(Vector3(10, 10, 10));
 	obj->SetTexture("Resources/player0.png");
+	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 }
 
 void KochaEngine::Player::Update()
 {
-	gManager->CheckBlock(this, COLLISION_BLOCK);
+	gManager->HitObject(this, COLLISION_BLOCK);
 	
 	InputMove();
 	MoveX();
-	MoveZ();
+	MoveY();
 
 	SetObjParam();
-	CameraTracking();
 }
 
 void KochaEngine::Player::Hit()
 {
-}
-
-void KochaEngine::Player::HitBlock(_Box arg_box)
-{
-	_Box _box = arg_box;
-	CollisionFace faceX = Collision::CheckHitFaceX(sphere, _box);
-	CollisionFace faceZ = Collision::CheckHitFaceZ(sphere, _box);
-	XMFLOAT3 minPos = Collision::GetLeftUpFront(_box.position, _box.edgeLength);
-	XMFLOAT3 maxPos = Collision::GetRightDownBack(_box.position, _box.edgeLength);
-
-	switch (faceX)
-	{
-	case Face_Right:
-		position.x = maxPos.x + sphere.radius;
-		break;
-	case Face_Left:
-		position.x = minPos.x - sphere.radius;
-		break;
-	default:
-		break;
-	}
-	switch (faceZ)
-	{
-	case Face_Back:
-		position.z = maxPos.z + sphere.radius;
-		break;
-	case Face_Front:
-		position.z = minPos.z - sphere.radius;
-		break;
-	default:
-		break;
-	}
+	//‰½‚©‚É“–‚½‚Á‚½Žž‚±‚±’Ê‚é
 }
 
 void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
@@ -108,11 +75,11 @@ void KochaEngine::Player::InputMove()
 	}
 	if (Input::CheckKey(DIK_W))
 	{
-		velocity.z = 1;
+		velocity.y = 1;
 	}
 	if (Input::CheckKey(DIK_S))
 	{
-		velocity.z = -1;
+		velocity.y = -1;
 	}
 	if (Input::CheckKey(DIK_A))
 	{
@@ -130,21 +97,13 @@ void KochaEngine::Player::MoveX()
 	position.x += velocity.x * speed;
 }
 
-void KochaEngine::Player::MoveZ()
+void KochaEngine::Player::MoveY()
 {
-	position.z += velocity.z * speed;
+	position.y += velocity.y * speed;
 }
 
 void KochaEngine::Player::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
-}
-
-void KochaEngine::Player::CameraTracking()
-{
-	Vector3 cameraPos = Vector3(position.x, position.y + 20, position.z - 60);
-	Vector3 cameraTargetPos = Vector3(position.x, position.y, position.z + 20);
-	camera->SetEye(cameraPos);
-	camera->SetTarget(cameraTargetPos);
 }

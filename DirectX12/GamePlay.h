@@ -23,9 +23,6 @@ namespace KochaEngine
 		ParticleEmitter* emitter;
 		LightManager* lightManager;
 
-		Object* floor;
-		Object* skyObj;
-
 		bool fadeFlag;
 		float fadeAlpha;
 

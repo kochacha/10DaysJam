@@ -12,10 +12,6 @@ KochaEngine::CollisionBlock::~CollisionBlock()
 
 void KochaEngine::CollisionBlock::Initialize()
 {
-	box.position = Vector3(position.x + 1, position.y, position.z);
-	box.edgeLength = 10;
-	box.leftUpFront = Collision::GetLeftUpFront(box.position, box.edgeLength);
-	box.rightDownBack = Collision::GetRightDownBack(box.position, box.edgeLength);
 }
 
 void KochaEngine::CollisionBlock::Update()
