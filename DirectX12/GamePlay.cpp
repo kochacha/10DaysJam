@@ -16,6 +16,8 @@ KochaEngine::GamePlay::GamePlay()
 	emitter = new ParticleEmitter(pManager);
 	map = new Map(gManager, camera);
 	lightManager = new LightManager();
+
+	iManager = new ItemManager(camera, gManager);
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -27,6 +29,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete pManager;
 	delete emitter;
 	delete map;
+	delete iManager;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -45,8 +48,7 @@ void KochaEngine::GamePlay::Initialize()
 	//map->CreateMap(0);
 
 	gManager->AddObject(new Player(camera, gManager, Vector3(0, 0, 0)));
-	gManager->AddObject(new EnhancementItem(camera, gManager, Vector3(20, 10, 0)));
-	gManager->AddObject(new JammingSpine(camera, gManager, Vector3(-30, -20, 0)));
+	iManager->Initialize();	
 
 	frameCount = 0;
 	seconds = 0;
@@ -64,7 +66,7 @@ void KochaEngine::GamePlay::Update()
 	camera->Update();
 	lightManager->Update();
 
-
+	iManager->Update();
 }
 
 void KochaEngine::GamePlay::SpriteDraw()

@@ -7,6 +7,7 @@
 #include "Number.h"
 #include "Audio.h"
 #include "Texture2D.h"
+#include "ItemManager.h"
 
 namespace KochaEngine
 {
@@ -22,6 +23,7 @@ namespace KochaEngine
 		ParticleManager* pManager;
 		ParticleEmitter* emitter;
 		LightManager* lightManager;
+		ItemManager* iManager;
 
 		bool fadeFlag;
 		float fadeAlpha;
