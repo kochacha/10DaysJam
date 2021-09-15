@@ -64,8 +64,8 @@ KochaEngine::GameObjectType KochaEngine::Player::GetType()
 
 void KochaEngine::Player::InputMove()
 {
-	velocity.Zero();
-	if (Input::CheckKey(DIK_LSHIFT))
+	
+	/*if (Input::CheckKey(DIK_LSHIFT))
 	{
 		speed = 0.8f;
 	}
@@ -88,8 +88,27 @@ void KochaEngine::Player::InputMove()
 	if (Input::CheckKey(DIK_D))
 	{
 		velocity.x = 1;
+	}*/
+	speed -= 1.0f;
+	if (speed <= 0)
+	{
+		speed = 0;
 	}
+	
+	if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+	{
+		velocity.Zero();
+		speed = 8.0f;
+
+		velocity.x = Input::GetLStickDirection().x;
+		velocity.y = Input::GetLStickDirection().y;
+	}
+	
+	
+
 	velocity.normalize();
+	
+	
 }
 
 void KochaEngine::Player::MoveX()
