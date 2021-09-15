@@ -180,6 +180,7 @@
     <ClCompile Include="Dx12_Wrapper.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Ending.cpp" />
+    <ClCompile Include="EnhancementItem.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="FBXModel.cpp" />
     <ClCompile Include="FBXObject.cpp" />
@@ -467,6 +468,7 @@
     <ClInclude Include="Dx12_Wrapper.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Ending.h" />
+    <ClInclude Include="EnhancementItem.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="FBXModel.h" />
     <ClInclude Include="FBXObject.h" />

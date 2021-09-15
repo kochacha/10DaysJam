@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "LightManager.h"
 #include "Player.h"
+#include "EnhancementItem.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -43,6 +44,7 @@ void KochaEngine::GamePlay::Initialize()
 	//map->CreateMap(0);
 
 	gManager->AddObject(new Player(camera, gManager, Vector3(0, 0, 0)));
+	gManager->AddObject(new EnhancementItem(camera, gManager, Vector3(20, 10, 0)));
 
 	frameCount = 0;
 	seconds = 0;
