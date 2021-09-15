@@ -180,6 +180,7 @@
     <ClCompile Include="Dx12_Wrapper.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Ending.cpp" />
+    <ClCompile Include="EnhancementItem.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="FBXModel.cpp" />
     <ClCompile Include="FBXObject.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="JammingSpine.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -467,6 +469,7 @@
     <ClInclude Include="Dx12_Wrapper.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Ending.h" />
+    <ClInclude Include="EnhancementItem.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="FBXModel.h" />
     <ClInclude Include="FBXObject.h" />
@@ -486,6 +489,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="JammingSpine.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Number.h" />
