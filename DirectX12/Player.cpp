@@ -59,7 +59,7 @@ void KochaEngine::Player::Update()
 		}
 		stunCount++;*/
 	}
-
+	MoveWallPos();
 	InputMove();
 	MoveX();
 	MoveY();
@@ -224,6 +224,11 @@ void KochaEngine::Player::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
+}
+
+void KochaEngine::Player::MoveWallPos()
+{
+
 }
 
 void KochaEngine::Player::ResetPower()

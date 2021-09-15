@@ -25,6 +25,7 @@ namespace KochaEngine
 		void MoveX();
 		void MoveY();
 		void SetObjParam();
+		void MoveWallPos();
 		//パワーのリセット
 		void ResetPower();
 
