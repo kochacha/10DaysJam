@@ -35,7 +35,7 @@ void KochaEngine::GamePlay::Initialize()
 	isGameOver = false;
 
 	gManager->RemoveAll();
-	camera->Initialize(1280, 720, 90, 100, { 0,0,-120 }, { 0,0,0 }, { 0,1,0 });
+	camera->Initialize(1280, 960, 90, 100, { 0,0,-120 }, { 0,0,0 }, { 0,1,0 });
 	lightManager = LightManager::Create();
 	lightManager->SetDirectionalLightColor(0, Vector3(1, 1, 1));
 	lightManager->SetDirectionalLightDirection(0, Vector3(0, 0, -1));
