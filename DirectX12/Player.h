@@ -17,6 +17,9 @@ namespace KochaEngine
 		const int MAX_SMASHPOWER = 10;
 
 		int wallPosX;
+		bool isStun;
+		int stunCount;
+		const int stunTime = 30;
 
 		void InputMove();
 		void MoveX();
@@ -36,6 +39,7 @@ namespace KochaEngine
 		GameObjectType GetType();
 		//スマッシュしているかどうか
 		const bool IsSmashing();
+		const bool IsStuning();
 
 		//パワーアップ
 		void PowerUp(const GameObjectType arg_objectType);
