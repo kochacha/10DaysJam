@@ -24,6 +24,10 @@ void KochaEngine::Player::Initialize()
 
 	velocity.Zero();
 	speed = 0.5f;
+	smash = false;
+	
+
+	wallPosX = -118;
 
 	sphere.radius = 4.0f;
 	sphere.position = this->position;
@@ -89,36 +93,70 @@ void KochaEngine::Player::InputMove()
 	{
 		velocity.x = 1;
 	}*/
-	speed -= 1.0f;
-	if (speed <= 0)
-	{
-		speed = 0;
+	if (smash)
+	{		
+		Input::Vibration(60000, 10);
+		if (position.x <= wallPosX )
+		{
+			smash = false;
+			speed = 0;
+			position.x = wallPosX;
+		}
 	}
-	
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+	if (!smash)
 	{
-		velocity.Zero();
-		speed = 8.0f;
+		speed -= 1.0f;
+		if (speed <= 0)
+		{
+			speed = 0;
+		}
+		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+		{
+			velocity.Zero();
+			speed = 8.0f;
 
-		velocity.x = Input::GetLStickDirection().x;
-		velocity.y = Input::GetLStickDirection().y;
+			velocity.x = Input::GetLStickDirection().x;
+			velocity.y = Input::GetLStickDirection().y;
+		}
+	}	
+	if (speed <= 0 && !smash)
+	{
+		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+		{
+			smash = true;		
+			velocity.Zero();
+			velocity.x = -1;
+			speed = 10;
+		}
 	}
-	
-	
 
-	velocity.normalize();
-	
-	
+	velocity.normalize();	
 }
 
 void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
+	if (position.x <= -118)
+	{
+		position.x = -118;
+	}
+	if (position.x >= 120)
+	{
+		position.x = 120;
+	}
 }
 
 void KochaEngine::Player::MoveY()
 {
 	position.y += velocity.y * speed;
+	if (position.y <= -63)
+	{
+		position.y = -63;
+	}
+	if (position.y >= 63)
+	{
+		position.y = 63;
+	}
 }
 
 void KochaEngine::Player::SetObjParam()

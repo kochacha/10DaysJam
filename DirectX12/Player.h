@@ -10,6 +10,10 @@ namespace KochaEngine
 		GameObjectManager* gManager;
 
 		float speed;
+		bool smash;
+		int testCount;
+
+		int wallPosX;
 
 		void InputMove();
 		void MoveX();
