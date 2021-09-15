@@ -25,9 +25,12 @@ void KochaEngine::Player::Initialize()
 	velocity.Zero();
 	speed = 0.5f;
 	smash = false;
+	isStun = false;
+	stunCount = 0;
 	ResetPower();
 
-	wallPosX = -118;
+	wallPosX = -112;
+	
 
 	sphere.radius = 4.0f;
 	sphere.position = this->position;
@@ -43,6 +46,20 @@ void KochaEngine::Player::Update()
 {
 	gManager->HitObject(this, COLLISION_BLOCK);
 	
+	if (isStun)
+	{
+		if (speed <= 0)
+		{
+			isStun = false;
+		}
+		/*if (stunCount >= stunTime)
+		{
+			isStun = false;
+			stunCount = 0;
+		}
+		stunCount++;*/
+	}
+	MoveWallPos();
 	InputMove();
 	MoveX();
 	MoveY();
@@ -71,6 +88,11 @@ const bool KochaEngine::Player::IsSmashing()
 	return smash;
 }
 
+const bool KochaEngine::Player::IsStuning()
+{
+	return isStun;
+}
+
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 {
 	//è„å¿ílÇ»ÇÁreturn
@@ -95,7 +117,11 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 
 void KochaEngine::Player::PowerDown()
 {
-
+	smashPower -= 3;
+	velocity.x = -velocity.x;
+	velocity.y = -velocity.y;
+	speed = 6.0f;
+	isStun = true;
 }
 
 void KochaEngine::Player::InputMove()
@@ -145,7 +171,8 @@ void KochaEngine::Player::InputMove()
 		{
 			speed = 0;
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+		
+		if (!isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
 		{
 			velocity.Zero();
 			speed = 8.0f;
@@ -164,33 +191,32 @@ void KochaEngine::Player::InputMove()
 			speed = 10;
 		}
 	}
-
 	velocity.normalize();	
 }
 
 void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
-	if (position.x <= -118)
+	if (position.x <= wallPosX)
 	{
-		position.x = -118;
+		position.x = wallPosX;
 	}
-	if (position.x >= 120)
+	if (position.x >= 112)
 	{
-		position.x = 120;
+		position.x = 112;
 	}
 }
 
 void KochaEngine::Player::MoveY()
 {
 	position.y += velocity.y * speed;
-	if (position.y <= -63)
+	if (position.y <= -55)
 	{
-		position.y = -63;
+		position.y = -55;
 	}
-	if (position.y >= 63)
+	if (position.y >= 41)
 	{
-		position.y = 63;
+		position.y = 41;
 	}
 }
 
@@ -198,6 +224,11 @@ void KochaEngine::Player::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
+}
+
+void KochaEngine::Player::MoveWallPos()
+{
+
 }
 
 void KochaEngine::Player::ResetPower()

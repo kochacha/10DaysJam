@@ -57,7 +57,7 @@ void KochaEngine::JammingSpine::Hit()
 		isDead = true;
 	}
 	//’ÊíŽž‚È‚ç
-	else
+	else if(!player->IsSmashing() && !player->IsStuning())
 	{
 		player->PowerDown();
 	}
