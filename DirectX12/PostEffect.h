@@ -29,6 +29,7 @@ namespace KochaEngine
 	enum PaletteType
 	{
 		GAMEBOY,
+		SEPIA,
 	};
 
 	class PostEffect

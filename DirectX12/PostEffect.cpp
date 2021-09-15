@@ -20,51 +20,6 @@ KochaEngine::PostEffect::~PostEffect()
 {
 }
 
-//void KochaEngine::PostEffect::PreDrawShadow(ID3D12GraphicsCommandList* cmdList)
-//{
-//	//リソースバリアを変更
-//	for (int i = 0; i < TEX_BUFF_COUNT; i++)
-//	{
-//		auto resBarrier = CD3DX12_RESOURCE_BARRIER::Transition(texBuff[i].Get(),
-//			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-//			D3D12_RESOURCE_STATE_RENDER_TARGET);
-//		cmdList->ResourceBarrier(1, &resBarrier);
-//	}
-//
-//	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
-//	D3D12_CPU_DESCRIPTOR_HANDLE rtvHs[TEX_BUFF_COUNT];
-//	for (int i = 0; i < TEX_BUFF_COUNT; i++)
-//	{
-//		rtvHs[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeapRTV->GetCPUDescriptorHandleForHeapStart(), i,
-//			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-//	}
-//
-//	auto handle = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
-//	handle.ptr += device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-//
-//	cmdList->OMSetRenderTargets(0, nullptr, false, &handle);
-//
-//	//ビューポートの設定
-//	CD3DX12_VIEWPORT viewports[TEX_BUFF_COUNT];
-//	//シザリング矩形の設定
-//	CD3DX12_RECT scissorRects[TEX_BUFF_COUNT];
-//	for (int i = 0; i < TEX_BUFF_COUNT; i++)
-//	{
-//		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, winSize.cx, winSize.cy);
-//		scissorRects[i] = CD3DX12_RECT(0, 0, winSize.cx, winSize.cy);
-//	}
-//	cmdList->RSSetViewports(TEX_BUFF_COUNT, viewports);
-//	cmdList->RSSetScissorRects(TEX_BUFF_COUNT, scissorRects);
-//
-//	//全画面クリア
-//	for (int i = 0; i < TEX_BUFF_COUNT; i++)
-//	{
-//		cmdList->ClearRenderTargetView(rtvHs[i], Application::clearColor, 0, nullptr);
-//	}
-//	//深度バッファのクリア
-//	cmdList->ClearDepthStencilView(descHeapDSV->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-//}
-
 void KochaEngine::PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	//リソースバリアを変更
@@ -247,8 +202,14 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 	case KochaEngine::GAMEBOY:
 		color[0] = Vector4(0.06f, 0.22f, 0.06f, 1.0f);
 		color[1] = Vector4(0.19f, 0.38f, 0.19f, 1.0f);
-		color[2] = Vector4(0.60f, 0.74f, 0.06f, 1.0f);
-		color[3] = Vector4(0.54f, 0.67f, 0.06f, 1.0f);
+		color[2] = Vector4(0.45f, 0.60f, 0.06f, 1.0f);
+		color[3] = Vector4(0.60f, 0.74f, 0.06f, 1.0f);
+		break;
+	case KochaEngine::SEPIA:
+		color[0] = Vector4(0.20f, 0.11f, 0.00f, 1.0f);
+		color[1] = Vector4(0.36f, 0.20f, 0.00f, 1.0f);
+		color[2] = Vector4(0.54f, 0.30f, 0.00f, 1.0f);
+		color[3] = Vector4(1.00f, 0.92f, 0.82f, 1.0f);
 		break;
 	default:
 		break;

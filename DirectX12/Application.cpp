@@ -30,7 +30,7 @@
 
 using namespace DirectX;
 
-float KochaEngine::Application::clearColor[4] = { 1.0f,1.0f,1.0f,1 };
+float KochaEngine::Application::clearColor[4] = { 1.0f,1.0f,1.0f,1.0f };
 
 KochaEngine::Application::Application()
 {
@@ -94,8 +94,8 @@ void KochaEngine::Application::Run()
 			Texture2D::BeginDraw(dx12->GetCmdList().Get());
 			//↓SpriteDraw↓//
 
-			sceneManager->SpriteDraw();
 			texture[0]->Draw();
+			sceneManager->SpriteDraw();
 
 			//↑SpriteDraw↑//
 			Texture2D::EndDraw();
@@ -153,6 +153,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/kaku4.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/number.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/waku.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/toge.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/item.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "LowTree");
@@ -361,7 +363,7 @@ bool KochaEngine::Application::Initialize()
 	pointLightAtten = Vector3(1.000f, 0.050f, 0.001f);
 	isActiveDirLight = true;
 
-	texture[0] = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 720), 0);
+	texture[0] = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 
 	peraBloom = new PostEffect();
 	peraEffect = new PostEffect();

@@ -34,7 +34,7 @@ void KochaEngine::JammingSpine::Initialize()
 
 	obj->SetRotate(Vector3(0, 0, 0));
 	obj->SetScale(Vector3(10, 10, 10));
-	obj->SetColor(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
+	obj->SetTexture("Resources/toge.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 }
 

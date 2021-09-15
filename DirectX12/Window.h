@@ -16,7 +16,7 @@ namespace KochaEngine
 		const unsigned int GetWIN_WIDTH();
 		const unsigned int GetWIN_HEIGHT();
 		const unsigned int WIN_WIDTH = 1280;
-		const unsigned int WIN_HEIGHT = 720;
+		const unsigned int WIN_HEIGHT = 960;
 	private:
 		RECT wrc;
 		HWND hwnd;
