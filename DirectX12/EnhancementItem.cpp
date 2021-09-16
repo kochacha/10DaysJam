@@ -1,6 +1,7 @@
 #include "EnhancementItem.h"
 #include "GameObjectManager.h"
 #include "ItemManager.h"
+#include "Wall.h"
 
 KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager)
 {
@@ -12,6 +13,7 @@ KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectMana
 	gManager = arg_gManager;
 	position = arg_position;
 	iManager = arg_iManager;
+	pWall = gManager->GetWall();
 
 	obj = new Object("plane");
 	Initialize();
@@ -45,6 +47,12 @@ void KochaEngine::EnhancementItem::Update()
 {
 	SetObjParam();
 
+	if (position.x <= pWall->GetMinPos().x)
+	{
+		Dead();
+		return;
+	}
+
 	gManager->HitObject(this, PLAYER);
 }
 
@@ -57,7 +65,7 @@ void KochaEngine::EnhancementItem::Hit()
 void KochaEngine::EnhancementItem::Dead()
 {
 	iManager->DeleteFromVector(this, GetType());
-	isDead = true;
+	isDelete = true;
 }
 
 void KochaEngine::EnhancementItem::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)

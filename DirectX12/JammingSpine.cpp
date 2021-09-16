@@ -1,6 +1,7 @@
 #include "JammingSpine.h"
 #include "GameObjectManager.h"
 #include "ItemManager.h"
+#include "Wall.h"
 
 KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager)
 {
@@ -12,6 +13,7 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	gManager = arg_gManager;
 	position = arg_position;
 	iManager = arg_iManager;
+	pWall = gManager->GetWall();
 
 	obj = new Object("plane");
 	Initialize();
@@ -45,6 +47,12 @@ void KochaEngine::JammingSpine::Update()
 {
 	SetObjParam();
 
+	if (position.x <= pWall->GetMinPos().x)
+	{
+		Dead();
+		return;
+	}
+
 	gManager->HitObject(this, PLAYER);
 }
 
@@ -57,7 +65,7 @@ void KochaEngine::JammingSpine::Hit()
 	{
 		player->PowerUp(GetType());
 
-		Dead();
+		Dead();		
 	}
 	//’ÊíŽž‚È‚ç
 	else if(!player->IsSmashing() && !player->IsStuning())
@@ -69,7 +77,7 @@ void KochaEngine::JammingSpine::Hit()
 void KochaEngine::JammingSpine::Dead()
 {
 	iManager->DeleteFromVector(this, GetType());
-	isDead = true;
+	isDelete = true;
 }
 
 void KochaEngine::JammingSpine::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
