@@ -19,5 +19,7 @@ namespace KochaEngine
 
 		void Draw();
 		void Draw(Vector2 position, DirectX::XMFLOAT4 color);
+
+		void SetPosition(const Vector2& arg_position) { position = arg_position; }
 	};
 }

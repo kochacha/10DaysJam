@@ -8,6 +8,7 @@
 #include "JammingSpine.h"
 #include "ScoreManager.h"
 #include "Wall.h"
+#include "PauseManager.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -21,6 +22,7 @@ KochaEngine::GamePlay::GamePlay()
 
 	iManager = new ItemManager(camera, gManager);
 	sManager = new ScoreManager();
+	pauseManager = new PauseManager();
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -34,6 +36,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete map;
 	delete iManager;
 	delete sManager;
+	delete pauseManager;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -53,6 +56,7 @@ void KochaEngine::GamePlay::Initialize()
 	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }));
 	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0)));
 	iManager->Initialize();	
+	pauseManager->Initialize();
 
 	frameCount = 0;
 	seconds = 0;
@@ -66,6 +70,10 @@ void KochaEngine::GamePlay::Initialize()
 void KochaEngine::GamePlay::Update()
 {
 	Fade();
+
+	pauseManager->Update();
+
+	if (pauseManager->IsPause()) return; //ƒ|[ƒY’†
 
 	Scroll();
 	gManager->Update();
@@ -86,6 +94,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 {
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
+	pauseManager->Draw();
 }
 
 void KochaEngine::GamePlay::ObjDraw()

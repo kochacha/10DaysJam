@@ -48,6 +48,7 @@ namespace KochaEngine
 		EffectManager* effectManager;
 
 		ShaderType peraEffectType;
+
 		bool isDof;
 
 		float vignetteScale;
@@ -88,6 +89,8 @@ namespace KochaEngine
 		void Run();
 		void Terminate();
 
+		static bool isExit;
 		static float clearColor[4];
+		static PaletteType paletteType;
 	};
 }

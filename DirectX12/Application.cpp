@@ -30,7 +30,9 @@
 
 using namespace DirectX;
 
+bool KochaEngine::Application::isExit = false;
 float KochaEngine::Application::clearColor[4] = { 1.0f,1.0f,1.0f,1.0f };
+KochaEngine::PaletteType KochaEngine::Application::paletteType = KochaEngine::GAMEBOY;
 
 KochaEngine::Application::Application()
 {
@@ -60,6 +62,7 @@ void KochaEngine::Application::Run()
 		//終了メッセージが来たら＆ESCAPEを押したらループを抜ける
 		if (msg.message == WM_QUIT) break;
 		if (Input::TriggerKey(DIK_ESCAPE)) break;
+		if (isExit) break;
 
 		if (UpdateFPS()) continue;
 
@@ -68,7 +71,7 @@ void KochaEngine::Application::Run()
 
 		sceneManager->Update();
 
-		//peraEffect->SetColorPalette(KochaEngine::PaletteType::GAMEBOY);
+		peraEffect->SetColorPalette(paletteType);
 
 		////↑毎フレーム処理↑//
 		
@@ -158,6 +161,11 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/toge.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/item.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wall.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu1.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu2.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
