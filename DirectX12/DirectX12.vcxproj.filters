@@ -255,6 +255,9 @@
     <ClCompile Include="ItemManager.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreManager.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -539,6 +542,9 @@
     </ClInclude>
     <ClInclude Include="ItemManager.h">
       <Filter>Header\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
+      <Filter>Header\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
