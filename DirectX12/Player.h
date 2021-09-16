@@ -16,7 +16,6 @@ namespace KochaEngine
 		int smashPower;
 		const int MAX_SMASHPOWER = 10;
 
-		int wallPosX;
 		bool isStun;
 		int stunCount;
 		const int stunTime = 30;

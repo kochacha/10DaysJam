@@ -44,5 +44,6 @@ namespace KochaEngine
 		Scenes Next() override;
 		void CountTime();
 		void Fade();
+		void Scroll();
 	};
 }

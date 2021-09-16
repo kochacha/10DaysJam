@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "EnhancementItem.h"
 #include "JammingSpine.h"
+#include "Wall.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -46,7 +47,7 @@ void KochaEngine::GamePlay::Initialize()
 	lightManager->SetLightCamera(camera);
 
 	//map->CreateMap(0);
-
+	gManager->AddObject(new Wall(camera, gManager, { -80,-55 }, { 80,-40 }));
 	gManager->AddObject(new Player(camera, gManager, Vector3(0, 0, 0)));
 	iManager->Initialize();	
 
@@ -61,6 +62,7 @@ void KochaEngine::GamePlay::Initialize()
 void KochaEngine::GamePlay::Update()
 {
 	Fade();
+	
 	gManager->Update();
 	pManager->Update();
 	camera->Update();
@@ -128,4 +130,10 @@ void KochaEngine::GamePlay::Fade()
 		}
 	}
 	
+}
+
+void KochaEngine::GamePlay::Scroll()
+{
+	camera->MoveEye({ 1,0,0, });
+	camera->MoveTarget({ 1,0,0 });
 }
