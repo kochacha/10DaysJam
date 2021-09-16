@@ -74,7 +74,7 @@ void KochaEngine::Map::CreateMap(const int arg_mapNum)
 				gManager->AddObject(new FieldAlphaObject(camera, KochaEngine::FieldAlphaObjType::GRASS1, Vector3(posX, 4, posZ)));
 				break;
 			case 99:
-				gManager->AddObject(new Player(camera, gManager, Vector3(posX, 5, posZ)));
+				//gManager->AddObject(new Player(camera, gManager, Vector3(posX, 5, posZ)));
 				break;
 			default:
 				break;

@@ -10,30 +10,21 @@ KochaEngine::ParticleEmitter::~ParticleEmitter()
 {
 }
 
-void KochaEngine::ParticleEmitter::HitParticle(Vector3 position)
+void KochaEngine::ParticleEmitter::MoveParticle(Vector3 position)
 {
 	ParticleParam param;
 	param.position = position;
 
-	for (int i = 0; i < MAX_EXPROTION; i++)
-	{
-		if (i % 2)
-		{
-			param.color = { 0.9f,0.7f,0,1 };
-		}
-		else
-		{
-			param.color = { 0.7f,0.5f,0.7f,1 };
-		}
+	param.life = 20;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(-0.2f, -0.2f, 0);
+	param.scale = Vector3(4, 4, 1);
+	param.textureName = "Resources/green.png";
+	param.velocity = Vector3(0, 0, 0);
+	param.color = Vector4(0, 0, 0, 1);
+	auto rand = Util::GetIntRand(0, 360);
+	param.rotate = Vector3(0,0, rand);
 
-		param.life = 20;
-		param.moveColor = { 0,0,0,-0.05f };
-		param.moveRotate = { 3,3,0 };
-		param.moveScale = { 0,0,0 };
-		float rand = ((float)Util::GetRandInt(10) + 30) / 3.0f;
-		param.scale = { rand, rand ,rand };
-		param.velocity = { ((float)Util::GetRandInt(30) - 15) / 10, ((float)Util::GetRandInt(15)) / 10,((float)Util::GetRandInt(30) - 15) / 10 };
-
-		pManager->AddParticle(new Particle(param));
-	}
+	pManager->AddParticle(new Particle(param));
 }

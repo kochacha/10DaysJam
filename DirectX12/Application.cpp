@@ -160,16 +160,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wall.png");
 
 	//.objのロード
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "LowTree");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "Yukidaruma");
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "plane");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "graund");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "taimatu");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "sphere");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "Ground1");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "skydome");
-	//Dx12_Object::LoadObject(dx12->GetDevice().Get(), "tree");
 
 }
 
