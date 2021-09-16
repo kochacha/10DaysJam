@@ -60,7 +60,7 @@ void KochaEngine::ItemManager::Update()
 
 void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position)
 {
-	EnhancementItem* item = new EnhancementItem(camera, gManager, arg_position, this);
+	EnhancementItem* item = new EnhancementItem(camera, gManager, arg_position + Vector3(pWall->GetCenterPos().x, 0, 0), this);
 	gManager->AddObject(item);
 	enhancementItems.push_back(item);
 	CompareTheRightmost();
@@ -68,7 +68,7 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position)
 
 void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position)
 {
-	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this);
+	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position + Vector3(pWall->GetCenterPos().x, 0, 0), this);
 	gManager->AddObject(spine);
 	jammingSpines.push_back(spine);
 	CompareTheRightmost();
@@ -124,7 +124,7 @@ void KochaEngine::ItemManager::DeleteFromSpines(JammingSpine* arg_jamSpine)
 
 void KochaEngine::ItemManager::CompareTheRightmost()
 {
-	Vector2 wallPos = pWall->GetMaxPos();
+	Vector2 wallPos = pWall->GetCenterPos();
 	theRightmostPos = Vector3(wallPos.x, wallPos.y, 0);
 
 	for (std::vector<EnhancementItem*>::iterator itr = enhancementItems.begin(); itr != enhancementItems.end(); itr++)

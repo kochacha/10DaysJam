@@ -45,3 +45,8 @@ const KochaEngine::Vector2 KochaEngine::Wall::GetMaxPos()
 {
 	return maxPos;
 }
+
+const KochaEngine::Vector2 KochaEngine::Wall::GetCenterPos()
+{
+	return (maxPos + minPos) / 2;
+}

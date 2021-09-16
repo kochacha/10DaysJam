@@ -22,7 +22,7 @@ namespace KochaEngine
 
 		const Vector2 GetMinPos();
 		const Vector2 GetMaxPos();
-
+		const Vector2 GetCenterPos();
 	};
 
 }
