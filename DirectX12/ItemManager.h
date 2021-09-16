@@ -25,6 +25,7 @@ namespace KochaEngine
 		std::vector<JammingSpine*> jammingSpines;
 		Vector3 theRightmostPos;
 		Wall* pWall;
+		const float MARGIN_RIGHTSIDE = 12.0f;
 
 		void AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 		void AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);

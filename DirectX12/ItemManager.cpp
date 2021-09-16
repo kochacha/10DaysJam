@@ -35,11 +35,11 @@ void KochaEngine::ItemManager::Update()
 	//生成用デバッグ
 	if (Input::TriggerKey(DIK_P))
 	{
-		AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
+		AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
 	}
 	if (Input::TriggerKey(DIK_O))
 	{
-		AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);
+		AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
 	}
 	//消去用デバッグ
 	if (Input::TriggerKey(DIK_L))
@@ -69,7 +69,8 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const Ite
 		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
 	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
-		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
+		emitPos.x = MARGIN_RIGHTSIDE;
+		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);		
 		break;
 	default:
 		break;
@@ -92,6 +93,7 @@ void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const It
 		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
 	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
+		emitPos.x = MARGIN_RIGHTSIDE;
 		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
 		break;
 	default:
