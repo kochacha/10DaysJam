@@ -211,13 +211,13 @@ void KochaEngine::Player::MoveX()
 void KochaEngine::Player::MoveY()
 {
 	position.y += velocity.y * speed;
-	if (position.y <= -55)
+	if (position.y <= -23)
 	{
-		position.y = -55;
+		position.y = -23;
 	}
-	if (position.y >= 41)
+	if (position.y >= 45)
 	{
-		position.y = 41;
+		position.y = 45;
 	}
 }
 

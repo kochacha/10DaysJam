@@ -155,6 +155,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/waku.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/toge.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/item.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wall.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "LowTree");
