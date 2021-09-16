@@ -5,11 +5,13 @@ namespace KochaEngine
 {
 	class GameObjectManager;
 	class ItemManager;
+	class Wall;
 	class EnhancementItem : public GameObject
 	{
 	private:
 		GameObjectManager* gManager;
 		ItemManager* iManager;
+		Wall* pWall;
 
 		void SetObjParam();
 

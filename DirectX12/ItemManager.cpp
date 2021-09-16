@@ -197,15 +197,18 @@ void KochaEngine::ItemManager::EmitItems()
 	static int rndMax = 5;
 	static int rndCoefficient = 3;
 	int rnd = Util::GetRandInt(rndMax);
+	Vector3 emitPos = Vector3();
 	//強化アイテム生成
 	if (rnd < rndCoefficient)
 	{
-		AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
+		emitPos = Vector3(20, 10, 0);
+		AddEnhItem(emitPos, ItemEmitOption::MORE_THAN_RIGHTSIDE);
 	}
 	//おじゃまトゲ生成
 	else
 	{
-		AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
+		emitPos = Vector3(-30, -20, 0);
+		AddJamSpine(emitPos, ItemEmitOption::MORE_THAN_RIGHTSIDE);
 	}
 
 	//インターバルリセット
