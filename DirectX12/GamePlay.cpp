@@ -62,10 +62,12 @@ void KochaEngine::GamePlay::Initialize()
 void KochaEngine::GamePlay::Update()
 {
 	Fade();
-	
+
+	Scroll();
 	gManager->Update();
 	pManager->Update();
 	camera->Update();
+	
 	lightManager->Update();
 
 	iManager->Update();
@@ -134,6 +136,6 @@ void KochaEngine::GamePlay::Fade()
 
 void KochaEngine::GamePlay::Scroll()
 {
-	camera->MoveEye({ 1,0,0, });
-	camera->MoveTarget({ 1,0,0 });
+	camera->MoveEye({ scrollAmount,0,0, });
+	gManager->GetWall()->ScrollWall(scrollAmount);
 }
