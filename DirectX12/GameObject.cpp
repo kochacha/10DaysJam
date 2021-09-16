@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "Collision.h"
 
+
+
 KochaEngine::GameObject::GameObject()
 {
 }

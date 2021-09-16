@@ -145,6 +145,15 @@ void KochaEngine::GamePlay::Fade()
 
 void KochaEngine::GamePlay::Scroll()
 {
-	camera->MoveEye({ scrollAmount,0,0, });
-	gManager->GetWall()->ScrollWall(scrollAmount);
+	if (gManager->GetPlayer()->GetBackCount() > 0 && gManager->GetPlayer()->IsHitWall())
+	{
+		camera->MoveEye({ -10,0,0, });
+		gManager->GetWall()->ScrollWall(-10);
+	}
+	else
+	{
+		camera->MoveEye({ scrollAmount,0,0, });
+		gManager->GetWall()->ScrollWall(scrollAmount);
+	}
+	
 }

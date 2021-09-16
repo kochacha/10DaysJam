@@ -23,6 +23,9 @@ namespace KochaEngine
 		int stunCount;
 		const int stunTime = 30;
 
+		int backCount;
+		bool hitWall;
+
 		void InputMove();
 		void MoveX();
 		void MoveY();
@@ -48,5 +51,8 @@ namespace KochaEngine
 		void PowerUp(const GameObjectType arg_objectType);
 		//’Êí‚Ì‚¨‚¶‚á‚ÜƒgƒQ‚Æ‚ÌÕ“Ëˆ—
 		void PowerDown();
+
+		const int GetBackCount();
+		const bool IsHitWall();
 	};
 }

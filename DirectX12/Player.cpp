@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "GameObjectManager.h"
 
+
+
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position)
 {
 	if (arg_camera == nullptr) return;
@@ -29,6 +31,8 @@ void KochaEngine::Player::Initialize()
 	smash = false;
 	isStun = false;
 	stunCount = 0;
+	backCount = 0;
+	hitWall = false;
 	ResetPower();
 	
 
@@ -45,6 +49,23 @@ void KochaEngine::Player::Initialize()
 void KochaEngine::Player::Update()
 {
 	gManager->HitObject(this, COLLISION_BLOCK);
+
+	if (backCount > 0)
+	{
+		backCount--;
+	}
+	if (backCount <= 0 && position.x >= gManager->GetWall()->GetMinPos().x)
+	{
+		hitWall = false;
+	}
+	/*if (backCount > 0 && position.x >= gManager->GetWall()->GetMinPos().x)
+	{
+		speed = 0;
+	}*/
+	else
+	{
+		
+	}
 	
 	if (isStun)
 	{
@@ -65,6 +86,14 @@ void KochaEngine::Player::Update()
 	MoveY();
 
 	SetObjParam();
+
+	wchar_t str[256];
+	swprintf_s(str, L"smashPower %d\n", smashPower);
+	OutputDebugString(str);
+
+	swprintf_s(str, L"backCount %d\n", backCount);
+	OutputDebugString(str);
+	
 }
 
 void KochaEngine::Player::Hit()
@@ -76,6 +105,10 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 {
 	if (arg_camera == nullptr) return;
 	obj->Draw(arg_camera, arg_lightManager);
+
+	/*ImGui::Begin("smashPower");
+	ImGui::Text("smashPowar %f", smashPower);
+	ImGui::End();*/
 }
 
 KochaEngine::GameObjectType KochaEngine::Player::GetType()
@@ -124,6 +157,16 @@ void KochaEngine::Player::PowerDown()
 	isStun = true;
 }
 
+const int KochaEngine::Player::GetBackCount()
+{
+	return backCount;
+}
+
+const bool KochaEngine::Player::IsHitWall()
+{
+	return hitWall;
+}
+
 void KochaEngine::Player::InputMove()
 {
 	
@@ -157,21 +200,27 @@ void KochaEngine::Player::InputMove()
 		int wallPosX = gManager->GetWall()->GetMinPos().x;
 		if (position.x <= wallPosX )
 		{
-			smash = false;
-			speed = 0;
+			smash = false;			
 			position.x = wallPosX;
-
+			backCount = smashPower * 7.0f;
+			hitWall = true;
+			
 			//‰¼’u‚«
 			ResetPower();
+		
 		}
 	}
 	if (!smash)
 	{
-		speed -= 1.0f;
-		if (speed <= 0)
+		if (backCount <= 0)
 		{
-			speed = 0;
+			speed -= 1.0f;
+			if (speed <= 0)
+			{
+				speed = 0;
+			}
 		}
+		
 		
 		if (!isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
 		{
