@@ -1,14 +1,17 @@
 #include "EnhancementItem.h"
 #include "GameObjectManager.h"
+#include "ItemManager.h"
 
-KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position)
+KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
+	if (arg_iManager == nullptr) return;
 
 	camera = arg_camera;
 	gManager = arg_gManager;
 	position = arg_position;
+	iManager = arg_iManager;
 
 	obj = new Object("plane");
 	Initialize();
@@ -48,6 +51,12 @@ void KochaEngine::EnhancementItem::Update()
 void KochaEngine::EnhancementItem::Hit()
 {	
 	gManager->GetPlayer()->PowerUp(GetType());
+	Dead();
+}
+
+void KochaEngine::EnhancementItem::Dead()
+{
+	iManager->DeleteFromVector(this, GetType());
 	isDead = true;
 }
 

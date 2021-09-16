@@ -1,14 +1,17 @@
 #include "JammingSpine.h"
 #include "GameObjectManager.h"
+#include "ItemManager.h"
 
-KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position)
+KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
+	if (arg_iManager == nullptr) return;
 
 	camera = arg_camera;
 	gManager = arg_gManager;
 	position = arg_position;
+	iManager = arg_iManager;
 
 	obj = new Object("plane");
 	Initialize();
@@ -54,13 +57,19 @@ void KochaEngine::JammingSpine::Hit()
 	{
 		player->PowerUp(GetType());
 
-		isDead = true;
+		Dead();
 	}
 	//’ÊíŽž‚È‚ç
 	else if(!player->IsSmashing() && !player->IsStuning())
 	{
 		player->PowerDown();
 	}
+}
+
+void KochaEngine::JammingSpine::Dead()
+{
+	iManager->DeleteFromVector(this, GetType());
+	isDead = true;
 }
 
 void KochaEngine::JammingSpine::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
