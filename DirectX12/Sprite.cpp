@@ -16,7 +16,7 @@ KochaEngine::Sprite::~Sprite()
 
 void KochaEngine::Sprite::Draw()
 {
-	tex->Draw();
+	tex->Draw(position);
 }
 
 void KochaEngine::Sprite::Draw(Vector2 position,DirectX::XMFLOAT4 color)

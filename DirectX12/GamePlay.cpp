@@ -94,6 +94,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 {
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
+	pauseManager->Draw();
 }
 
 void KochaEngine::GamePlay::ObjDraw()
