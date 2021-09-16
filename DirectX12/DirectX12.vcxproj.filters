@@ -258,6 +258,8 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreManager.cpp" />
+    <ClCompile Include="PauseManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -546,5 +548,7 @@
     <ClInclude Include="Wall.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreManager.h" />
+    <ClInclude Include="PauseManager.h" />
   </ItemGroup>
 </Project>
