@@ -163,3 +163,17 @@ KochaEngine::Player* KochaEngine::GameObjectManager::GetPlayer()
 	}
 	return nullptr;
 }
+
+KochaEngine::Wall* KochaEngine::GameObjectManager::GetWall()
+{
+	auto end = gameObjects.end();
+	for (auto it = gameObjects.begin(); it != end; ++it)
+	{
+		if ((*it)->GetType() == WALL)
+		{
+			Wall* wall = static_cast<Wall*>(static_cast<void*>(*it));
+			return wall;
+		}
+	}
+	return nullptr;
+}

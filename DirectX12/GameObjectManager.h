@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "Player.h"
+#include "Wall.h"
 #include <vector>
 
 namespace KochaEngine
@@ -29,6 +30,7 @@ namespace KochaEngine
 		int GetTypeCount(const GameObjectType& arg_objType);
 
 		Player* GetPlayer();
+		Wall* GetWall();
 
 		void Remove();
 		void RemoveAll();

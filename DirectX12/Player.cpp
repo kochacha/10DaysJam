@@ -28,8 +28,6 @@ void KochaEngine::Player::Initialize()
 	isStun = false;
 	stunCount = 0;
 	ResetPower();
-
-	wallPosX = -112;
 	
 
 	sphere.radius = 4.0f;
@@ -154,6 +152,7 @@ void KochaEngine::Player::InputMove()
 	if (smash)
 	{		
 		Input::Vibration(60000, 10);
+		int wallPosX = gManager->GetWall()->GetMinPos().x;
 		if (position.x <= wallPosX )
 		{
 			smash = false;
@@ -197,13 +196,15 @@ void KochaEngine::Player::InputMove()
 void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
-	if (position.x <= wallPosX)
+	int leftWall = gManager->GetWall()->GetMinPos().x;
+	int rightWall = gManager->GetWall()->GetMaxPos().x; //112
+	if (position.x <= leftWall)
 	{
-		position.x = wallPosX;
+		position.x = leftWall;
 	}
-	if (position.x >= 112)
+	if (position.x >= rightWall)
 	{
-		position.x = 112;
+		position.x = rightWall;
 	}
 }
 
