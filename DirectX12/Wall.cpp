@@ -14,7 +14,7 @@ KochaEngine::Wall::~Wall()
 
 void KochaEngine::Wall::Initialize()
 {
-	
+	playableSize = maxPos - minPos;
 }
 
 void KochaEngine::Wall::Update()
@@ -49,4 +49,9 @@ const KochaEngine::Vector2 KochaEngine::Wall::GetMaxPos()
 const KochaEngine::Vector2 KochaEngine::Wall::GetCenterPos()
 {
 	return (maxPos + minPos) / 2;
+}
+
+const KochaEngine::Vector2 KochaEngine::Wall::GetPlayableSize()
+{
+	return playableSize;
 }
