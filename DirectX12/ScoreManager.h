@@ -27,6 +27,7 @@ namespace KochaEngine
 		void Initialize();
 		void Draw(bool arg_isShow);
 
-		void UpdateRanking(int arg_score);
+		void UpdateRanking(const int arg_score);
+		void SetScore(const int arg_score) { score = arg_score; }
 	};
 }

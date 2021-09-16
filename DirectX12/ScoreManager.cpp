@@ -50,7 +50,7 @@ void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 	scoreTex->Draw(score);
 }
 
-void KochaEngine::ScoreManager::UpdateRanking(int arg_score)
+void KochaEngine::ScoreManager::UpdateRanking(const int arg_score)
 {
 	LoadRankData();
 
