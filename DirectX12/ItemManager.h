@@ -25,13 +25,16 @@ namespace KochaEngine
 		std::vector<JammingSpine*> jammingSpines;
 		Vector3 theRightmostPos;
 		Wall* pWall;
-		const float MARGIN_RIGHTSIDE = 12.0f;
+		const float MARGIN_FRAME = 12.0f;
+		unsigned int emitInterval;
+		unsigned int maxEmitInterval;
 
 		void AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 		void AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
 		void CompareTheRightmost();
+		void EmitItems();
 
 	public:
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);

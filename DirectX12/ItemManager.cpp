@@ -1,4 +1,5 @@
 #include "ItemManager.h"
+#include "Util.h"
 #include "GameObjectManager.h"
 #include "EnhancementItem.h"
 #include "JammingSpine.h"
@@ -28,10 +29,16 @@ void KochaEngine::ItemManager::Initialize()
 
 	AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
 	AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);
+	emitInterval = 0;
+	maxEmitInterval = 180;
 }
 
 void KochaEngine::ItemManager::Update()
 {
+	CompareTheRightmost();
+	EmitItems();
+
+#ifdef _DEBUG
 	//生成用デバッグ
 	if (Input::TriggerKey(DIK_P))
 	{
@@ -56,6 +63,7 @@ void KochaEngine::ItemManager::Update()
 			jammingSpines[0]->Dead();
 		}
 	}
+#endif _DEBUG
 }
 
 void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption)
@@ -69,7 +77,7 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const Ite
 		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
 	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
-		emitPos.x = MARGIN_RIGHTSIDE;
+		emitPos.x = MARGIN_FRAME;
 		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);		
 		break;
 	default:
@@ -93,7 +101,7 @@ void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const It
 		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
 	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
-		emitPos.x = MARGIN_RIGHTSIDE;
+		emitPos.x = MARGIN_FRAME;
 		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
 		break;
 	default:
@@ -173,4 +181,33 @@ void KochaEngine::ItemManager::CompareTheRightmost()
 			theRightmostPos = (*itr)->GetPosition();
 		}
 	}
+}
+
+void KochaEngine::ItemManager::EmitItems()
+{
+	//生成インターバル加算
+	emitInterval++;
+	//インターバルが足りなかったら
+	if (emitInterval < maxEmitInterval) return;
+
+	//一番右のアイテムが中心より右にあったら
+	if (theRightmostPos.x > pWall->GetCenterPos().x) return;
+
+	//生成処理
+	static int rndMax = 5;
+	static int rndCoefficient = 3;
+	int rnd = Util::GetRandInt(rndMax);
+	//強化アイテム生成
+	if (rnd < rndCoefficient)
+	{
+		AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
+	}
+	//おじゃまトゲ生成
+	else
+	{
+		AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
+	}
+
+	//インターバルリセット
+	emitInterval = 0;
 }
