@@ -2,6 +2,7 @@
 #include "GameObjectManager.h"
 #include "EnhancementItem.h"
 #include "JammingSpine.h"
+#include "Wall.h"
 
 KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager)
 {
@@ -14,13 +15,16 @@ KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg
 
 KochaEngine::ItemManager::~ItemManager()
 {
-
+	enhancementItems.clear();
+	jammingSpines.clear();
 }
 
 void KochaEngine::ItemManager::Initialize()
 {
+	pWall = gManager->GetWall();
 	enhancementItems.clear();
 	jammingSpines.clear();
+	CompareTheRightmost();
 
 	AddEnhItem(Vector3(20, 10, 0));
 	AddJamSpine(Vector3(-30, -20, 0));
@@ -59,6 +63,7 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position)
 	EnhancementItem* item = new EnhancementItem(camera, gManager, arg_position, this);
 	gManager->AddObject(item);
 	enhancementItems.push_back(item);
+	CompareTheRightmost();
 }
 
 void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position)
@@ -66,6 +71,7 @@ void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position)
 	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this);
 	gManager->AddObject(spine);
 	jammingSpines.push_back(spine);
+	CompareTheRightmost();
 }
 
 void KochaEngine::ItemManager::DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType)
@@ -97,6 +103,7 @@ void KochaEngine::ItemManager::DeleteFromItems(EnhancementItem* arg_enhItem)
 	assert(itr != enhancementItems.end());
 
 	enhancementItems.erase(itr);
+	CompareTheRightmost();
 }
 
 void KochaEngine::ItemManager::DeleteFromSpines(JammingSpine* arg_jamSpine)
@@ -112,4 +119,26 @@ void KochaEngine::ItemManager::DeleteFromSpines(JammingSpine* arg_jamSpine)
 	assert(itr != jammingSpines.end());	
 
 	jammingSpines.erase(itr);
+	CompareTheRightmost();
+}
+
+void KochaEngine::ItemManager::CompareTheRightmost()
+{
+	Vector2 wallPos = pWall->GetMaxPos();
+	theRightmostPos = Vector3(wallPos.x, wallPos.y, 0);
+
+	for (std::vector<EnhancementItem*>::iterator itr = enhancementItems.begin(); itr != enhancementItems.end(); itr++)
+	{
+		if ((*itr)->GetPosition().x > theRightmostPos.x)
+		{
+			theRightmostPos = (*itr)->GetPosition();
+		}
+	}
+	for (std::vector<JammingSpine*>::iterator itr = jammingSpines.begin(); itr != jammingSpines.end(); itr++)
+	{
+		if ((*itr)->GetPosition().x > theRightmostPos.x)
+		{
+			theRightmostPos = (*itr)->GetPosition();
+		}
+	}
 }
