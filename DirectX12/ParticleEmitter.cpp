@@ -18,8 +18,8 @@ void KochaEngine::ParticleEmitter::MoveParticle(Vector3 position)
 	param.life = 20;
 	param.moveColor = Vector4(0, 0, 0, 0);
 	param.moveRotate = Vector3(0, 0, 0);
-	param.moveScale = Vector3(-0.15f, -0.15f, 0);
-	param.scale = Vector3(3, 3, 1);
+	param.moveScale = Vector3(-0.2f, -0.2f, 0);
+	param.scale = Vector3(4, 4, 1);
 	param.textureName = "Resources/green.png";
 	param.velocity = Vector3(0, 0, 0);
 	param.color = Vector4(0, 0, 0, 1);
