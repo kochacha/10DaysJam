@@ -31,6 +31,10 @@ void KochaEngine::ScoreManager::Initialize()
 		rankScoreTex[i]->Init();
 	}
 	scoreTex->Init();
+
+	score = 100;
+
+	UpdateRanking(score);
 }
 
 void KochaEngine::ScoreManager::Draw(bool arg_isShow)
@@ -40,17 +44,40 @@ void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 		for (int i = 0; i < RANK_COUNT; i++)
 		{
 			rankNumTex[i]->Draw(i + 1);
-			rankScoreTex[i]->Draw(648375);
+			rankScoreTex[i]->Draw(rankScore[i]);
 		}
 	}
-	scoreTex->Draw(648375);
+	scoreTex->Draw(score);
+}
+
+void KochaEngine::ScoreManager::UpdateRanking(int arg_score)
+{
+	LoadRankData();
+
+	for (int i = RANK_COUNT - 1; i > -1; i--)
+	{
+		if (rankScore[i] < score)
+		{
+			int a = rankScore[i];
+			rankScore[i] = score;
+			if (i != RANK_COUNT - 1)
+			{
+				rankScore[i + 1] = a;
+			}
+		}
+	}
+
+	for (int i = 0; i < RANK_COUNT; i++)
+	{
+		SaveRankData(i, rankScore[i]);
+	}
 }
 
 void KochaEngine::ScoreManager::SaveRankData(int arg_rank, int arg_score)
 {
 	if (arg_rank <= 0) { return; }
-	if (arg_score < rankScore[arg_rank - 1]) { return; }
-	rankScore[arg_rank - 1] = arg_score;
+	if (arg_score < rankScore[arg_rank]) { return; }
+	rankScore[arg_rank] = arg_score;
 	std::ofstream ofs("Resources/ScoreData.txt");
 	for (int i = 0; i < RANK_COUNT; i++)
 	{

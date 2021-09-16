@@ -134,7 +134,9 @@ void KochaEngine::Application::Run()
 
 			peraEffect->Draw(peraEffectType);
 
+#ifdef _DEBUG
 			DrawGUI();
+#endif
 
 			dx12->EndDraw();
 		}

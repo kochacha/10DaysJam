@@ -253,7 +253,7 @@ void KochaEngine::PostEffect::StaticInit(ID3D12Device* device, ID3D12GraphicsCom
 
 void KochaEngine::PostEffect::Initialize()
 {
-	paletteType = KochaEngine::PaletteType::PALETTE4;
+	paletteType = KochaEngine::PaletteType::PALETTE1;
 	SetColorPalette(paletteType);
 	time = 0;
 	value = 0;
