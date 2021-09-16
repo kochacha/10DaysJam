@@ -31,6 +31,8 @@ namespace KochaEngine
 		int frameCount;
 		int seconds;
 		int endCount;
+
+		const float scrollAmount = 0.05f;
 	public:
 		GamePlay();
 		~GamePlay() override;

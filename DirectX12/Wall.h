@@ -18,6 +18,7 @@ namespace KochaEngine
 		void Update() override;
 		void Hit()override;
 		GameObjectType GetType();
+		void ScrollWall(float amount);
 
 		const Vector2 GetMinPos();
 		const Vector2 GetMaxPos();

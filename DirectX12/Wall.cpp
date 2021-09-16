@@ -30,6 +30,12 @@ KochaEngine::GameObjectType KochaEngine::Wall::GetType()
 	return WALL;
 }
 
+void KochaEngine::Wall::ScrollWall(float amount)
+{
+	minPos.x += amount;
+	maxPos.x += amount;
+}
+
 const KochaEngine::Vector2 KochaEngine::Wall::GetMinPos()
 {
 	return minPos;
