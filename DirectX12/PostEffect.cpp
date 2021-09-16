@@ -211,6 +211,30 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 		color[2] = Vector4(0.54f, 0.30f, 0.00f, 1.0f);
 		color[3] = Vector4(1.00f, 0.92f, 0.82f, 1.0f);
 		break;
+	case KochaEngine::PALETTE1:
+		color[0] = Vector4(0.12f, 0.28f, 0.41f, 1.0f);
+		color[1] = Vector4(0.03f, 1.00f, 0.78f, 1.0f);
+		color[2] = Vector4(0.85f, 0.85f, 0.85f, 1.0f);
+		color[3] = Vector4(1.00f, 0.96f, 0.96f, 1.0f);
+		break;
+	case KochaEngine::PALETTE2:
+		color[0] = Vector4(0.71f, 0.53f, 0.69f, 1.0f);
+		color[1] = Vector4(0.83f, 0.64f, 0.81f, 1.0f);
+		color[2] = Vector4(0.97f, 0.73f, 0.86f, 1.0f);
+		color[3] = Vector4(1.00f, 0.94f, 0.67f, 1.0f);
+		break;
+	case KochaEngine::PALETTE3:
+		color[0] = Vector4(0.07f, 0.10f, 0.45f, 1.0f);
+		color[1] = Vector4(0.89f, 0.17f, 0.39f, 1.0f);
+		color[2] = Vector4(0.17f, 0.26f, 0.54f, 1.0f);
+		color[3] = Vector4(0.38f, 0.29f, 0.82f, 1.0f);
+		break;
+	case KochaEngine::PALETTE4:
+		color[0] = Vector4(0.94f, 0.47f, 0.06f, 1.0f);
+		color[1] = Vector4(0.93f, 0.77f, 0.04f, 1.0f);
+		color[2] = Vector4(0.77f, 0.05f, 0.40f, 1.0f);
+		color[3] = Vector4(0.96f, 0.95f, 0.90f, 1.0f);
+		break;
 	default:
 		break;
 	}
@@ -229,7 +253,7 @@ void KochaEngine::PostEffect::StaticInit(ID3D12Device* device, ID3D12GraphicsCom
 
 void KochaEngine::PostEffect::Initialize()
 {
-	paletteType = KochaEngine::PaletteType::GAMEBOY;
+	paletteType = KochaEngine::PaletteType::PALETTE4;
 	SetColorPalette(paletteType);
 	time = 0;
 	value = 0;
