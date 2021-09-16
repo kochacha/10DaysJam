@@ -26,8 +26,8 @@ void KochaEngine::ItemManager::Initialize()
 	jammingSpines.clear();
 	CompareTheRightmost();
 
-	AddEnhItem(Vector3(20, 10, 0));
-	AddJamSpine(Vector3(-30, -20, 0));
+	AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
+	AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);
 }
 
 void KochaEngine::ItemManager::Update()
@@ -35,11 +35,11 @@ void KochaEngine::ItemManager::Update()
 	//生成用デバッグ
 	if (Input::TriggerKey(DIK_P))
 	{
-		AddEnhItem(Vector3(20, 10, 0));
+		AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
 	}
 	if (Input::TriggerKey(DIK_O))
 	{
-		AddJamSpine(Vector3(-30, -20, 0));
+		AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);
 	}
 	//消去用デバッグ
 	if (Input::TriggerKey(DIK_L))
@@ -58,17 +58,47 @@ void KochaEngine::ItemManager::Update()
 	}
 }
 
-void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position)
+void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption)
 {
-	EnhancementItem* item = new EnhancementItem(camera, gManager, arg_position + Vector3(pWall->GetCenterPos().x, 0, 0), this);
+	Vector3 emitPos = arg_position;
+	switch (arg_emitOption)
+	{
+	case ItemEmitOption::ABSOLUTE_WORLDPOS:
+		break;
+	case ItemEmitOption::FROM_CENTER:
+		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
+		break;
+	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
+		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
+		break;
+	default:
+		break;
+	}
+
+	EnhancementItem* item = new EnhancementItem(camera, gManager, emitPos, this);
 	gManager->AddObject(item);
 	enhancementItems.push_back(item);
 	CompareTheRightmost();
 }
 
-void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position)
+void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption)
 {
-	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position + Vector3(pWall->GetCenterPos().x, 0, 0), this);
+	Vector3 emitPos = arg_position;
+	switch (arg_emitOption)
+	{
+	case ItemEmitOption::ABSOLUTE_WORLDPOS:
+		break;
+	case ItemEmitOption::FROM_CENTER:
+		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
+		break;
+	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
+		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
+		break;
+	default:
+		break;
+	}
+
+	JammingSpine* spine = new JammingSpine(camera, gManager, emitPos, this);
 	gManager->AddObject(spine);
 	jammingSpines.push_back(spine);
 	CompareTheRightmost();

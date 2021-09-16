@@ -8,6 +8,13 @@ namespace KochaEngine
 	class JammingSpine;
 	class Wall;
 
+	enum class ItemEmitOption
+	{
+		ABSOLUTE_WORLDPOS,
+		FROM_CENTER,
+		MORE_THAN_RIGHTSIDE,
+	};
+
 	class ItemManager
 	{
 	private:
@@ -19,8 +26,8 @@ namespace KochaEngine
 		Vector3 theRightmostPos;
 		Wall* pWall;
 
-		void AddEnhItem(const Vector3& arg_position);
-		void AddJamSpine(const Vector3& arg_position);
+		void AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
+		void AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
 		void CompareTheRightmost();
