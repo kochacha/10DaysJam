@@ -50,7 +50,7 @@ void KochaEngine::GamePlay::Initialize()
 	lightManager->SetLightCamera(camera);
 
 	//map->CreateMap(0);
-	gManager->AddObject(new Wall(camera, gManager, { -80,-55 }, { 80,-40 }));
+	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }));
 	gManager->AddObject(new Player(camera, gManager, Vector3(0, 0, 0)));
 	iManager->Initialize();	
 
