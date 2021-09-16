@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "EnhancementItem.h"
 #include "JammingSpine.h"
+#include "ScoreManager.h"
 #include "Wall.h"
 
 KochaEngine::GamePlay::GamePlay()
@@ -19,6 +20,7 @@ KochaEngine::GamePlay::GamePlay()
 	lightManager = new LightManager();
 
 	iManager = new ItemManager(camera, gManager);
+	sManager = new ScoreManager();
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -31,6 +33,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete emitter;
 	delete map;
 	delete iManager;
+	delete sManager;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -47,13 +50,14 @@ void KochaEngine::GamePlay::Initialize()
 	lightManager->SetLightCamera(camera);
 
 	//map->CreateMap(0);
-	gManager->AddObject(new Wall(camera, gManager, { -80,-55 }, { 80,-40 }));
+	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }));
 	gManager->AddObject(new Player(camera, gManager, Vector3(0, 0, 0)));
 	iManager->Initialize();	
 
 	frameCount = 0;
 	seconds = 0;
 	
+	isShowRank = false;
 	fadeFlag = true;
 	fadeAlpha = 1;
 	endCount = 180;
@@ -71,11 +75,17 @@ void KochaEngine::GamePlay::Update()
 	lightManager->Update();
 
 	iManager->Update();
+
+	if (Input::TriggerKey(DIK_Q))
+	{
+		isShowRank = !isShowRank;
+	}
 }
 
 void KochaEngine::GamePlay::SpriteDraw()
 {
 	gManager->SpriteDraw();
+	sManager->Draw(isShowRank);
 }
 
 void KochaEngine::GamePlay::ObjDraw()

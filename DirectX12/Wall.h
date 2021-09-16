@@ -8,6 +8,8 @@ namespace KochaEngine
 	private:
 		GameObjectManager* gManager;
 
+		
+
 		Vector2 minPos;
 		Vector2 maxPos;
 		Vector2 playableSize;
@@ -19,6 +21,7 @@ namespace KochaEngine
 		void Update() override;
 		void Hit()override;
 		GameObjectType GetType();
+		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
 		void ScrollWall(float amount);
 
 		const Vector2 GetMinPos();

@@ -211,13 +211,15 @@ void KochaEngine::Player::MoveX()
 void KochaEngine::Player::MoveY()
 {
 	position.y += velocity.y * speed;
-	if (position.y <= -55)
+	int DownWall = gManager->GetWall()->GetMinPos().y;
+	int UpWall = gManager->GetWall()->GetMaxPos().y; //112
+	if (position.y <= DownWall)
 	{
-		position.y = -55;
+		position.y = DownWall;
 	}
-	if (position.y >= 41)
+	if (position.y >= UpWall)
 	{
-		position.y = 41;
+		position.y = UpWall;
 	}
 }
 

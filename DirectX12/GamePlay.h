@@ -13,6 +13,7 @@ namespace KochaEngine
 {
 	class Map;
 	class LightManager;
+	class ScoreManager;
 
 	class GamePlay : public Scene
 	{
@@ -24,7 +25,9 @@ namespace KochaEngine
 		ParticleEmitter* emitter;
 		LightManager* lightManager;
 		ItemManager* iManager;
+		ScoreManager* sManager;
 
+		bool isShowRank;
 		bool fadeFlag;
 		float fadeAlpha;
 
