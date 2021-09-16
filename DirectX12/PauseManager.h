@@ -35,13 +35,19 @@ namespace KochaEngine
 			PALETTE2,
 			PALETTE3,
 			PALETTE4,
+			PALETTE5,
+			PALETTE6,
+			PALETTE7,
+			PALETTE8,
+			PALETTE9,
+			PALETTE10,
 		};
 
 		enum SoundMixer
 		{
 			MASTER_VOLUME,
-			SE_VOLUME,
 			BGM_VOLUME,
+			SE_VOLUME,
 		};
 
 	private:

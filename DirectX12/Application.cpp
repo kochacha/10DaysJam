@@ -163,6 +163,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wall.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu1.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu2.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
 
 	//.objのロード
