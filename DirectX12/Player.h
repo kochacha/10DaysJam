@@ -4,10 +4,13 @@
 namespace KochaEngine
 {
 	class GameObjectManager;
+	class ParticleEmitter;
+
 	class Player : public GameObject
 	{
 	private:
 		GameObjectManager* gManager;
+		ParticleEmitter* pEmitter;
 
 		float speed;
 		bool smash;
@@ -29,7 +32,7 @@ namespace KochaEngine
 		void ResetPower();
 
 	public:
-		Player(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position);
+		Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position);
 		~Player() override;
 
 		void Initialize() override;

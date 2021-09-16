@@ -22,6 +22,6 @@ namespace KochaEngine
 		ParticleEmitter(ParticleManager* pManager);
 		~ParticleEmitter();
 
-		void HitParticle(Vector3 position);
+		void MoveParticle(Vector3 position);
 	};
 }

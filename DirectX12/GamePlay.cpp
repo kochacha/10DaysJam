@@ -51,7 +51,7 @@ void KochaEngine::GamePlay::Initialize()
 
 	//map->CreateMap(0);
 	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }));
-	gManager->AddObject(new Player(camera, gManager, Vector3(0, 0, 0)));
+	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0)));
 	iManager->Initialize();	
 
 	frameCount = 0;
@@ -91,13 +91,12 @@ void KochaEngine::GamePlay::SpriteDraw()
 void KochaEngine::GamePlay::ObjDraw()
 {
 	gManager->ObjDraw(camera, lightManager);
-
-	pManager->Draw(camera);
 }
 
 void KochaEngine::GamePlay::AlphaObjDraw()
 {
 	gManager->AlphaObjDraw(camera, lightManager);
+	pManager->Draw(camera, lightManager);
 }
 
 void KochaEngine::GamePlay::DrawGUI()

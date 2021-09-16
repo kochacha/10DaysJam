@@ -1,12 +1,14 @@
 #include "Player.h"
 #include "GameObjectManager.h"
 
-KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position)
+KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
+	if (arg_pEmitter == nullptr) return;
 	camera = arg_camera;
 	gManager = arg_gManager;
+	pEmitter = arg_pEmitter;
 	position = arg_position;
 
 	obj = new Object("plane");
@@ -191,6 +193,12 @@ void KochaEngine::Player::InputMove()
 		}
 	}
 	velocity.normalize();	
+
+	if (velocity.x != 0 || velocity.y != 0)
+	{
+		//“®‚¢‚Ä‚¢‚½‚ç
+		pEmitter->MoveParticle(Vector3(position.x, position.y, position.z + 1.0f));
+	}
 }
 
 void KochaEngine::Player::MoveX()
