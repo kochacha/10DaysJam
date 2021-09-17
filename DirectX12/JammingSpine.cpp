@@ -53,6 +53,12 @@ void KochaEngine::JammingSpine::Update()
 		return;
 	}
 
+	if (position.x >= pWall->GetMaxPos().x + pWall->GetPlayableSize().x / 2)
+	{
+		Dead();
+		return;
+	}
+
 	gManager->HitObject(this, PLAYER);
 }
 

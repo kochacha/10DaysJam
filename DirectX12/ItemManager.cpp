@@ -4,6 +4,7 @@
 #include "EnhancementItem.h"
 #include "JammingSpine.h"
 #include "Wall.h"
+const float KochaEngine::ItemManager::MARGIN_FRAME = 12.0f;
 
 KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager)
 {
@@ -48,7 +49,8 @@ void KochaEngine::ItemManager::Initialize()
 void KochaEngine::ItemManager::Update()
 {
 	CompareTheRightmost();
-	EmitItems();
+	EmitItemsNormalTime();
+	EmitItemsFinishSmash();
 
 #ifdef _DEBUG
 	//生成用デバッグ
@@ -195,7 +197,7 @@ void KochaEngine::ItemManager::CompareTheRightmost()
 	}
 }
 
-void KochaEngine::ItemManager::EmitItems()
+void KochaEngine::ItemManager::EmitItemsNormalTime()
 {
 	//生成インターバル加算
 	emitInterval++;
@@ -225,6 +227,15 @@ void KochaEngine::ItemManager::EmitItems()
 
 	//インターバルリセット
 	emitInterval = 0;
+}
+
+void KochaEngine::ItemManager::EmitItemsFinishSmash()
+{
+	Player* pPlayer = gManager->GetPlayer();
+	if (!pPlayer->IsFinishSmash()) return;
+
+	int a = 5;
+	a++;
 }
 
 KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObjectType arg_objType)

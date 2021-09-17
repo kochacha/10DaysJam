@@ -34,7 +34,9 @@ namespace KochaEngine
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
 		void CompareTheRightmost();
-		void EmitItems();
+		void EmitItemsNormalTime();
+		void EmitItemsFinishSmash();
+
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
 
 	public:
@@ -45,7 +47,7 @@ namespace KochaEngine
 		void Update();
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
 	
-		const float MARGIN_FRAME = 12.0f;
+		static const float MARGIN_FRAME;
 		float arrayEmitHight[11];
 	};
 }

@@ -132,6 +132,15 @@ const bool KochaEngine::Player::IsStuning()
 	return isStun;
 }
 
+const bool KochaEngine::Player::IsFinishSmash()
+{
+	if (backCount != 1) return false;
+	if (position.x < gManager->GetWall()->GetMinPos().x) return false;
+	if (!hitWall) return false;
+
+	return true;
+}
+
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 {
 	//è„å¿ílÇ»ÇÁreturn

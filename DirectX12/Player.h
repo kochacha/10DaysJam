@@ -47,6 +47,7 @@ namespace KochaEngine
 		//スマッシュしているかどうか
 		const bool IsSmashing();
 		const bool IsStuning();
+		const bool IsFinishSmash();
 
 		//パワーアップ
 		void PowerUp(const GameObjectType arg_objectType);
