@@ -22,7 +22,7 @@ KochaEngine::DeadLine::~DeadLine()
 void KochaEngine::DeadLine::Initialize()
 {
 	obj->SetTexture("Resources/wall.png");
-	obj->SetScale(Vector3(20, 120, 1));
+	obj->SetScale(Vector3(5, 120, 1));
 	obj->SetPosition(position);
 	isAlpha = true;
 }

@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Player.h"
 #include "Wall.h"
+#include "DeadLine.h"
 #include <vector>
 
 namespace KochaEngine
@@ -33,6 +34,7 @@ namespace KochaEngine
 
 		Player* GetPlayer();
 		Wall* GetWall();
+		DeadLine* GetDeadLine();
 
 		void Remove();
 		void RemoveAll();
