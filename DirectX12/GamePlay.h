@@ -29,9 +29,12 @@ namespace KochaEngine
 		ScoreManager* sManager;
 		PauseManager* pauseManager;
 
+		Audio* bgm;
+
 		bool isShowRank;
 		bool fadeFlag;
 		float fadeAlpha;
+		float bgmVolume;
 
 		int frameCount;
 		int seconds;

@@ -4,6 +4,8 @@
 
 namespace KochaEngine
 {
+	class Audio;
+
 	class PauseManager
 	{
 		enum PauseUI
@@ -55,6 +57,8 @@ namespace KochaEngine
 		bool isPause;
 		bool isSoundMixer;
 
+		float seVolume;
+
 		const float LEFT_POS_X = 90;
 		const float CENTER_POS_X = 490;
 		const float RIGHT_POS_X = 890;
@@ -62,6 +66,8 @@ namespace KochaEngine
 		Sprite* menu[4];
 		Sprite* cursor;
 		Sprite* _cursor;
+
+		Audio* se;
 
 		Number* soundNum[3];
 

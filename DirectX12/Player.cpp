@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "GameObjectManager.h"
-
-
+#include "Audio.h"
+#include "GameSetting.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position)
 {
@@ -14,12 +14,14 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	position = arg_position;
 
 	obj = new Object("plane");
+	se = new Audio();
 	Initialize();
 }
 
 KochaEngine::Player::~Player()
 {
 	delete obj;
+	delete se;
 }
 
 void KochaEngine::Player::Initialize()
@@ -33,6 +35,7 @@ void KochaEngine::Player::Initialize()
 	stunCount = 0;
 	backCount = 0;
 	hitWall = false;
+	isHitStop = false;
 	ResetPower();
 	
 
@@ -44,10 +47,14 @@ void KochaEngine::Player::Initialize()
 	obj->SetScale(Vector3(10, 10, 10));
 	obj->SetTexture("Resources/player0.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
+
+	se->Init();
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 }
 
 void KochaEngine::Player::Update()
 {
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	gManager->HitObject(this, COLLISION_BLOCK);
 
 	if (backCount > 0)
@@ -140,11 +147,15 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	//強化アイテム取得時
 	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
 	{
+		se->PlayWave("Resources/Sound/item.wav", seVolume);
 		smashPower++;
 	}
 	//スマッシュでおじゃまトゲを巻き込んだ時
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
+		isHitStop = true;
+		hitStopCount = 15;
+		se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		smashPower += 3;
 
 		if (smashPower > MAX_SMASHPOWER)
@@ -156,11 +167,25 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 
 void KochaEngine::Player::PowerDown()
 {
+	se->PlayWave("Resources/Sound/toge.wav", seVolume);
 	smashPower -= 3;
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
 	speed = 6.0f;
 	isStun = true;
+}
+
+void KochaEngine::Player::HitStopTimer()
+{
+	if (hitStopCount > 0)
+	{
+		hitStopCount--;
+	}
+	else
+	{
+		isHitStop = false;
+	}
+
 }
 
 const int KochaEngine::Player::GetBackCount()
@@ -230,6 +255,7 @@ void KochaEngine::Player::InputMove()
 		
 		if (!isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
 		{
+			se->PlayWave("Resources/Sound/dash.wav", seVolume);
 			velocity.Zero();
 			speed = 8.0f;
 
@@ -241,6 +267,7 @@ void KochaEngine::Player::InputMove()
 	{
 		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
 		{
+			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		
 			velocity.Zero();
 			velocity.x = -1;
