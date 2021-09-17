@@ -1,5 +1,6 @@
 #include "Wall.h"
 #include "GameObjectManager.h"
+#include "Util.h"
 
 KochaEngine::Wall::Wall(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos)
 {
@@ -20,16 +21,19 @@ KochaEngine::Wall::~Wall()
 void KochaEngine::Wall::Initialize()
 {
 	playableSize = maxPos - minPos;
+	currMinPos = minPos;
+	currMinPos.x -= 9.5f;
 
 	obj->SetTexture("Resources/wall.png");
-	obj->SetScale(Vector3(-20, 120, 1));
-	obj->SetPosition(Vector3(minPos.x - 10, 0, 0));
+	obj->SetScale(Vector3(-70, 120, 1));
+	obj->SetPosition(Vector3(minPos.x - 9.5f, 0, 0));
 	isAlpha = true;
 }
 
 void KochaEngine::Wall::Update()
 {
-	obj->SetPosition(Vector3(minPos.x, 0, 0));
+	currMinPos.x = Util::EaseIn(currMinPos.x, minPos.x - 9.5f, 0.55f);
+	obj->SetPosition(Vector3(currMinPos.x, 0, 0));
 }
 
 void KochaEngine::Wall::Hit()

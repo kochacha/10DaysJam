@@ -1,5 +1,6 @@
 #pragma once
 #include "Sprite.h"
+#include "Number.h"
 
 namespace KochaEngine
 {
@@ -52,9 +53,17 @@ namespace KochaEngine
 
 	private:
 		bool isPause;
+		bool isSoundMixer;
+
+		const float LEFT_POS_X = 90;
+		const float CENTER_POS_X = 490;
+		const float RIGHT_POS_X = 890;
 
 		Sprite* menu[4];
 		Sprite* cursor;
+		Sprite* _cursor;
+
+		Number* soundNum[3];
 
 		PauseUI menuType;
 		Menu nowMenu;

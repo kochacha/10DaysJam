@@ -42,6 +42,7 @@ namespace KochaEngine
 		void Update() override;
 		void Hit()override;
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
+		void ShowGUI() override;
 		GameObjectType GetType();
 		//スマッシュしているかどうか
 		const bool IsSmashing();

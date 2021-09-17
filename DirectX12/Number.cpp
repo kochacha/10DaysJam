@@ -37,6 +37,7 @@ void KochaEngine::Number::SetColor(DirectX::XMFLOAT4 color)
 
 void KochaEngine::Number::Draw(int num)
 {
+	Init();
 	int digits = Util::GetDigit(num) - 1;
 	int hoge = (int)std::pow(10, digits);
 	int baka = num;
@@ -56,6 +57,7 @@ void KochaEngine::Number::Draw(int num)
 
 void KochaEngine::Number::Draw(Vector2 position, int num)
 {
+	Init();
 	int digits = Util::GetDigit(num) - 1;
 	int hoge = (int)std::pow(10, digits);
 	int baka = num;

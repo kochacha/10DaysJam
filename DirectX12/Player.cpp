@@ -111,6 +111,12 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 	ImGui::End();*/
 }
 
+void KochaEngine::Player::ShowGUI()
+{
+	float _position[3] = { position.x, position.y, position.z };
+	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
+}
+
 KochaEngine::GameObjectType KochaEngine::Player::GetType()
 {
 	return PLAYER;

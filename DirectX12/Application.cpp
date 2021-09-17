@@ -21,6 +21,8 @@
 #include "CustomGui.h"
 #include "EffectManager.h"
 #include "LightManager.h"
+#include "GameSetting.h"
+#include "CSVReader.h"
 
 #include <sstream>
 #include <mmsystem.h>
@@ -40,6 +42,7 @@ KochaEngine::Application::Application()
 
 KochaEngine::Application::~Application()
 {
+	SaveGameSettings();
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -181,6 +184,37 @@ void KochaEngine::Application::LoadScene()
 	sceneManager->Load(ENDING);
 	sceneManager->Load(GAMEOVER);
 	sceneManager->ChangeScene(TITLE);
+}
+
+void KochaEngine::Application::LoadGameSettings()
+{
+	gameSetData.resize(GameSetting::SETTING_VOL);
+	CSVReader reader;
+	reader.LoadCSV(0, "Resources/GameSetting.txt");
+	std::vector<std::vector<int>> tmp = reader.GetMapData(0);
+	for (int i = 0; i < GameSetting::SETTING_VOL; i++)
+	{
+		gameSetData[i] = tmp[0][i];
+	}
+
+	GameSetting::masterVolume = gameSetData[0];
+	GameSetting::bgmVolume = gameSetData[1];
+	GameSetting::seVolume = gameSetData[2];
+}
+
+void KochaEngine::Application::SaveGameSettings()
+{
+	gameSetData[0] = GameSetting::masterVolume;
+	gameSetData[1] = GameSetting::bgmVolume;
+	gameSetData[2] = GameSetting::seVolume;
+
+	std::ofstream ofs("Resources/GameSetting.txt");
+	for (int i = 0; i < GameSetting::SETTING_VOL; i++)
+	{
+		ofs << std::to_string(gameSetData[i]);
+		ofs << ',';
+	}
+	ofs.close();
 }
 
 void KochaEngine::Application::InitFPS()
@@ -356,6 +390,7 @@ bool KochaEngine::Application::Initialize()
 	//sceneManager->ChangeScene(TITLE);
 
 	LoadScene();
+	LoadGameSettings();
 
 	CustomGui::DefaultCustom();
 
@@ -374,18 +409,12 @@ bool KochaEngine::Application::Initialize()
 	peraEffectType = ShaderType::GAME_BOY_SHADER;
 	isDof = false;
 
-	effectManager = new EffectManager(*dx12);
-	effectManager->LoadEffect("light.efk", 10.0f);
-	effectManager->LoadEffect("hit.efk", 10.0f);
-
 	vignetteScale = 0.2f;
 	gBoyPixelSize = 5.81f;
 	mosaicSize = 4.0f;
 	sepiaScale = 0.2f;
 	blurScale = 2.0f;
 	cAbeScale = 0.4f;
-
-
 
 	shaderColor = Vector4(1, 1, 1, 1);
 
@@ -406,7 +435,6 @@ void KochaEngine::Application::Terminate()
 	delete peraBloom;
 	delete peraEffect;
 	delete peraDof;
-	delete effectManager;
 
 	Input::Terminate();
 }

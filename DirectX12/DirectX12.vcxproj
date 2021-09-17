@@ -171,6 +171,7 @@
     <ClCompile Include="CollisionBlock.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="CustomGui.cpp" />
+    <ClCompile Include="DeadLine.cpp" />
     <ClCompile Include="Dx12_Blob.cpp" />
     <ClCompile Include="Dx12_Descriptor.cpp" />
     <ClCompile Include="Dx12_Object.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="GameSetting.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -463,6 +465,7 @@
     <ClInclude Include="CollisionBlock.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="CustomGui.h" />
+    <ClInclude Include="DeadLine.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Dx12_Blob.h" />
     <ClInclude Include="Dx12_Descriptor.h" />
@@ -484,6 +487,7 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="GameSetting.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx12.h" />

@@ -27,6 +27,10 @@ void KochaEngine::GameObject::SpriteDraw()
 {
 }
 
+void KochaEngine::GameObject::ShowGUI()
+{
+}
+
 void KochaEngine::GameObject::Hit()
 {
 }

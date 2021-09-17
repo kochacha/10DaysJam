@@ -9,6 +9,7 @@
 #include "ScoreManager.h"
 #include "Wall.h"
 #include "PauseManager.h"
+#include "DeadLine.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -54,6 +55,7 @@ void KochaEngine::GamePlay::Initialize()
 
 	//map->CreateMap(0);
 	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }));
+	gManager->AddObject(new DeadLine(camera, gManager, emitter, { 100,0,0, }));
 	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0)));
 	iManager->Initialize();	
 	pauseManager->Initialize();
@@ -111,6 +113,7 @@ void KochaEngine::GamePlay::AlphaObjDraw()
 void KochaEngine::GamePlay::DrawGUI()
 {
 	ImGui::Text("GamePlay");
+	gManager->ShowGUI();
 }
 
 void KochaEngine::GamePlay::Load()
@@ -149,7 +152,6 @@ void KochaEngine::GamePlay::Fade()
 			fadeAlpha += 0.02f;
 		}
 	}
-	
 }
 
 void KochaEngine::GamePlay::Scroll()
@@ -159,7 +161,7 @@ void KochaEngine::GamePlay::Scroll()
 		camera->MoveEye({ -10,0,0, });
 		gManager->GetWall()->ScrollWall(-10);
 	}
-	else
+	else if(gManager->GetWall()->GetMaxPos().x < 100)
 	{
 		camera->MoveEye({ scrollAmount,0,0, });
 		gManager->GetWall()->ScrollWall(scrollAmount);
