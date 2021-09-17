@@ -111,6 +111,7 @@ void KochaEngine::GamePlay::AlphaObjDraw()
 void KochaEngine::GamePlay::DrawGUI()
 {
 	ImGui::Text("GamePlay");
+	gManager->ShowGUI();
 }
 
 void KochaEngine::GamePlay::Load()

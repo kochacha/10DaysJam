@@ -95,6 +95,15 @@ void KochaEngine::GameObjectManager::SpriteDraw()
 	}
 }
 
+void KochaEngine::GameObjectManager::ShowGUI()
+{
+	auto end = gameObjects.end();
+	for (auto it = gameObjects.begin(); it != end; ++it)
+	{
+		(*it)->ShowGUI();
+	}
+}
+
 void KochaEngine::GameObjectManager::HitObject(GameObject* arg_gameObject, const GameObjectType& arg_objType)
 {
 	if (arg_gameObject->IsDead()) return; //オブジェクトがそもそも死んでいたら判定を取らない

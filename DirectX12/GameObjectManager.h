@@ -26,6 +26,8 @@ namespace KochaEngine
 		void AlphaObjDraw(Camera* arg_camera, LightManager* arg_lightManager);
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager);
 		void SpriteDraw();
+		void ShowGUI();
+
 		void HitObject(GameObject* arg_gameObject, const GameObjectType& arg_objType);
 		int GetTypeCount(const GameObjectType& arg_objType);
 

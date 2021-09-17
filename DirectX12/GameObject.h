@@ -57,6 +57,7 @@ namespace KochaEngine
 		virtual void Update();
 		virtual void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager);
 		virtual void SpriteDraw();
+		virtual void ShowGUI();
 
 		virtual void Hit();
 		virtual void HitBlock(_Box arg_box);
