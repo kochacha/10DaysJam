@@ -25,7 +25,7 @@ namespace KochaEngine
 		std::vector<JammingSpine*> jammingSpines;
 		Vector3 theRightmostPos;
 		Wall* pWall;
-		const float MARGIN_FRAME = 12.0f;
+		
 		unsigned int emitInterval;
 		unsigned int maxEmitInterval;
 
@@ -35,6 +35,7 @@ namespace KochaEngine
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
 		void CompareTheRightmost();
 		void EmitItems();
+		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
 
 	public:
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);
@@ -43,5 +44,8 @@ namespace KochaEngine
 		void Initialize();
 		void Update();
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
+	
+		const float MARGIN_FRAME = 12.0f;
+		float arrayEmitHight[11];
 	};
 }

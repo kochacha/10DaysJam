@@ -31,6 +31,18 @@ void KochaEngine::ItemManager::Initialize()
 	AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);
 	emitInterval = 0;
 	maxEmitInterval = 180;
+
+	//生成座標レーンの初期化
+	arrayEmitHight[0] = pWall->GetPlayableSize().y / 2;
+	arrayEmitHight[5] = 0;
+	arrayEmitHight[10] = -pWall->GetPlayableSize().y / 2;
+
+	float unitHeight = pWall->GetPlayableSize().y / 10;
+	for (int i = 1; i <= 4; i++)
+	{
+		arrayEmitHight[i] = pWall->GetPlayableSize().y / 2 - unitHeight * i;
+		arrayEmitHight[10 - i] = -pWall->GetPlayableSize().y / 2 + unitHeight * i;
+	}
 }
 
 void KochaEngine::ItemManager::Update()
@@ -197,20 +209,52 @@ void KochaEngine::ItemManager::EmitItems()
 	static int rndMax = 5;
 	static int rndCoefficient = 3;
 	int rnd = Util::GetRandInt(rndMax);
-	Vector3 emitPos = Vector3();
+	
 	//強化アイテム生成
 	if (rnd < rndCoefficient)
 	{
-		emitPos = Vector3(20, 10, 0);
+		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);		
 		AddEnhItem(emitPos, ItemEmitOption::MORE_THAN_RIGHTSIDE);
 	}
 	//おじゃまトゲ生成
 	else
 	{
-		emitPos = Vector3(-30, -20, 0);
+		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);		
 		AddJamSpine(emitPos, ItemEmitOption::MORE_THAN_RIGHTSIDE);
 	}
 
 	//インターバルリセット
 	emitInterval = 0;
+}
+
+KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObjectType arg_objType)
+{
+	Vector3 emitPos = Vector3();
+	int rndMax = 0;
+	int rnd = 0;
+
+	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)
+	{	
+		rndMax = 9;
+		rnd = Util::GetRandInt(rndMax);
+		emitPos = Vector3(0, arrayEmitHight[rnd + 1], 0);
+	}
+	else if (arg_objType == GameObjectType::JAMMING_SPINE)
+	{
+		rndMax = 5;
+		rnd = Util::GetRandInt(rndMax);
+		emitPos = Vector3(0, arrayEmitHight[rnd * 2 + 1], 0);
+	}
+
+	//y座標を枠の内側に収める
+	if (emitPos.y > pWall->GetPlayableSize().y / 2)
+	{
+		emitPos.y = pWall->GetPlayableSize().y / 2;
+	}
+	else if (emitPos.y < -pWall->GetPlayableSize().y / 2)
+	{
+		emitPos.y = -pWall->GetPlayableSize().y / 2;
+	}
+
+	return emitPos;
 }
