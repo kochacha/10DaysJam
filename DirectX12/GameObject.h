@@ -24,6 +24,7 @@ namespace KochaEngine
 		ENHANCEMENT_ITEM,
 		JAMMING_SPINE,
 		WALL,
+		DEADLINE,
 	};
 
 	class GameObject

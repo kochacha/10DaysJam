@@ -171,6 +171,7 @@
     <ClCompile Include="CollisionBlock.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="CustomGui.cpp" />
+    <ClCompile Include="DeadLine.cpp" />
     <ClCompile Include="Dx12_Blob.cpp" />
     <ClCompile Include="Dx12_Descriptor.cpp" />
     <ClCompile Include="Dx12_Object.cpp" />
@@ -463,6 +464,7 @@
     <ClInclude Include="CollisionBlock.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="CustomGui.h" />
+    <ClInclude Include="DeadLine.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Dx12_Blob.h" />
     <ClInclude Include="Dx12_Descriptor.h" />
