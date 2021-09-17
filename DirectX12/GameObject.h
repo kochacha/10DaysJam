@@ -7,6 +7,7 @@
 #include "LightManager.h"
 #include "Input.h"
 #include "Vector3.h"
+#include "Texture2D.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"

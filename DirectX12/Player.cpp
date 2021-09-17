@@ -14,12 +14,29 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	position = arg_position;
 
 	obj = new Object("plane");
+	for (int i = 0; i < 10; i++)
+	{
+		powarGauge[i] = new Texture2D("Resources/white.png", Vector2(150 + 70 * i, 720), Vector2(40, 40), 45);
+		if (i < 5)
+		{
+			overDriveGauge[i] = new Texture2D("Resources/black.png", Vector2(0, 720), Vector2(40, 40), 45);
+		}
+		
+	}
 	Initialize();
 }
 
 KochaEngine::Player::~Player()
 {
 	delete obj;
+	for (int i = 0; i < 10; i++)
+	{
+		delete powarGauge[i];
+		if (i < 5)
+		{
+			delete overDriveGauge[i];
+		}
+	}
 }
 
 void KochaEngine::Player::Initialize()
@@ -132,6 +149,19 @@ const bool KochaEngine::Player::IsStuning()
 	return isStun;
 }
 
+void KochaEngine::Player::SpriteDraw()
+{
+	for (int i = 0; i < smashPower; i++)
+	{
+		powarGauge[i]->Draw();
+	}
+
+	for (int i = 0; i < overDirveSmashPower; i++)
+	{
+		overDriveGauge[i]->Draw(Vector2(150 + 70 * smashPower + 80 * i, 720));
+	}
+}
+
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 {
 	//上限値ならreturn
@@ -145,11 +175,11 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	//スマッシュでおじゃまトゲを巻き込んだ時
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
-		smashPower += 3;
+		overDirveSmashPower += 1;
 
-		if (smashPower > MAX_SMASHPOWER)
+		if (overDirveSmashPower > MAX_OVERDRIVE)
 		{
-			smashPower = MAX_SMASHPOWER;
+			overDirveSmashPower = MAX_OVERDRIVE;
 		}
 	}
 }
@@ -208,7 +238,7 @@ void KochaEngine::Player::InputMove()
 		{
 			smash = false;			
 			position.x = wallPosX;
-			backCount = smashPower * 7.0f;
+			backCount = (smashPower * 7.0f) + (overDirveSmashPower * 10.0f); //ここの倍率で戻る量が変わる
 			hitWall = true;
 			
 			//仮置き
@@ -228,7 +258,7 @@ void KochaEngine::Player::InputMove()
 		}
 		
 		
-		if (!isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+		if (backCount <= 0 && !isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
 		{
 			velocity.Zero();
 			speed = 8.0f;
@@ -300,4 +330,5 @@ void KochaEngine::Player::MoveWallPos()
 void KochaEngine::Player::ResetPower()
 {
 	smashPower = 0;
+	overDirveSmashPower = 0;
 }
