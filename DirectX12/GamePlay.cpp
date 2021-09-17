@@ -10,6 +10,8 @@
 #include "Wall.h"
 #include "PauseManager.h"
 #include "DeadLine.h"
+#include "Audio.h"
+#include "GameSetting.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -24,6 +26,8 @@ KochaEngine::GamePlay::GamePlay()
 	iManager = new ItemManager(camera, gManager);
 	sManager = new ScoreManager();
 	pauseManager = new PauseManager();
+
+	bgm = new Audio();
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -38,6 +42,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete iManager;
 	delete sManager;
 	delete pauseManager;
+	delete bgm;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -67,6 +72,10 @@ void KochaEngine::GamePlay::Initialize()
 	fadeFlag = true;
 	fadeAlpha = 1;
 	endCount = 180;
+
+	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
+	bgm->Init();
+	bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
 }
 
 void KochaEngine::GamePlay::Update()
@@ -74,8 +83,14 @@ void KochaEngine::GamePlay::Update()
 	Fade();
 
 	pauseManager->Update();
+	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
+	bgm->SetVolume(bgmVolume);
 
 	if (pauseManager->IsPause()) return; //ƒ|[ƒY’†
+
+	auto player = gManager->GetPlayer();
+	player->HitStopTimer();
+	if (player->IsHitStop()) return;
 
 	Scroll();
 	gManager->Update();

@@ -5,12 +5,14 @@ namespace KochaEngine
 {
 	class GameObjectManager;
 	class ParticleEmitter;
+	class Audio;
 
 	class Player : public GameObject
 	{
 	private:
 		GameObjectManager* gManager;
 		ParticleEmitter* pEmitter;
+		Audio* se;
 
 		float speed;
 		bool smash;
@@ -30,6 +32,10 @@ namespace KochaEngine
 
 		Texture2D* powarGauge[10];
 		Texture2D* overDriveGauge[5];
+
+		float seVolume;
+		bool isHitStop;
+		int hitStopCount;
 
 		void InputMove();
 		void MoveX();
@@ -59,6 +65,9 @@ namespace KochaEngine
 		void PowerUp(const GameObjectType arg_objectType);
 		//’Êí‚Ì‚¨‚¶‚á‚ÜƒgƒQ‚Æ‚ÌÕ“Ëˆ—
 		void PowerDown();
+
+		bool IsHitStop() { return isHitStop; }
+		void HitStopTimer();
 
 		const int GetBackCount();
 		const bool IsHitWall();
