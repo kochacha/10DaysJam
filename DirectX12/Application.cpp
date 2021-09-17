@@ -170,6 +170,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/normalGauge.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/gauge.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");

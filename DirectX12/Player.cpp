@@ -17,10 +17,10 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	se = new Audio();
 	for (int i = 0; i < 10; i++)
 	{
-		powarGauge[i] = new Texture2D("Resources/white.png", Vector2(150 + 70 * i, 720), Vector2(40, 40), 45);
+		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
 		if (i < 5)
 		{
-			overDriveGauge[i] = new Texture2D("Resources/black.png", Vector2(0, 720), Vector2(40, 40), 45);
+			overDriveGauge[i] = new Texture2D("Resources/gauge.png", Vector2(0, 720), Vector2(65, 55), 0);
 		}
 		
 	}
