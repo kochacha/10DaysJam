@@ -267,7 +267,9 @@
     <ClCompile Include="GameSetting.cpp">
       <Filter>Source\Util</Filter>
     </ClCompile>
-    <ClCompile Include="DeadLine.cpp" />
+    <ClCompile Include="DeadLine.cpp">
+      <Filter>Source\Object\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -560,6 +562,12 @@
       <Filter>Header\Util</Filter>
     </ClInclude>
     <ClInclude Include="ScoreManager.h">
+      <Filter>Header\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSetting.h">
+      <Filter>Header\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadLine.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
