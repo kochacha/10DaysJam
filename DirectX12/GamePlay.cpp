@@ -90,6 +90,12 @@ void KochaEngine::GamePlay::Update()
 	{
 		isShowRank = !isShowRank;
 	}
+
+	//ƒQ[ƒ€I—¹
+	if (gManager->GetWall()->GetMinPos().x >= gManager->GetDeadLine()->GetPosition().x + 5)
+	{
+		Initialize();
+	}
 }
 
 void KochaEngine::GamePlay::SpriteDraw()
@@ -161,10 +167,8 @@ void KochaEngine::GamePlay::Scroll()
 		camera->MoveEye({ -10,0,0, });
 		gManager->GetWall()->ScrollWall(-10);
 	}
-	else if(gManager->GetWall()->GetMaxPos().x < 100)
-	{
-		camera->MoveEye({ scrollAmount,0,0, });
-		gManager->GetWall()->ScrollWall(scrollAmount);
-	}
+
+	camera->MoveEye({ scrollAmount,0,0, });
+	gManager->GetWall()->ScrollWall(scrollAmount);
 	
 }

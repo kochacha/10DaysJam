@@ -17,7 +17,9 @@ namespace KochaEngine
 		int testCount;
 		//スマッシュのパワー
 		int smashPower;
+		int overDirveSmashPower;
 		const int MAX_SMASHPOWER = 10;
+		const int MAX_OVERDRIVE = 5;
 
 		bool isStun;
 		int stunCount;
@@ -25,6 +27,9 @@ namespace KochaEngine
 
 		int backCount;
 		bool hitWall;
+
+		Texture2D* powarGauge[10];
+		Texture2D* overDriveGauge[5];
 
 		void InputMove();
 		void MoveX();
@@ -42,6 +47,7 @@ namespace KochaEngine
 		void Update() override;
 		void Hit()override;
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
+		void SpriteDraw() override;
 		void ShowGUI() override;
 		GameObjectType GetType();
 		//スマッシュしているかどうか

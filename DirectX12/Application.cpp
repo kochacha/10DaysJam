@@ -155,6 +155,7 @@ void KochaEngine::Application::Load()
 {
 	//Textureのロード
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/white.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/black.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/player0.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/green.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/PIEN.png");

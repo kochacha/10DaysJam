@@ -186,3 +186,17 @@ KochaEngine::Wall* KochaEngine::GameObjectManager::GetWall()
 	}
 	return nullptr;
 }
+
+KochaEngine::DeadLine* KochaEngine::GameObjectManager::GetDeadLine()
+{
+	auto end = gameObjects.end();
+	for (auto it = gameObjects.begin(); it != end; ++it)
+	{
+		if ((*it)->GetType() == DEADLINE)
+		{
+			DeadLine* deadLine = static_cast<DeadLine*>(static_cast<void*>(*it));
+			return deadLine;
+		}
+	}
+	return nullptr;
+}
