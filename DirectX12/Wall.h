@@ -9,7 +9,7 @@ namespace KochaEngine
 		GameObjectManager* gManager;
 
 		
-
+		Vector2 currMinPos;
 		Vector2 minPos;
 		Vector2 maxPos;
 		Vector2 playableSize;
