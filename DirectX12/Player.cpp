@@ -238,7 +238,7 @@ void KochaEngine::Player::InputMove()
 		{
 			smash = false;			
 			position.x = wallPosX;
-			backCount = (smashPower * 7.0f) + (overDirveSmashPower * 10.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+			backCount = (smashPower * 7.0f) + (overDirveSmashPower * 5.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
 			hitWall = true;
 			
 			//‰¼’u‚«
