@@ -12,7 +12,7 @@ KochaEngine::CSVReader::~CSVReader()
 {
 }
 
-void KochaEngine::CSVReader::LoadCSV(float num, std::string fileName)
+void KochaEngine::CSVReader::LoadCSV(int num, std::string fileName)
 {
 	std::ifstream ifs(fileName);
 	if (ifs.fail())
@@ -21,8 +21,8 @@ void KochaEngine::CSVReader::LoadCSV(float num, std::string fileName)
 		return;
 	}
 
-	std::vector<std::vector<float>> m_map;
-	std::vector<float> row;
+	std::vector<std::vector<int>> m_map;
+	std::vector<int> row;
 	std::string line;
 
 	while (getline(ifs, line))
@@ -37,7 +37,7 @@ void KochaEngine::CSVReader::LoadCSV(float num, std::string fileName)
 		}
 		m_map.push_back(row);
 		{
-			std::vector<float> e;
+			std::vector<int> e;
 			e.swap(row);
 			row.resize(0);
 		}
@@ -46,7 +46,7 @@ void KochaEngine::CSVReader::LoadCSV(float num, std::string fileName)
 	mapList.emplace(num, m_map);
 }
 
-std::vector<std::vector<float>> KochaEngine::CSVReader::GetMapData(float num)
+std::vector<std::vector<int>> KochaEngine::CSVReader::GetMapData(int num)
 {
 	return this->mapList[num];
 }
@@ -55,7 +55,7 @@ void KochaEngine::CSVReader::Clear()
 {
 	if(!mapList.empty())
 	{
-		std::map<float, std::vector<std::vector<float>>> e;
+		std::map<int, std::vector<std::vector<int>>> e;
 		e.swap(mapList);
 	}
 }

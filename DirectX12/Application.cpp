@@ -191,7 +191,7 @@ void KochaEngine::Application::LoadGameSettings()
 	gameSetData.resize(GameSetting::SETTING_VOL);
 	CSVReader reader;
 	reader.LoadCSV(0, "Resources/GameSetting.txt");
-	std::vector<std::vector<float>> tmp = reader.GetMapData(0);
+	std::vector<std::vector<int>> tmp = reader.GetMapData(0);
 	for (int i = 0; i < GameSetting::SETTING_VOL; i++)
 	{
 		gameSetData[i] = tmp[0][i];

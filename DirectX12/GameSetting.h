@@ -7,8 +7,8 @@ namespace KochaEngine
 	public:
 		static const int SETTING_VOL = 3;
 
-		static float masterVolume;
-		static float bgmVolume;
-		static float seVolume;
+		static int masterVolume;
+		static int bgmVolume;
+		static int seVolume;
 	};
 }

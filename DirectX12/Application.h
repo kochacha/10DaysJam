@@ -58,7 +58,7 @@ namespace KochaEngine
 		float color[4];
 		Vector4 shaderColor;
 
-		std::vector<float> gameSetData;
+		std::vector<int> gameSetData;
 
 		bool isActiveDirLight;
 		Vector3 dirLightDirection;

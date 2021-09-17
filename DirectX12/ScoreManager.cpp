@@ -92,7 +92,7 @@ void KochaEngine::ScoreManager::LoadRankData()
 	rankScore.resize(RANK_COUNT);
 	CSVReader reader;
 	reader.LoadCSV(0, "Resources/ScoreData.txt");
-	std::vector<std::vector<float>> tmp = reader.GetMapData(0);
+	std::vector<std::vector<int>> tmp = reader.GetMapData(0);
 	for (int i = 0; i < RANK_COUNT; i++)
 	{
 		rankScore[i] = tmp[0][i];
