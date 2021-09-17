@@ -191,6 +191,7 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="GameSetting.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -484,6 +485,7 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="GameSetting.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx12.h" />

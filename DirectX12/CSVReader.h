@@ -13,10 +13,10 @@ namespace KochaEngine
 		CSVReader();
 		~CSVReader();
 
-		std::map<int, std::vector<std::vector<int>>> mapList;
+		std::map<float, std::vector<std::vector<float>>> mapList;
 
-		void LoadCSV(int num, std::string fileName);
-		std::vector<std::vector<int>> GetMapData(int num);
+		void LoadCSV(float num, std::string fileName);
+		std::vector<std::vector<float>> GetMapData(float num);
 		void Clear();
 	};
 }

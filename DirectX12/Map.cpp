@@ -23,7 +23,7 @@ void KochaEngine::Map::CreateMap(const int arg_mapNum)
 	char fileName[64];
 	sprintf_s(fileName, 64, "Resources/Map/Field%d.csv", arg_mapNum);
 	csvReader.LoadCSV(arg_mapNum, fileName);
-	mapData = csvReader.GetMapData(arg_mapNum);
+	//mapData = csvReader.GetMapData(arg_mapNum);
 
 	auto x_Data = mapData[0].size();
 	auto z_Data = mapData.size();

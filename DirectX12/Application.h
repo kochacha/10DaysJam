@@ -21,7 +21,6 @@ namespace KochaEngine
 	class Texture2D;
 	class Object;
 	class Camera;
-	class EffectManager;
 	class LightManager;
 
 	class Application
@@ -45,8 +44,6 @@ namespace KochaEngine
 		PostEffect* peraEffect;
 		PostEffect* peraDof;
 
-		EffectManager* effectManager;
-
 		ShaderType peraEffectType;
 
 		bool isDof;
@@ -61,6 +58,8 @@ namespace KochaEngine
 		float color[4];
 		Vector4 shaderColor;
 
+		std::vector<float> gameSetData;
+
 		bool isActiveDirLight;
 		Vector3 dirLightDirection;
 		Vector3 dirLightColor;
@@ -70,6 +69,8 @@ namespace KochaEngine
 
 		void Load();
 		void LoadScene();
+		void LoadGameSettings();
+		void SaveGameSettings();
 		void InitFPS();
 		void DrawGUI();
 		bool UpdateFPS();
