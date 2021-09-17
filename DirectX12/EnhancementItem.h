@@ -5,6 +5,7 @@ namespace KochaEngine
 {
 	class GameObjectManager;
 	class ItemManager;
+	enum class ItemEmitOption;
 	class Wall;
 	class EnhancementItem : public GameObject
 	{
@@ -16,7 +17,7 @@ namespace KochaEngine
 		void SetObjParam();
 
 	public:
-		EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager);
+		EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option);
 		~EnhancementItem() override;
 
 		void Initialize() override;

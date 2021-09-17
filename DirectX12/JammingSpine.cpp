@@ -3,7 +3,7 @@
 #include "ItemManager.h"
 #include "Wall.h"
 
-KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager)
+KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
