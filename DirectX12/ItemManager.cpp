@@ -28,8 +28,8 @@ void KochaEngine::ItemManager::Initialize()
 	jammingSpines.clear();
 	CompareTheRightmost();
 
-	AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
-	AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);
+	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
+	AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);*/
 	emitInterval = 0;
 	maxEmitInterval = 180;
 

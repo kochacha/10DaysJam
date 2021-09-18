@@ -29,7 +29,7 @@ namespace KochaEngine
 		unsigned int emitInterval;
 		unsigned int maxEmitInterval;
 
-		void AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
+		
 		void AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
@@ -46,6 +46,7 @@ namespace KochaEngine
 		void Initialize();
 		void Update();
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
+		void AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 	
 		static const float MARGIN_FRAME;
 		float arrayEmitHight[11];

@@ -3,7 +3,7 @@
 #include "Audio.h"
 #include "GameSetting.h"
 
-KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position)
+KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position, bool* inGameFlag)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -12,6 +12,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	gManager = arg_gManager;
 	pEmitter = arg_pEmitter;
 	position = arg_position;
+	this->inGame = inGameFlag;
 
 	obj = new Object("plane");
 	se = new Audio();
@@ -77,6 +78,10 @@ void KochaEngine::Player::Update()
 	if (backCount > 0)
 	{
 		backCount--;
+		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPos())
+		{
+			backCount = 0;
+		}
 	}
 	if (backCount <= 0 && position.x >= gManager->GetWall()->GetMinPos().x)
 	{
@@ -272,7 +277,15 @@ void KochaEngine::Player::InputMove()
 		{
 			smash = false;			
 			position.x = wallPosX;
-			backCount = (smashPower * 7.0f) + (overDirveSmashPower * 5.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+			if (*inGame)
+			{
+				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 5.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+			}
+			else
+			{
+				backCount = 10000;
+			}
+			
 			hitWall = true;
 			
 			//‰¼’u‚«
@@ -327,10 +340,21 @@ void KochaEngine::Player::MoveX()
 	position.x += velocity.x * speed;
 	int leftWall = gManager->GetWall()->GetMinPos().x;
 	int rightWall = gManager->GetWall()->GetMaxPos().x; //112
+	
 	if (position.x <= leftWall)
 	{
-		position.x = leftWall;
+		if (backCount <= 0)
+		{
+			position.x = leftWall;
+		}
+		else
+		{
+			position.x = leftWall + 20;
+		}
+		
 	}
+
+	
 	if (position.x >= rightWall)
 	{
 		position.x = rightWall;

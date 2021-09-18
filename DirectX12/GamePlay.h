@@ -33,6 +33,7 @@ namespace KochaEngine
 
 		bool isShowRank;
 		bool fadeFlag;
+		bool inGame;
 		float fadeAlpha;
 		float bgmVolume;
 
@@ -55,5 +56,6 @@ namespace KochaEngine
 		void CountTime();
 		void Fade();
 		void Scroll();
+		void Title();
 	};
 }
