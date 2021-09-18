@@ -28,6 +28,9 @@ KochaEngine::GamePlay::GamePlay()
 	pauseManager = new PauseManager();
 
 	bgm = new Audio();
+	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
+	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
+	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -43,6 +46,9 @@ KochaEngine::GamePlay::~GamePlay()
 	delete sManager;
 	delete pauseManager;
 	delete bgm;
+	delete flameTexture;
+	delete controlUITexture;
+	delete rankingUITexture;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -117,7 +123,7 @@ void KochaEngine::GamePlay::Update()
 		Title();
 	}
 
-	if (Input::TriggerKey(DIK_Q))
+	if (Input::TriggerKey(DIK_Q) || Input::TriggerPadButton(XINPUT_GAMEPAD_X))
 	{
 		isShowRank = !isShowRank;
 	}
@@ -131,6 +137,9 @@ void KochaEngine::GamePlay::Update()
 
 void KochaEngine::GamePlay::SpriteDraw()
 {
+	flameTexture->Draw();
+	controlUITexture->Draw();
+	rankingUITexture->Draw();
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
 	pauseManager->Draw();

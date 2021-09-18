@@ -35,6 +35,11 @@ namespace KochaEngine
 		PALETTE3,
 		PALETTE4,
 		PALETTE5,
+		PALETTE6,
+		PALETTE7,
+		PALETTE8,
+		PALETTE9,
+		PALETTE10,
 	};
 
 	class PostEffect

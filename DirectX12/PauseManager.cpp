@@ -318,6 +318,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE4:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE4;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 455));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -331,6 +332,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE5:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE5;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 550));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -344,6 +346,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE6:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE6;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 645));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -357,6 +360,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE7:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE7;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 360));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -370,6 +374,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE8:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE8;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 455));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -383,6 +388,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE9:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE9;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 550));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -396,6 +402,7 @@ void KochaEngine::PauseManager::ColorTab()
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE10:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE10;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 645));
 		if (Input::TriggerPadLStickUp()) 
 		{ 
@@ -543,6 +550,7 @@ void KochaEngine::PauseManager::SoundTab()
 void KochaEngine::PauseManager::PauseChange()
 {
 	isPause = !isPause;
+	isSoundMixer = false;
 	menuType = PauseManager::PauseUI::MENU_TAB;
 	nowMenu = PauseManager::Menu::BACK;
 	nowOption = PauseManager::Option::COLOR_PALETTE;

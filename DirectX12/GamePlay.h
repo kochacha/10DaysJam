@@ -30,6 +30,9 @@ namespace KochaEngine
 		PauseManager* pauseManager;
 
 		Audio* bgm;
+		Texture2D* flameTexture;
+		Texture2D* controlUITexture;
+		Texture2D* rankingUITexture;
 
 		bool isShowRank;
 		bool fadeFlag;

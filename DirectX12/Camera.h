@@ -79,8 +79,8 @@ namespace KochaEngine
 		void CameraSpeedUp();
 		void CameraSpeedDown();//cameraSpeed-1
 
-		void Shake(float time, float power);
-		void SetShake(float time, float power);
+		void Shake(int time, float power);
+		void SetShake(int time, float power);
 
 	};
 }
