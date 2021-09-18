@@ -3,6 +3,7 @@
 #include "Dx12_Blob.h"
 #include "Dx12_RootSignature.h"
 
+ComPtr<ID3D12PipelineState> KochaEngine::Dx12_Pipeline::spriteAlphaSortPipelineState;
 ComPtr<ID3D12PipelineState> KochaEngine::Dx12_Pipeline::spritePipelineState;
 ComPtr<ID3D12PipelineState> KochaEngine::Dx12_Pipeline::objPipelineState;
 ComPtr<ID3D12PipelineState> KochaEngine::Dx12_Pipeline::alphaObjPipelineState;
@@ -97,7 +98,11 @@ void KochaEngine::Dx12_Pipeline::CreateSpriteGraphicsPipelineState()
 
 	gpipeline.pRootSignature = Dx12_RootSignature::GetSpriteRootSignature().Get();
 
-	auto result = dx12.GetDevice().Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&spritePipelineState));
+	auto result = dx12.GetDevice().Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&spriteAlphaSortPipelineState));
+	if (FAILED(result)) { assert(0); }
+
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
+	result = dx12.GetDevice().Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&spritePipelineState));
 	if (FAILED(result)) { assert(0); }
 }
 
