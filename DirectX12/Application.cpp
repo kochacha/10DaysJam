@@ -100,7 +100,7 @@ void KochaEngine::Application::Run()
 			Texture2D::BeginDraw(dx12->GetCmdList().Get());
 			//↓SpriteDraw↓//
 
-			texture[0]->Draw();
+			//texture[0]->Draw();
 			sceneManager->SpriteDraw();
 
 			//↑SpriteDraw↑//
@@ -170,6 +170,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/controlUI.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rankingUI.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
