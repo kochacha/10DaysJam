@@ -13,6 +13,10 @@ namespace KochaEngine
 		GameObjectManager* gManager;
 		ItemManager* iManager;
 		Wall* pWall;
+		//•Ç‰Ÿ‚µ‚İ‚Ì¶¬‚Ég‚¤
+		Vector3 emittedPlayerPosition;
+		Vector3 prearrangedPosition;
+		int moveCount;
 
 		void SetObjParam();
 

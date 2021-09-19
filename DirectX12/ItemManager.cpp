@@ -248,13 +248,13 @@ void KochaEngine::ItemManager::EmitItemsSmashing()
 	if (rnd < rndCoefficient)
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
-		AddEnhItem(emitPos, ItemEmitPosition::FROM_CENTER);
+		AddEnhItem(emitPos, ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
 	}
 	//‚¨‚¶‚á‚ÜƒgƒQ¶¬
 	else
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
-		AddJamSpine(emitPos, ItemEmitPosition::FROM_CENTER);
+		AddJamSpine(emitPos, ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
 	}
 }
 

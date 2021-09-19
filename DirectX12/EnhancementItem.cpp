@@ -2,6 +2,7 @@
 #include "GameObjectManager.h"
 #include "ItemManager.h"
 #include "Wall.h"
+#include "Util.h"
 
 KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option)
 {
@@ -10,10 +11,26 @@ KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectMana
 	if (arg_iManager == nullptr) return;
 
 	camera = arg_camera;
-	gManager = arg_gManager;
-	position = arg_position;
+	gManager = arg_gManager;	
 	iManager = arg_iManager;
 	pWall = gManager->GetWall();
+	moveCount = 0;
+
+	switch (arg_option)
+	{
+	case ItemEmitOption::NORMAL:
+		position = arg_position;
+		break;
+	case ItemEmitOption::SMASHING_WALL:
+		emittedPlayerPosition = gManager->GetPlayer()->GetPosition();
+		position = emittedPlayerPosition;
+		prearrangedPosition = arg_position;
+		moveCount = 5;
+		break;
+	default:
+		position = arg_position;
+		break;
+	}	
 
 	obj = new Object("plane");
 	Initialize();
@@ -45,6 +62,13 @@ void KochaEngine::EnhancementItem::Initialize()
 
 void KochaEngine::EnhancementItem::Update()
 {
+	if (moveCount > 0)
+	{
+		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
+
+		moveCount--;
+	}
+
 	SetObjParam();
 
 	if (position.x <= pWall->GetMinPos().x)
@@ -64,6 +88,9 @@ void KochaEngine::EnhancementItem::Update()
 
 void KochaEngine::EnhancementItem::Hit()
 {	
+	//•Ç‚ð‰Ÿ‚µž‚ñ‚Å‚¢‚éŠÔ
+	if (gManager->GetPlayer()->GetBackCount() > 0) return;
+
 	gManager->GetPlayer()->PowerUp(GetType());
 	Dead();
 }

@@ -80,7 +80,11 @@ void KochaEngine::Player::Update()
 		backCount--;
 		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPos())
 		{
-			backCount = 0;
+			backCount = 0;			
+		}
+		
+		if (backCount == 0)
+		{
 			camera->SetShake(1.00f);
 			se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		}
@@ -97,6 +101,8 @@ void KochaEngine::Player::Update()
 	{
 		
 	}
+
+	
 	
 	if (isStun)
 	{
@@ -166,8 +172,10 @@ const bool KochaEngine::Player::IsStuning()
 
 const bool KochaEngine::Player::IsFinishSmash()
 {
+	Wall* pWall = gManager->GetWall();
+
 	if (backCount != 1) return false;
-	if (position.x < gManager->GetWall()->GetMinPos().x) return false;
+	if (position.x < pWall->GetMinPos().x) return false;
 	if (!hitWall) return false;
 
 	return true;
