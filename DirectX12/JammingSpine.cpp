@@ -89,8 +89,8 @@ void KochaEngine::JammingSpine::Hit()
 {	
 	Player* player = gManager->GetPlayer();
 
-	//壁を押し込んでいる間
-	if (gManager->GetPlayer()->GetBackCount() > 0) return;
+	//自身が移動している間
+	if (moveCount > 0) return;
 
 	//プレイヤーがスマッシュ中なら
 	if (player->IsSmashing())

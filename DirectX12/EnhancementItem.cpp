@@ -88,8 +88,8 @@ void KochaEngine::EnhancementItem::Update()
 
 void KochaEngine::EnhancementItem::Hit()
 {	
-	//•Ç‚ð‰Ÿ‚µž‚ñ‚Å‚¢‚éŠÔ
-	if (gManager->GetPlayer()->GetBackCount() > 0) return;
+	//Ž©g‚ªˆÚ“®‚µ‚Ä‚¢‚éŠÔ
+	if (moveCount > 0) return;
 
 	gManager->GetPlayer()->PowerUp(GetType());
 	Dead();
