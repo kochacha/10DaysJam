@@ -71,7 +71,7 @@ void KochaEngine::GamePlay::Initialize()
 	gManager->AddObject(new DeadLine(camera, gManager, emitter, { 80,0,0, }));
 	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0),&inGame));
 	iManager->Initialize();	
-	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
+	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	pauseManager->Initialize();
 
 	frameCount = 0;

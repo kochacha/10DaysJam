@@ -8,11 +8,17 @@ namespace KochaEngine
 	class JammingSpine;
 	class Wall;
 
-	enum class ItemEmitOption
+	enum class ItemEmitPosition
 	{
 		ABSOLUTE_WORLDPOS,
 		FROM_CENTER,
 		MORE_THAN_RIGHTSIDE,
+	};
+
+	enum class ItemEmitOption
+	{
+		NORMAL,
+		AFTER_SMASH_WALL,
 	};
 
 	class ItemManager
@@ -29,8 +35,6 @@ namespace KochaEngine
 		unsigned int emitInterval;
 		unsigned int maxEmitInterval;
 
-		
-		void AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
 		void CompareTheRightmost();
@@ -46,7 +50,8 @@ namespace KochaEngine
 		void Initialize();
 		void Update();
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
-		void AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption = ItemEmitOption::ABSOLUTE_WORLDPOS);
+		void AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);
+		void AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);
 	
 		static const float MARGIN_FRAME;
 		float arrayEmitHight[11];

@@ -28,8 +28,8 @@ void KochaEngine::ItemManager::Initialize()
 	jammingSpines.clear();
 	CompareTheRightmost();
 
-	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::FROM_CENTER);
-	AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::FROM_CENTER);*/
+	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
+	AddJamSpine(Vector3(-30, -20, 0), ItemEmitPosition::FROM_CENTER);*/
 	emitInterval = 0;
 	maxEmitInterval = 180;
 
@@ -56,11 +56,11 @@ void KochaEngine::ItemManager::Update()
 	//生成用デバッグ
 	if (Input::TriggerKey(DIK_P))
 	{
-		AddEnhItem(Vector3(20, 10, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
+		AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::MORE_THAN_RIGHTSIDE);
 	}
 	if (Input::TriggerKey(DIK_O))
 	{
-		AddJamSpine(Vector3(-30, -20, 0), ItemEmitOption::MORE_THAN_RIGHTSIDE);
+		AddJamSpine(Vector3(-30, -20, 0), ItemEmitPosition::MORE_THAN_RIGHTSIDE);
 	}
 	//消去用デバッグ
 	if (Input::TriggerKey(DIK_L))
@@ -80,17 +80,17 @@ void KochaEngine::ItemManager::Update()
 #endif _DEBUG
 }
 
-void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const ItemEmitOption arg_emitOption)
+void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
 {
 	Vector3 emitPos = arg_position;
-	switch (arg_emitOption)
+	switch (arg_emitPosition)
 	{
-	case ItemEmitOption::ABSOLUTE_WORLDPOS:
+	case ItemEmitPosition::ABSOLUTE_WORLDPOS:
 		break;
-	case ItemEmitOption::FROM_CENTER:
+	case ItemEmitPosition::FROM_CENTER:
 		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
-	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
+	case ItemEmitPosition::MORE_THAN_RIGHTSIDE:
 		emitPos.x = MARGIN_FRAME;
 		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);		
 		break;
@@ -98,23 +98,23 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const Ite
 		break;
 	}
 
-	EnhancementItem* item = new EnhancementItem(camera, gManager, emitPos, this);
+	EnhancementItem* item = new EnhancementItem(camera, gManager, emitPos, this, arg_emitOption);
 	gManager->AddObject(item);
 	enhancementItems.push_back(item);
 	CompareTheRightmost();
 }
 
-void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitOption arg_emitOption)
+void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
 {
 	Vector3 emitPos = arg_position;
-	switch (arg_emitOption)
+	switch (arg_emitPosition)
 	{
-	case ItemEmitOption::ABSOLUTE_WORLDPOS:
+	case ItemEmitPosition::ABSOLUTE_WORLDPOS:
 		break;
-	case ItemEmitOption::FROM_CENTER:
+	case ItemEmitPosition::FROM_CENTER:
 		emitPos += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
-	case ItemEmitOption::MORE_THAN_RIGHTSIDE:
+	case ItemEmitPosition::MORE_THAN_RIGHTSIDE:
 		emitPos.x = MARGIN_FRAME;
 		emitPos += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
 		break;
@@ -122,7 +122,7 @@ void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const It
 		break;
 	}
 
-	JammingSpine* spine = new JammingSpine(camera, gManager, emitPos, this);
+	JammingSpine* spine = new JammingSpine(camera, gManager, emitPos, this, arg_emitOption);
 	gManager->AddObject(spine);
 	jammingSpines.push_back(spine);
 	CompareTheRightmost();
@@ -216,13 +216,13 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 	if (rnd < rndCoefficient)
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);		
-		AddEnhItem(emitPos, ItemEmitOption::MORE_THAN_RIGHTSIDE);
+		AddEnhItem(emitPos, ItemEmitPosition::MORE_THAN_RIGHTSIDE);
 	}
 	//おじゃまトゲ生成
 	else
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);		
-		AddJamSpine(emitPos, ItemEmitOption::MORE_THAN_RIGHTSIDE);
+		AddJamSpine(emitPos, ItemEmitPosition::MORE_THAN_RIGHTSIDE);
 	}
 
 	//インターバルリセット
