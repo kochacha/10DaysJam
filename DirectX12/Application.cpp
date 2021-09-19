@@ -156,6 +156,7 @@ void KochaEngine::Application::Run()
 
 			if (!isLogoFlag)
 			{
+				texture[1]->Draw();
 				texture[0]->Draw();
 			}
 
@@ -377,14 +378,14 @@ void KochaEngine::Application::EngineLogo()
 		{
 			alphaCount++;
 		}
-		if (alphaCount > 90)
+		if (alphaCount > 150)
 		{
 			isAlphaChange = true;
 		}
 	}
 	else
 	{
-		if (logoAlpha > 0.00f)
+		if (logoAlpha > -0.80f)
 		{
 			logoAlpha -= 0.02f;
 		}
@@ -461,6 +462,7 @@ bool KochaEngine::Application::Initialize()
 	isActiveDirLight = true;
 
 	texture[0] = new Texture2D("Resources/engineLogo.png", Vector2(240, 180), Vector2(800, 600), 0);
+	texture[1] = new Texture2D("Resources/white.png", Vector2(0, 0), Vector2(1280, 960), 0);
 
 	peraBloom = new PostEffect();
 	peraEffect = new PostEffect();
@@ -490,6 +492,7 @@ void KochaEngine::Application::Terminate()
 	sceneManager->Terminate();
 	delete sceneManager;
 	delete texture[0];
+	delete texture[1];
 	delete blob;
 	delete descriptor;
 	delete rootSignature;

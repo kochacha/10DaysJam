@@ -23,8 +23,8 @@ void KochaEngine::ParticleEmitter::MoveParticle(Vector3 position)
 	param.textureName = "Resources/green.png";
 	param.velocity = Vector3(0, 0, 0);
 	param.color = Vector4(0, 0, 0, 1);
-	auto rand = Util::GetIntRand(0, 360);
-	param.rotate = Vector3(0,0, rand);
+	//auto rand = Util::GetIntRand(0, 360);
+	param.rotate = Vector3(0, 0, 45);
 
 	pManager->AddParticle(new Particle(param));
 }

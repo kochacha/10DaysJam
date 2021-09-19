@@ -38,7 +38,7 @@ namespace KochaEngine
 		Dx12_Pipeline* pipeline;
 		SceneManager* sceneManager;
 
-		Texture2D* texture[1];
+		Texture2D* texture[2];
 
 		PostEffect* peraBloom;
 		PostEffect* peraEffect;
