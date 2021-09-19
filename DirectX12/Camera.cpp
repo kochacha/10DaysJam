@@ -54,7 +54,7 @@ void KochaEngine::Camera::Initialize(float WIN_WIDTH, float WIN_HEIGHT, float an
 
 void KochaEngine::Camera::Update()
 {	
-	//Shake(shakeTime, shakePower);
+	Shake();
 
 	Billboard();
 
@@ -228,49 +228,33 @@ void KochaEngine::Camera::CameraSpeedDown()
 	}
 }
 
-void KochaEngine::Camera::Shake(int time, float power)
+void KochaEngine::Camera::Shake()
 {
+	if (!shakeFlag) return;
 
-	// 経過時間が継続時間以下なら
-	if (nowTime < time)
+	if (shakeTime % 2)
 	{
-		// X方向とY方向にランダムな速度を得る
-		float x;
-		float y;
-		if (nowTime % 2)
-		{
-			x = -power;
-			y = -power;
-		}
-		else
-		{
-			x = power;
-			y = power;
-		}
-		
-
-		// カメラの座標にセット
-		cameraDistance += x;
-
-
-		// カウントアップ
-		nowTime++;
+		MoveEye(Vector3(shakePower, 0, 0));
 	}
-	else if (nowTime >= time)
+	else
 	{
-		// 始点座標、注視点座標を元の位置に戻す
+		MoveEye(Vector3(-shakePower, 0, 0));
+	}
 
-		shakeTime = 0;
-		shakePower = 0;
-		nowTime = 0;
-		cameraDistance = 80;
+	if (shakeTime >= 0)
+	{
+		shakeTime--;
+	}
+	else
+	{
+		shakeFlag = false;
 	}
 }
 
-void KochaEngine::Camera::SetShake(int time, float power)
+void KochaEngine::Camera::SetShake(const float arg_power)
 {
-	shakeTime = time;
-	shakePower = power;
+	shakeTime = 24;
+	shakePower = arg_power;
 	shakeFlag = true;
 }
 

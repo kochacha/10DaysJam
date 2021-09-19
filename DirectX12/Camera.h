@@ -22,7 +22,7 @@ namespace KochaEngine
 		int count;
 		int nowTime;
 		int shakeTime;
-		int shakePower;
+		float shakePower;
 
 		bool shakeFlag;
 		float H;
@@ -42,6 +42,8 @@ namespace KochaEngine
 		XMMATRIX matBillboard;
 		// Y軸回りビルボード行列
 		XMMATRIX matBillboardY;
+
+		void Shake();
 
 	public:
 		Camera();
@@ -79,8 +81,7 @@ namespace KochaEngine
 		void CameraSpeedUp();
 		void CameraSpeedDown();//cameraSpeed-1
 
-		void Shake(int time, float power);
-		void SetShake(int time, float power);
+		void SetShake(const float arg_power);
 
 	};
 }

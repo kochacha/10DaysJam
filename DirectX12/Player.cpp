@@ -81,6 +81,8 @@ void KochaEngine::Player::Update()
 		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPos())
 		{
 			backCount = 0;
+			camera->SetShake(1.00f);
+			se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		}
 	}
 	if (backCount <= 0 && position.x >= gManager->GetWall()->GetMinPos().x)
@@ -198,8 +200,8 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
 		isHitStop = true;
-		hitStopCount = 15;
-		se->PlayWave("Resources/Sound/hit.wav", seVolume);
+		hitStopCount = 20;
+		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
 		overDirveSmashPower += 1;
 
 		if (overDirveSmashPower > MAX_OVERDRIVE)
