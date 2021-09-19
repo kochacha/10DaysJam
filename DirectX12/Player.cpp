@@ -215,6 +215,10 @@ void KochaEngine::Player::PowerDown()
 {
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
 	smashPower -= 3;
+	if (smashPower <= 0)
+	{
+		smashPower = 0;
+	}
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
 	speed = 6.0f;

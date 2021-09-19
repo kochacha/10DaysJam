@@ -206,6 +206,7 @@
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -501,6 +502,7 @@
     <ClInclude Include="JammingSpine.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Particle.h" />

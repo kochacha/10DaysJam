@@ -198,6 +198,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/controlUI.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rankingUI.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/engineLogo.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/mapUI.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/playerUI.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
