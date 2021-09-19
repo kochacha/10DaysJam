@@ -146,6 +146,7 @@ void KochaEngine::Player::ShowGUI()
 {
 	float _position[3] = { position.x, position.y, position.z };
 	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
+	ImGui::InputInt("##PlayerBackCount", &backCount);
 }
 
 KochaEngine::GameObjectType KochaEngine::Player::GetType()
@@ -215,6 +216,10 @@ void KochaEngine::Player::PowerDown()
 {
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
 	smashPower -= 3;
+	if (smashPower < 0)
+	{
+		smashPower = 0;
+	}
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
 	speed = 6.0f;
@@ -324,7 +329,7 @@ void KochaEngine::Player::InputMove()
 	}	
 	if (speed <= 0 && !smash)
 	{
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B) && smashPower > 0)
 		{
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		
