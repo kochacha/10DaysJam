@@ -31,7 +31,7 @@ void KochaEngine::ItemManager::Initialize()
 	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	AddJamSpine(Vector3(-30, -20, 0), ItemEmitPosition::FROM_CENTER);*/
 	emitInterval = 0;
-	maxEmitInterval = 180;
+	maxEmitInterval = 360;
 
 	//生成座標レーンの初期化
 	arrayEmitHight[0] = pWall->GetPlayableSize().y / 2;
@@ -50,7 +50,7 @@ void KochaEngine::ItemManager::Update()
 {
 	CompareTheRightmost();
 	EmitItemsNormalTime();
-	EmitItemsFinishSmash();
+	EmitItemsSmashing();
 
 #ifdef _DEBUG
 	//生成用デバッグ
@@ -205,7 +205,7 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 	if (emitInterval < maxEmitInterval) return;
 
 	//一番右のアイテムが中心より右にあったら
-	if (theRightmostPos.x > pWall->GetCenterPos().x) return;
+	//if (theRightmostPos.x > pWall->GetCenterPos().x) return;
 
 	//生成処理
 	static int rndMax = 5;
@@ -229,13 +229,33 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 	emitInterval = 0;
 }
 
-void KochaEngine::ItemManager::EmitItemsFinishSmash()
+void KochaEngine::ItemManager::EmitItemsSmashing()
 {
 	Player* pPlayer = gManager->GetPlayer();
-	if (!pPlayer->IsFinishSmash()) return;
+	int playerBackCount = pPlayer->GetBackCount();
+	if (playerBackCount <= 0) return;
 
-	int a = 5;
-	a++;
+	if (!pPlayer->IsInGame()) return;
+
+	if ((playerBackCount % 3) != 0) return;
+
+	//生成処理
+	static int rndMax = 5;
+	static int rndCoefficient = 3;
+	int rnd = Util::GetRandInt(rndMax);
+
+	//強化アイテム生成
+	if (rnd < rndCoefficient)
+	{
+		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
+		AddEnhItem(emitPos, ItemEmitPosition::FROM_CENTER);
+	}
+	//おじゃまトゲ生成
+	else
+	{
+		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
+		AddJamSpine(emitPos, ItemEmitPosition::FROM_CENTER);
+	}
 }
 
 KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObjectType arg_objType)

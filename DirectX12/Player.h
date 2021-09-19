@@ -6,13 +6,14 @@ namespace KochaEngine
 	class GameObjectManager;
 	class ParticleEmitter;
 	class Audio;
+	class ItemManager;
 
 	class Player : public GameObject
 	{
 	private:
 		GameObjectManager* gManager;
 		ParticleEmitter* pEmitter;
-		Audio* se;
+		Audio* se;		
 
 		float speed;
 		bool smash;
@@ -73,5 +74,6 @@ namespace KochaEngine
 
 		const int GetBackCount();
 		const bool IsHitWall();
+		const bool IsInGame();
 	};
 }

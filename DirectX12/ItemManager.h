@@ -33,13 +33,13 @@ namespace KochaEngine
 		Wall* pWall;
 		
 		unsigned int emitInterval;
-		unsigned int maxEmitInterval;
+		unsigned int maxEmitInterval;		
 
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
 		void CompareTheRightmost();
 		void EmitItemsNormalTime();
-		void EmitItemsFinishSmash();
+		void EmitItemsSmashing();
 
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
 
@@ -51,8 +51,8 @@ namespace KochaEngine
 		void Update();
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
 		void AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);
-		void AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);
-	
+		void AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);		
+
 		static const float MARGIN_FRAME;
 		float arrayEmitHight[11];
 	};

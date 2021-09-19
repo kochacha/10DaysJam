@@ -242,6 +242,11 @@ const bool KochaEngine::Player::IsHitWall()
 	return hitWall;
 }
 
+const bool KochaEngine::Player::IsInGame()
+{
+	return *inGame;
+}
+
 void KochaEngine::Player::InputMove()
 {
 	
@@ -271,11 +276,11 @@ void KochaEngine::Player::InputMove()
 	}*/
 	if (smash)
 	{		
-		Input::Vibration(60000, 10);
+		//Input::Vibration(60000, 10);
 		int wallPosX = gManager->GetWall()->GetMinPos().x;
 		if (position.x <= wallPosX )
 		{
-			smash = false;			
+			smash = false;
 			position.x = wallPosX;
 			if (*inGame)
 			{
