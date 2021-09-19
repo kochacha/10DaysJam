@@ -181,7 +181,7 @@ void KochaEngine::Player::SpriteDraw()
 
 	for (int i = 0; i < overDirveSmashPower; i++)
 	{
-		overDriveGauge[i]->Draw(Vector2(150 + 70 * smashPower + 80 * i, 720));
+		overDriveGauge[i]->Draw(Vector2(150 + ((70 * smashPower) + (80 * i)), 720));
 	}
 }
 
