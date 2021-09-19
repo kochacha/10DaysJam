@@ -32,7 +32,7 @@ void KochaEngine::ScoreManager::Initialize()
 	}
 	scoreTex->Init();
 
-	score = 100;
+	score = 0;
 
 	UpdateRanking(score);
 }
@@ -71,6 +71,11 @@ void KochaEngine::ScoreManager::UpdateRanking(const int arg_score)
 	{
 		SaveRankData(i, rankScore[i]);
 	}
+}
+
+void KochaEngine::ScoreManager::AddScore(const int arg_addScore)
+{
+	score += arg_addScore;
 }
 
 void KochaEngine::ScoreManager::SaveRankData(int arg_rank, int arg_score)
