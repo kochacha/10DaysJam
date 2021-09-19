@@ -134,6 +134,7 @@ void KochaEngine::GamePlay::Update()
 	if (gManager->GetWall()->GetMinPos().x >= gManager->GetDeadLine()->GetPosition().x + 5)
 	{
 		float x = gManager->GetWall()->GetMaxPos().x;
+		sManager->SaveScore();
 		Initialize();
 	}
 }
@@ -237,5 +238,6 @@ void KochaEngine::GamePlay::Title()
 	{
 		inGame = true;
 		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
+		sManager->Initialize();
 	}
 }

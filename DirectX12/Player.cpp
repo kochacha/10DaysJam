@@ -345,13 +345,15 @@ void KochaEngine::Player::InputMove()
 		
 		
 		if (backCount <= 0 && !isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
-		{
-			se->PlayWave("Resources/Sound/dash.wav", seVolume);
+		{	
 			velocity.Zero();
-			speed = 8.0f;
-
+			speed = 6.5f;
 			velocity.x = Input::GetLStickDirection().x;
 			velocity.y = Input::GetLStickDirection().y;
+			if (velocity.x != 0 || velocity.y != 0)
+			{
+				se->PlayWave("Resources/Sound/dash.wav", seVolume);
+			}
 		}
 	}	
 	if (speed <= 0 && !smash)
