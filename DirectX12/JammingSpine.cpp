@@ -2,6 +2,7 @@
 #include "GameObjectManager.h"
 #include "ItemManager.h"
 #include "Wall.h"
+#include "Util.h"
 
 KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option)
 {
@@ -10,10 +11,25 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	if (arg_iManager == nullptr) return;
 
 	camera = arg_camera;
-	gManager = arg_gManager;
-	position = arg_position;
+	gManager = arg_gManager;	
 	iManager = arg_iManager;
 	pWall = gManager->GetWall();
+
+	switch (arg_option)
+	{
+	case ItemEmitOption::NORMAL:
+		position = arg_position;
+		break;
+	case ItemEmitOption::SMASHING_WALL:
+		emittedPlayerPosition = gManager->GetPlayer()->GetPosition();
+		position = emittedPlayerPosition;
+		prearrangedPosition = arg_position;
+		moveCount = 5;
+		break;
+	default:
+		position = arg_position;
+		break;
+	}
 
 	obj = new Object("plane");
 	Initialize();
@@ -45,6 +61,13 @@ void KochaEngine::JammingSpine::Initialize()
 
 void KochaEngine::JammingSpine::Update()
 {
+	if (moveCount > 0)
+	{
+		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
+
+		moveCount--;
+	}
+
 	SetObjParam();
 
 	if (position.x <= pWall->GetMinPos().x)
@@ -65,6 +88,9 @@ void KochaEngine::JammingSpine::Update()
 void KochaEngine::JammingSpine::Hit()
 {	
 	Player* player = gManager->GetPlayer();
+
+	//自身が移動している間
+	if (moveCount > 0) return;
 
 	//プレイヤーがスマッシュ中なら
 	if (player->IsSmashing())

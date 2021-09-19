@@ -18,7 +18,7 @@ namespace KochaEngine
 	enum class ItemEmitOption
 	{
 		NORMAL,
-		AFTER_SMASH_WALL,
+		SMASHING_WALL,
 	};
 
 	class ItemManager

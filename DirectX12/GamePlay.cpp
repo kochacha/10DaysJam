@@ -70,7 +70,7 @@ void KochaEngine::GamePlay::Initialize()
 	//map->CreateMap(0);
 	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }, -300, 300)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
 	gManager->AddObject(new DeadLine(camera, gManager, emitter, { 295,0,0, }));
-	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0),&inGame));
+	gManager->AddObject(new Player(camera, gManager, emitter,sManager, Vector3(0, 0, 0),&inGame));
 	gManager->AddObject(new MiniMap(camera, gManager, emitter));
 	iManager->Initialize();	
 	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);

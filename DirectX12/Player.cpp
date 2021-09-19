@@ -2,15 +2,18 @@
 #include "GameObjectManager.h"
 #include "Audio.h"
 #include "GameSetting.h"
+#include "ScoreManager.h"
 
-KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position, bool* inGameFlag)
+KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
 	if (arg_pEmitter == nullptr) return;
+	if (arg_sManager == nullptr) return;
 	camera = arg_camera;
 	gManager = arg_gManager;
 	pEmitter = arg_pEmitter;
+	sManager = arg_sManager;
 	position = arg_position;
 	this->inGame = inGameFlag;
 
@@ -52,6 +55,7 @@ void KochaEngine::Player::Initialize()
 	isStun = false;
 	stunCount = 0;
 	backCount = 0;
+	addSmashScore = 0;
 	hitWall = false;
 	isHitStop = false;
 	ResetPower();
@@ -77,10 +81,21 @@ void KochaEngine::Player::Update()
 
 	if (backCount > 0)
 	{
+		addSmashScore++;
 		backCount--;
+		if (*inGame)
+		{
+			sManager->AddScore(addSmashScore * 15);
+		}
+
 		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPos())
 		{
-			backCount = 0;
+			backCount = 0;			
+		}
+		
+		if (backCount == 0)
+		{
+			addSmashScore = 0;
 			camera->SetShake(1.00f);
 			se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		}
@@ -97,6 +112,8 @@ void KochaEngine::Player::Update()
 	{
 		
 	}
+
+	
 	
 	if (isStun)
 	{
@@ -146,6 +163,7 @@ void KochaEngine::Player::ShowGUI()
 {
 	float _position[3] = { position.x, position.y, position.z };
 	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
+	ImGui::InputInt("##PlayerBackCount", &backCount);
 }
 
 KochaEngine::GameObjectType KochaEngine::Player::GetType()
@@ -165,8 +183,10 @@ const bool KochaEngine::Player::IsStuning()
 
 const bool KochaEngine::Player::IsFinishSmash()
 {
+	Wall* pWall = gManager->GetWall();
+
 	if (backCount != 1) return false;
-	if (position.x < gManager->GetWall()->GetMinPos().x) return false;
+	if (position.x < pWall->GetMinPos().x) return false;
 	if (!hitWall) return false;
 
 	return true;
@@ -193,6 +213,10 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	//‹­‰»ƒAƒCƒeƒ€Žæ“¾Žž
 	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
 	{
+		if (*inGame)
+		{
+			sManager->AddScore(100);
+		}
 		se->PlayWave("Resources/Sound/item.wav", seVolume);
 		smashPower++;
 	}
@@ -201,6 +225,10 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	{
 		isHitStop = true;
 		hitStopCount = 20;
+		if (*inGame)
+		{
+			sManager->AddScore(300);
+		}
 		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
 		overDirveSmashPower += 1;
 
@@ -215,7 +243,7 @@ void KochaEngine::Player::PowerDown()
 {
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
 	smashPower -= 3;
-	if (smashPower <= 0)
+	if (smashPower < 0)
 	{
 		smashPower = 0;
 	}
@@ -328,7 +356,7 @@ void KochaEngine::Player::InputMove()
 	}	
 	if (speed <= 0 && !smash)
 	{
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B) && smashPower > 0)
 		{
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		

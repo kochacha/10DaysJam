@@ -31,7 +31,7 @@ void KochaEngine::ItemManager::Initialize()
 	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	AddJamSpine(Vector3(-30, -20, 0), ItemEmitPosition::FROM_CENTER);*/
 	emitInterval = 0;
-	maxEmitInterval = 360;
+	maxEmitInterval = 240;
 
 	//生成座標レーンの初期化
 	arrayEmitHight[0] = pWall->GetPlayableSize().y / 2;
@@ -209,7 +209,7 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 
 	//生成処理
 	static int rndMax = 5;
-	static int rndCoefficient = 3;
+	static int rndCoefficient = 4;
 	int rnd = Util::GetRandInt(rndMax);
 	
 	//強化アイテム生成
@@ -237,24 +237,24 @@ void KochaEngine::ItemManager::EmitItemsSmashing()
 
 	if (!pPlayer->IsInGame()) return;
 
-	if ((playerBackCount % 3) != 0) return;
+	if ((playerBackCount % 6) != 0) return;
 
 	//生成処理
 	static int rndMax = 5;
-	static int rndCoefficient = 3;
+	static int rndCoefficient = 4;
 	int rnd = Util::GetRandInt(rndMax);
 
 	//強化アイテム生成
 	if (rnd < rndCoefficient)
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
-		AddEnhItem(emitPos, ItemEmitPosition::FROM_CENTER);
+		AddEnhItem(emitPos, ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
 	}
 	//おじゃまトゲ生成
 	else
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
-		AddJamSpine(emitPos, ItemEmitPosition::FROM_CENTER);
+		AddJamSpine(emitPos, ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
 	}
 }
 

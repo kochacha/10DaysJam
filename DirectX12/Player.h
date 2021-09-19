@@ -7,12 +7,14 @@ namespace KochaEngine
 	class ParticleEmitter;
 	class Audio;
 	class ItemManager;
+	class ScoreManager;
 
 	class Player : public GameObject
 	{
 	private:
 		GameObjectManager* gManager;
 		ParticleEmitter* pEmitter;
+		ScoreManager* sManager;
 		Audio* se;		
 
 		float speed;
@@ -29,6 +31,7 @@ namespace KochaEngine
 		const int stunTime = 30;
 
 		int backCount;
+		int addSmashScore;
 		bool hitWall;
 
 		Texture2D* powarGauge[10];
@@ -49,7 +52,7 @@ namespace KochaEngine
 		void ResetPower();
 
 	public:
-		Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position,bool* inGameFlag);
+		Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position,bool* inGameFlag);
 		~Player() override;
 
 		void Initialize() override;

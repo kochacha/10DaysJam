@@ -29,5 +29,6 @@ namespace KochaEngine
 
 		void UpdateRanking(const int arg_score);
 		void SetScore(const int arg_score) { score = arg_score; }
+		void AddScore(const int arg_addScore);
 	};
 }
