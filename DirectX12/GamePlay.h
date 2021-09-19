@@ -30,9 +30,13 @@ namespace KochaEngine
 		PauseManager* pauseManager;
 
 		Audio* bgm;
+		Texture2D* flameTexture;
+		Texture2D* controlUITexture;
+		Texture2D* rankingUITexture;
 
 		bool isShowRank;
 		bool fadeFlag;
+		bool inGame;
 		float fadeAlpha;
 		float bgmVolume;
 
@@ -55,5 +59,6 @@ namespace KochaEngine
 		void CountTime();
 		void Fade();
 		void Scroll();
+		void Title();
 	};
 }

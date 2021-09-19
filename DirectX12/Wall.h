@@ -13,8 +13,10 @@ namespace KochaEngine
 		Vector2 minPos;
 		Vector2 maxPos;
 		Vector2 playableSize;
+
+		float limitLeftPos;
 	public:
-		Wall(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos);
+		Wall(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos, const float& limitLeftPos);
 		~Wall() override;
 
 		void Initialize() override;
@@ -28,6 +30,7 @@ namespace KochaEngine
 		const Vector2 GetMaxPos();
 		const Vector2 GetCenterPos();
 		const Vector2 GetPlayableSize();
+		const float GetLimitLeftPos();
 	};
 
 }

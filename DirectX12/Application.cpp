@@ -72,7 +72,16 @@ void KochaEngine::Application::Run()
 		////↓毎フレーム処理↓//
 		Input::Update();
 
-		sceneManager->Update();
+		if (isLogoFlag)
+		{
+			sceneManager->Update();
+		}
+		else
+		{
+			EngineLogo();
+			texture[0]->SetColor(Vector4(1, 1, 1, logoAlpha));
+		}
+
 
 		peraEffect->SetColorPalette(paletteType);
 
@@ -82,30 +91,32 @@ void KochaEngine::Application::Run()
 		{
 			peraDof->PreDrawScene(dx12->GetCmdList().Get());
 
-			Object::BeginDraw(dx12->GetCmdList().Get());
-			//↓ObjDraw↓//
+			if (isLogoFlag)
+			{
+				Object::BeginDraw(dx12->GetCmdList().Get());
+				//↓ObjDraw↓//
 
-			sceneManager->ObjDraw();
+				sceneManager->ObjDraw();
 
-			//↑ObjDraw↑//
-			Object::EndDraw();
+				//↑ObjDraw↑//
+				Object::EndDraw();
 
-			Object::BeginAlphaDraw(dx12->GetCmdList().Get());
+				Object::BeginAlphaDraw(dx12->GetCmdList().Get());
 
-			sceneManager->AlphaObjDraw();
+				sceneManager->AlphaObjDraw();
 
-			//↑ObjDraw↑//
-			Object::EndDraw();
+				//↑ObjDraw↑//
+				Object::EndDraw();
 
-			Texture2D::BeginDraw(dx12->GetCmdList().Get());
-			//↓SpriteDraw↓//
+				Texture2D::BeginDrawAlphaSort(dx12->GetCmdList().Get());
+				//↓SpriteDraw↓//
 
-			texture[0]->Draw();
-			sceneManager->SpriteDraw();
+				//texture[0]->Draw();
+				sceneManager->SpriteDraw();
 
-			//↑SpriteDraw↑//
-			Texture2D::EndDraw();
-
+				//↑SpriteDraw↑//
+				Texture2D::EndDraw();
+			}
 			peraDof->PostDrawScene(dx12->GetCmdList().Get());
 		}
 
@@ -140,6 +151,17 @@ void KochaEngine::Application::Run()
 
 			peraEffect->Draw(peraEffectType);
 
+			Texture2D::BeginDraw(dx12->GetCmdList().Get());
+			//↓SpriteDraw↓//
+
+			if (!isLogoFlag)
+			{
+				texture[0]->Draw();
+			}
+
+			//↑SpriteDraw↑//
+			Texture2D::EndDraw();
+
 #ifdef _DEBUG
 			DrawGUI();
 #endif
@@ -170,6 +192,11 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/normalGauge.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/gauge.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/controlUI.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rankingUI.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/engineLogo.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
@@ -184,7 +211,7 @@ void KochaEngine::Application::LoadScene()
 	sceneManager->Load(GAMEPLAY);
 	sceneManager->Load(ENDING);
 	sceneManager->Load(GAMEOVER);
-	sceneManager->ChangeScene(TITLE);
+	sceneManager->ChangeScene(GAMEPLAY);
 }
 
 void KochaEngine::Application::LoadGameSettings()
@@ -338,6 +365,37 @@ void KochaEngine::Application::DrawGUI()
 	ImGui::End();
 }
 
+void KochaEngine::Application::EngineLogo()
+{
+	if (!isAlphaChange)
+	{
+		if (logoAlpha < 1.00f)
+		{
+			logoAlpha += 0.02f;
+		}
+		else
+		{
+			alphaCount++;
+		}
+		if (alphaCount > 90)
+		{
+			isAlphaChange = true;
+		}
+	}
+	else
+	{
+		if (logoAlpha > 0.00f)
+		{
+			logoAlpha -= 0.02f;
+		}
+		else
+		{
+			isLogoFlag = true;
+		}
+	}
+
+}
+
 bool KochaEngine::Application::UpdateFPS()
 {
 	// 今の時間を取得
@@ -402,7 +460,7 @@ bool KochaEngine::Application::Initialize()
 	pointLightAtten = Vector3(1.000f, 0.050f, 0.001f);
 	isActiveDirLight = true;
 
-	texture[0] = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
+	texture[0] = new Texture2D("Resources/engineLogo.png", Vector2(240, 180), Vector2(800, 600), 0);
 
 	peraBloom = new PostEffect();
 	peraEffect = new PostEffect();
@@ -418,6 +476,11 @@ bool KochaEngine::Application::Initialize()
 	cAbeScale = 0.4f;
 
 	shaderColor = Vector4(1, 1, 1, 1);
+
+	logoAlpha = 0.0f;
+	alphaCount = 0;
+	isLogoFlag = false;
+	isAlphaChange = false;
 
 	return true;
 }

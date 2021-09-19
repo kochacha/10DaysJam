@@ -47,6 +47,10 @@ namespace KochaEngine
 		ShaderType peraEffectType;
 
 		bool isDof;
+		bool isLogoFlag;
+		bool isAlphaChange;
+		float logoAlpha;
+		int alphaCount;
 
 		float vignetteScale;
 		float gBoyPixelSize;
@@ -73,6 +77,7 @@ namespace KochaEngine
 		void SaveGameSettings();
 		void InitFPS();
 		void DrawGUI();
+		void EngineLogo();
 		bool UpdateFPS();
 
 		const double MIN_FRAME_TIME = 1.000000f / 60.000000f;

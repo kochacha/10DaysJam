@@ -54,68 +54,6 @@ void KochaEngine::Camera::Initialize(float WIN_WIDTH, float WIN_HEIGHT, float an
 
 void KochaEngine::Camera::Update()
 {	
-	
-	//if (Input::CheckKey(DIK_LEFT))
-	//{
-	//	cameraHAngle += 1;	
-	//}
-	//if (Input::CheckKey(DIK_RIGHT))
-	//{
-	//	cameraHAngle -= 1;	
-	//}
-	//if (Input::CheckKey(DIK_UP))
-	//{
-	//	cameraVAngle += 1;	
-	//}
-	//if (Input::CheckKey(DIK_DOWN))
-	//{
-	//	cameraVAngle -= 1;
-	//}
-	////if (cameraVAngle <= 40 && cameraVAngle >= -23)
-	////{
-	////	cameraVAngle -= Input::GetRStickDirection().y * cameraSpeed / 2;
-	////}
-
-	//crrentAngle -= Input::GetRStickDirection().x * cameraSpeed;
-	//if (shakeFlag)
-	//{
-	//	H -= Input::GetRStickDirection().x;
-	//	V -= Input::GetRStickDirection().y;
-	//}
-	////cameraHAngle = Util::Lerp(cameraHAngle, crrentAngle, 0.5f);
-	
-	
-	
-
-	//Vector3 TempPosition1;
-	//Vector3 TempPosition2;
-	//Vector3 CameraLookAtPosition;
-
-	//// 注視点はキャラクターモデルの座標から CAMERA_LOOK_AT_HEIGHT 分だけ高い位置
-	//CameraLookAtPosition = target;
-	//
-
-	//// カメラの位置はカメラの水平角度と垂直角度から算出
-
-	//// 最初に垂直角度を反映した位置を算出
-	//float SinParam = sin(cameraVAngle / 180.0f * 3.14159265f);
-	//float CosParam = cos(cameraVAngle / 180.0f * 3.14159265f);
-	//TempPosition1.x = 0.0f;
-	//TempPosition1.y = SinParam * cameraDistance;
-	//TempPosition1.z = -CosParam * cameraDistance;
-
-	//// 次に水平角度を反映した位置を算出
-	//SinParam = sin(cameraHAngle / 180.0f * 3.14159265f);
-	//CosParam = cos(cameraHAngle / 180.0f * 3.14159265f);
-	//TempPosition2.x = CosParam * TempPosition1.x - SinParam * TempPosition1.z;
-	//TempPosition2.y = TempPosition1.y;
-	//TempPosition2.z = SinParam * TempPosition1.x + CosParam * TempPosition1.z;
-
-	//// 算出した座標に注視点の位置を加算したものがカメラの位置
-	//eye.x = TempPosition2.x + CameraLookAtPosition.x;
-	//eye.y = TempPosition2.y + CameraLookAtPosition.y;
-	//eye.z = TempPosition2.z + CameraLookAtPosition.z;
-
 	//Shake(shakeTime, shakePower);
 
 	Billboard();
@@ -290,45 +228,46 @@ void KochaEngine::Camera::CameraSpeedDown()
 	}
 }
 
-void KochaEngine::Camera::Shake(float time, float power)
+void KochaEngine::Camera::Shake(int time, float power)
 {
 
-	//// 経過時間が継続時間以下なら
-	//if (nowTime < time)
-	//{
-	//	// X方向とY方向にランダムな速度を得る
-	//	float x;
-	//	float y;
-	//	if (nowTime % 2)
-	//	{
-	//		x = -power;
-	//		y = -power;
-	//	}
-	//	else
-	//	{
-	//		x = power;
-	//		y = power;
-	//	}
-	//	
+	// 経過時間が継続時間以下なら
+	if (nowTime < time)
+	{
+		// X方向とY方向にランダムな速度を得る
+		float x;
+		float y;
+		if (nowTime % 2)
+		{
+			x = -power;
+			y = -power;
+		}
+		else
+		{
+			x = power;
+			y = power;
+		}
+		
 
-	//	// カメラの座標にセット
-	//	cameraDistance += x;
-	//	//cameraVAngle += y;
-	//	// カウントアップ
-	//	nowTime++;
-	//}
-	//else if (nowTime >= time)
-	//{
-	//	// 始点座標、注視点座標を元の位置に戻す
+		// カメラの座標にセット
+		cameraDistance += x;
 
-	//	shakeTime = 0;
-	//	shakePower = 0;
-	//	nowTime = 0;
-	//	cameraDistance = 80;
-	//}
+
+		// カウントアップ
+		nowTime++;
+	}
+	else if (nowTime >= time)
+	{
+		// 始点座標、注視点座標を元の位置に戻す
+
+		shakeTime = 0;
+		shakePower = 0;
+		nowTime = 0;
+		cameraDistance = 80;
+	}
 }
 
-void KochaEngine::Camera::SetShake(float time, float power)
+void KochaEngine::Camera::SetShake(int time, float power)
 {
 	shakeTime = time;
 	shakePower = power;

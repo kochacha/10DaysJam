@@ -2,10 +2,11 @@
 #include "GameObjectManager.h"
 #include "Util.h"
 
-KochaEngine::Wall::Wall(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos)
+KochaEngine::Wall::Wall(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos,const float& limitLeftPos)
 {
 	this->minPos = minPos;
 	this->maxPos = maxPos;
+	this->limitLeftPos = limitLeftPos;
 	if (arg_gManager == nullptr) return;
 	gManager = arg_gManager;
 	
@@ -34,6 +35,11 @@ void KochaEngine::Wall::Update()
 {
 	currMinPos.x = Util::EaseIn(currMinPos.x, minPos.x - 9.5f, 0.55f);
 	obj->SetPosition(Vector3(currMinPos.x, 0, 0));
+
+	wchar_t str[256];
+	swprintf_s(str, L"minposX %f\n", minPos.x);
+	OutputDebugString(str);
+	
 }
 
 void KochaEngine::Wall::Hit()
@@ -74,4 +80,9 @@ const KochaEngine::Vector2 KochaEngine::Wall::GetCenterPos()
 const KochaEngine::Vector2 KochaEngine::Wall::GetPlayableSize()
 {
 	return playableSize;
+}
+
+const float KochaEngine::Wall::GetLimitLeftPos()
+{
+	return limitLeftPos;
 }

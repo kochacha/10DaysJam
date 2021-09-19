@@ -37,6 +37,8 @@ namespace KochaEngine
 		bool isHitStop;
 		int hitStopCount;
 
+		bool* inGame;
+
 		void InputMove();
 		void MoveX();
 		void MoveY();
@@ -46,7 +48,7 @@ namespace KochaEngine
 		void ResetPower();
 
 	public:
-		Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position);
+		Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position,bool* inGameFlag);
 		~Player() override;
 
 		void Initialize() override;

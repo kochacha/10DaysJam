@@ -27,6 +27,7 @@ namespace KochaEngine
 		Dx12_Pipeline(Dx12_Wrapper& dx12, Dx12_Blob& blob);
 		~Dx12_Pipeline();
 
+		static ComPtr<ID3D12PipelineState> spriteAlphaSortPipelineState;
 		static ComPtr<ID3D12PipelineState> spritePipelineState;
 		static ComPtr<ID3D12PipelineState> objPipelineState;
 		static ComPtr<ID3D12PipelineState> alphaObjPipelineState;

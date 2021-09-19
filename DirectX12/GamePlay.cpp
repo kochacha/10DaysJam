@@ -22,12 +22,15 @@ KochaEngine::GamePlay::GamePlay()
 	emitter = new ParticleEmitter(pManager);
 	map = new Map(gManager, camera);
 	lightManager = new LightManager();
-
+	lightManager = LightManager::Create();
 	iManager = new ItemManager(camera, gManager);
 	sManager = new ScoreManager();
 	pauseManager = new PauseManager();
 
 	bgm = new Audio();
+	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
+	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
+	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -43,6 +46,9 @@ KochaEngine::GamePlay::~GamePlay()
 	delete sManager;
 	delete pauseManager;
 	delete bgm;
+	delete flameTexture;
+	delete controlUITexture;
+	delete rankingUITexture;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -50,19 +56,22 @@ void KochaEngine::GamePlay::Initialize()
 	isEnd = false;
 	isGameOver = false;
 
+	inGame = false;
+
 	gManager->RemoveAll();
 	camera->Initialize(1280, 960, 90, 100, { 0,0,-120 }, { 0,0,0 }, { 0,1,0 });
-	lightManager = LightManager::Create();
+	
 	lightManager->SetDirectionalLightColor(0, Vector3(1, 1, 1));
 	lightManager->SetDirectionalLightDirection(0, Vector3(0, 0, -1));
 	lightManager->SetDirectionalLightIsActive(0, true);
 	lightManager->SetLightCamera(camera);
 
 	//map->CreateMap(0);
-	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }));
-	gManager->AddObject(new DeadLine(camera, gManager, emitter, { 100,0,0, }));
-	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0)));
+	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }, -500));
+	gManager->AddObject(new DeadLine(camera, gManager, emitter, { 80,0,0, }));
+	gManager->AddObject(new Player(camera, gManager, emitter, Vector3(0, 0, 0),&inGame));
 	iManager->Initialize();	
+	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	pauseManager->Initialize();
 
 	frameCount = 0;
@@ -75,11 +84,13 @@ void KochaEngine::GamePlay::Initialize()
 
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	bgm->Init();
-	bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
+	
+	
 }
 
 void KochaEngine::GamePlay::Update()
 {
+	
 	Fade();
 
 	pauseManager->Update();
@@ -92,16 +103,27 @@ void KochaEngine::GamePlay::Update()
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
+	
 	Scroll();
+	
+	
 	gManager->Update();
 	pManager->Update();
 	camera->Update();
 	
 	lightManager->Update();
 
-	iManager->Update();
+	if (inGame)
+	{
+		iManager->Update();
+	}
+	
+	if (!inGame)
+	{
+		Title();
+	}
 
-	if (Input::TriggerKey(DIK_Q))
+	if (Input::TriggerKey(DIK_Q) || Input::TriggerPadButton(XINPUT_GAMEPAD_X))
 	{
 		isShowRank = !isShowRank;
 	}
@@ -115,6 +137,9 @@ void KochaEngine::GamePlay::Update()
 
 void KochaEngine::GamePlay::SpriteDraw()
 {
+	flameTexture->Draw();
+	controlUITexture->Draw();
+	rankingUITexture->Draw();
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
 	pauseManager->Draw();
@@ -177,13 +202,37 @@ void KochaEngine::GamePlay::Fade()
 
 void KochaEngine::GamePlay::Scroll()
 {
-	if (gManager->GetPlayer()->GetBackCount() > 0 && gManager->GetPlayer()->IsHitWall())
-	{
-		camera->MoveEye({ -10,0,0, });
-		gManager->GetWall()->ScrollWall(-10);
-	}
+	auto wall = gManager->GetWall();
+	auto player = gManager->GetPlayer();
 
-	camera->MoveEye({ scrollAmount,0,0, });
-	gManager->GetWall()->ScrollWall(scrollAmount);
+	if (inGame)
+	{
+		if (player->GetBackCount() > 0 && player->IsHitWall())
+		{
+			camera->MoveEye({ -10,0,0, });
+			wall->ScrollWall(-10);
+		}
+		camera->MoveEye({ scrollAmount,0,0, });
+		wall->ScrollWall(scrollAmount);
+	}
+	else
+	{
+		if (player->GetBackCount() > 0 && player->IsHitWall() && wall->GetMinPos().x > wall->GetLimitLeftPos() )
+		{
+			camera->MoveEye({ -10,0,0, });
+			wall->ScrollWall(-10);
+		}
+	}
 	
+	
+}
+
+void KochaEngine::GamePlay::Title()
+{
+	auto wall = gManager->GetWall();
+	if (wall->GetMinPos().x <= wall->GetLimitLeftPos())
+	{
+		inGame = true;
+		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
+	}
 }
