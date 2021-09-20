@@ -60,7 +60,7 @@ void KochaEngine::GamePlay::Initialize()
 	inGame = false;
 
 	gManager->RemoveAll();
-	camera->Initialize(1280, 960, 90, 100, { 0,0,-120 }, { 0,0,0 }, { 0,1,0 });
+	camera->Initialize(1280, 960, 90, 100, { 77.5f,0,-120 }, { 77.5f,0,0 }, { 0,1,0 });
 	
 	lightManager->SetDirectionalLightColor(0, Vector3(1, 1, 1));
 	lightManager->SetDirectionalLightDirection(0, Vector3(0, 0, -1));
@@ -68,9 +68,9 @@ void KochaEngine::GamePlay::Initialize()
 	lightManager->SetLightCamera(camera);
 
 	//map->CreateMap(0);
-	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }, -300, 300)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
+	gManager->AddObject(new Wall(camera, gManager, { -2.5f,-23 }, { 157.5f,45 }, -300, 300)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
 	gManager->AddObject(new DeadLine(camera, gManager, emitter, { 295,0,0, }));
-	gManager->AddObject(new Player(camera, gManager, emitter,sManager, Vector3(0, 0, 0),&inGame));
+	gManager->AddObject(new Player(camera, gManager, emitter,sManager, Vector3(77.5f, 0, 0),&inGame));
 	gManager->AddObject(new MiniMap(camera, gManager, emitter));
 	iManager->Initialize();	
 	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);

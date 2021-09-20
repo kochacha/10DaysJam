@@ -33,20 +33,21 @@ void KochaEngine::MiniMap::Initialize()
 void KochaEngine::MiniMap::Update()
 {
 	auto wall = gManager->GetWall();
-	float length = fabs(wall->GetLimitLeftPos()) + fabs(wall->GetLimitRightPos()); //600
-	float x = camera->GetTarget().x + fabs(wall->GetLimitLeftPos()); //300
-	float ratio = x / length; //0.5f
-	mapPlayerPos.x = (miniMapLength.x) * ratio -25; //140
+	//float length = fabs(wall->GetLimitLeftPos()) + fabs(wall->GetLimitRightPos()); //600
+	//float x = camera->GetTarget().x + fabs(wall->GetLimitLeftPos()); //300
+	//float ratio = x / length; //0.5f
+	//mapPlayerPos.x = (miniMapLength.x) * ratio -25; //140
 
 	//ŽŽ‚µ
-	/*float mapStart = wall->GetLimitLeftPos() + wall->GetPlayableSize().x / 2;
-	float mapEnd = (wall->GetLimitRightPos() + 5.0f) + wall->GetPlayableSize().x / 2;
+	float mapStart = wall->GetLimitLeftPos() + wall->GetPlayableSize().x / 2;
+	float mapEnd = (wall->GetLimitRightPos() - 5.0f) + wall->GetPlayableSize().x / 2;
 	float length = fabs(mapStart) + fabs(mapEnd);
 	float cameraPos = camera->GetTarget().x;
 	float ratio = cameraPos + fabs(mapStart);
 	mapPlayerPos.x = ratio / length;
 	mapPlayerPos.x *= miniMapLength.x;
-	mapPlayerPos.x += miniMapPos.x;*/
+	mapPlayerPos.x += miniMapPos.x;
+	mapPlayerPos.x -= 25.0f;
 }
 
 void KochaEngine::MiniMap::Hit()
