@@ -278,6 +278,10 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 		emitPos = Vector3(0, arrayEmitHight[rnd * 2 + 1], 0);
 	}
 
+	rndMax = 5;
+	rnd = Util::GetRandInt(rndMax) - 2;
+	emitPos.y += rnd;
+
 	//yÀ•W‚ð˜g‚Ì“à‘¤‚ÉŽû‚ß‚é
 	if (emitPos.y > pWall->GetPlayableSize().y / 2)
 	{
