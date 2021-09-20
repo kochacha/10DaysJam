@@ -35,6 +35,7 @@ namespace KochaEngine
 		bool hitWall;
 
 		Texture2D* powarGauge[10];
+		Texture2D* emptyGauge[10];
 		Texture2D* overDriveGauge[5];
 
 		float seVolume;

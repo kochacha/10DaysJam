@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "Texture2D.h"
 #include "ItemManager.h"
+#include "ScrollManager.h"
 
 namespace KochaEngine
 {
@@ -28,6 +29,7 @@ namespace KochaEngine
 		ItemManager* iManager;
 		ScoreManager* sManager;
 		PauseManager* pauseManager;
+		ScrollManager* scrollManager;
 
 		Audio* bgm;
 		Texture2D* flameTexture;

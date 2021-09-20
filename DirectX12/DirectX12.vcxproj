@@ -221,6 +221,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
+    <ClCompile Include="ScrollManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -519,6 +520,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScoreManager.h" />
+    <ClInclude Include="ScrollManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="Texture2D.h" />
