@@ -4,6 +4,7 @@
 #include "GameSetting.h"
 #include "ScoreManager.h"
 #include "Util.h"
+#include "InputManager.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 {
@@ -336,7 +337,7 @@ void KochaEngine::Player::InputMove()
 		}
 		
 		
-		if (backCount <= 0 && !isStun && Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+		if (backCount <= 0 && !isStun && InputManager::DashKey())
 		{	
 			velocity.Zero();
 			speed = 6.5f;
@@ -351,7 +352,7 @@ void KochaEngine::Player::InputMove()
 	}	
 	if (speed <= 0 && !smash)
 	{
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_B) && smashPower > 0)
+		if (InputManager::SmashKey() && smashPower > 0)
 		{
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		
@@ -359,7 +360,7 @@ void KochaEngine::Player::InputMove()
 			velocity.x = -1;
 			speed = 10;
 		}
-		else if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+		else if (InputManager::SmashKey())
 		{
 			se->PlayWave("Resources/Sound/feild.wav", seVolume);
 		}
