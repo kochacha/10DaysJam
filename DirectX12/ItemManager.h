@@ -42,7 +42,7 @@ namespace KochaEngine
 		void EmitItemsNormalTime();
 		void EmitItemsSmashing();
 		void GeneralEmitCommand(const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption);
-
+		void FixEmitPositionByCondition(Vector3& arg_position, const ItemEmitPosition arg_emitPosition);
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
 		const unsigned int GetMaxEmitInterval();
 		const unsigned int GetEmitTypeCoefficient();
