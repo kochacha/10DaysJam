@@ -25,6 +25,8 @@ namespace KochaEngine
 		int overDirveSmashPower;
 		const int MAX_SMASHPOWER = 10;
 		const int MAX_OVERDRIVE = 5;
+		Vector3 scale;
+		Vector3 endScale;
 
 		bool isStun;
 		int stunCount;
@@ -47,6 +49,7 @@ namespace KochaEngine
 		void InputMove();
 		void MoveX();
 		void MoveY();
+		void ScaleAnimation();
 		void SetObjParam();
 		void MoveWallPos();
 		//パワーのリセット

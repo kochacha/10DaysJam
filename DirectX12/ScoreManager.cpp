@@ -54,6 +54,7 @@ void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 
 void KochaEngine::ScoreManager::UpdateRanking(const int arg_score)
 {
+
 	LoadRankData();
 
 	for (int i = RANK_COUNT - 1; i > -1; i--)

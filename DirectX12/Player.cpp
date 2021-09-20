@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "GameSetting.h"
 #include "ScoreManager.h"
+#include "Util.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 {
@@ -66,9 +67,12 @@ void KochaEngine::Player::Initialize()
 	sphere.radius = 4.0f;
 	sphere.position = this->position;
 
+	scale = Vector3(10, 10, 10);
+	endScale = Vector3(10, 10, 10);
+
 	obj->SetPosition(position);
 	obj->SetRotate(Vector3(0, 0, 0));
-	obj->SetScale(Vector3(10, 10, 10));
+	obj->SetScale(scale);
 	obj->SetTexture("Resources/player0.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 
@@ -83,8 +87,10 @@ void KochaEngine::Player::Update()
 
 	if (backCount > 0)
 	{
+		scale = Vector3(12, 4, 10);
 		addSmashScore++;
 		backCount--;
+		pEmitter->SmashStar(position);
 		if (*inGame)
 		{
 			sManager->AddScore(addSmashScore * 15);
@@ -100,6 +106,7 @@ void KochaEngine::Player::Update()
 			addSmashScore = 0;
 			camera->SetShake(1.00f);
 			se->PlayWave("Resources/Sound/hit.wav", seVolume);
+			scale = Vector3(1,20,10);
 		}
 	}
 	if (backCount <= 0 && position.x >= gManager->GetWall()->GetMinPos().x)
@@ -135,6 +142,7 @@ void KochaEngine::Player::Update()
 	MoveX();
 	MoveY();
 
+	ScaleAnimation();
 	SetObjParam();
 
 	wchar_t str[256];
@@ -224,6 +232,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			sManager->AddScore(100);
 		}
 		se->PlayWave("Resources/Sound/item.wav", seVolume);
+		pEmitter->PowerUp(position);
 		smashPower++;
 	}
 	//スマッシュでおじゃまトゲを巻き込んだ時
@@ -236,6 +245,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			sManager->AddScore(300);
 		}
 		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
+		pEmitter->PowerUp(position);
 		overDirveSmashPower += 1;
 
 		if (overDirveSmashPower > MAX_OVERDRIVE)
@@ -248,6 +258,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 void KochaEngine::Player::PowerDown()
 {
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
+	pEmitter->PowerDown(position);
 	smashPower -= 3;
 	if (smashPower < 0)
 	{
@@ -358,6 +369,7 @@ void KochaEngine::Player::InputMove()
 			velocity.y = Input::GetLStickDirection().y;
 			if (velocity.x != 0 || velocity.y != 0)
 			{
+				scale = Vector3(3, 3, 10);
 				se->PlayWave("Resources/Sound/dash.wav", seVolume);
 			}
 		}
@@ -371,6 +383,10 @@ void KochaEngine::Player::InputMove()
 			velocity.Zero();
 			velocity.x = -1;
 			speed = 10;
+		}
+		else if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+		{
+			se->PlayWave("Resources/Sound/feild.wav", seVolume);
 		}
 	}
 	velocity.normalize();	
@@ -423,10 +439,25 @@ void KochaEngine::Player::MoveY()
 	}
 }
 
+void KochaEngine::Player::ScaleAnimation()
+{
+	scale.x = Util::EaseIn(scale.x, endScale.x, 0.4f);
+	scale.y = Util::EaseIn(scale.y, endScale.y, 0.4f);
+}
+
 void KochaEngine::Player::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
+
+	if (velocity.x >= 0)
+	{
+		obj->SetScale(Vector3(-scale.x, scale.y, scale.z));
+	}
+	else
+	{
+		obj->SetScale(scale);
+	}
 }
 
 void KochaEngine::Player::MoveWallPos()
