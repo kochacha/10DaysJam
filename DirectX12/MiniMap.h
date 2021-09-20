@@ -17,7 +17,13 @@ namespace KochaEngine
 
 		Vector2 miniMapPos;
 		Vector2 mapPlayerPos;
-		Vector2 miniMapLength;
+		Vector2 miniMapSize;
+
+		float mapStart;
+		float mapEnd;
+		float mapLength;
+		float mapCorrectionValue;
+
 	public:
 		MiniMap(Camera* arg_camera,GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter);
 		~MiniMap();
@@ -29,6 +35,7 @@ namespace KochaEngine
 		void SpriteDraw() override;
 		void ShowGUI() override;
 		GameObjectType GetType();
+		const float GetCorrectionValue();
 	};
 }
 

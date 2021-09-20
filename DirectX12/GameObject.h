@@ -26,6 +26,7 @@ namespace KochaEngine
 		JAMMING_SPINE,
 		WALL,
 		DEADLINE,
+		MINI_MAP,
 	};
 
 	class GameObject

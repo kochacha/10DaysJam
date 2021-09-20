@@ -10,11 +10,17 @@ KochaEngine::MiniMap::MiniMap(Camera* arg_camera,GameObjectManager* arg_gManager
 	gManager = arg_gManager;
 	pEmitter = arg_pEmitter;
 
-	miniMapLength = { 1000, 60 };
+	miniMapSize = { 1000, 60 };
 	miniMapPos = { 140, 800 };
-	mapBar = new Texture2D("Resources/mapUI.png", miniMapPos, miniMapLength, 0);
+	mapBar = new Texture2D("Resources/mapUI.png", miniMapPos, miniMapSize, 0);
 	mapPlayer = new Texture2D("Resources/playerUI.png", Vector2(100, 800), Vector2(50, 50), 0);
 	
+	auto wall = gManager->GetWall();
+	mapStart = wall->GetLimitLeftPos() + wall->GetPlayableSize().x / 2;
+	mapEnd = (wall->GetLimitRightPos() - 5.0f) + wall->GetPlayableSize().x / 2;
+	mapLength = fabs(mapStart) + fabs(mapEnd);
+	mapCorrectionValue = mapLength / 2.0f - fabs(mapStart);
+
 	Initialize();
 }
 
@@ -31,21 +37,17 @@ void KochaEngine::MiniMap::Initialize()
 }
 
 void KochaEngine::MiniMap::Update()
-{
-	auto wall = gManager->GetWall();
+{	
 	//float length = fabs(wall->GetLimitLeftPos()) + fabs(wall->GetLimitRightPos()); //600
 	//float x = camera->GetTarget().x + fabs(wall->GetLimitLeftPos()); //300
 	//float ratio = x / length; //0.5f
-	//mapPlayerPos.x = (miniMapLength.x) * ratio -25; //140
+	//mapPlayerPos.x = (miniMapSize.x) * ratio -25; //140
 
-	//ŽŽ‚µ
-	float mapStart = wall->GetLimitLeftPos() + wall->GetPlayableSize().x / 2;
-	float mapEnd = (wall->GetLimitRightPos() - 5.0f) + wall->GetPlayableSize().x / 2;
-	float length = fabs(mapStart) + fabs(mapEnd);
+	//ŽŽ‚µ	
 	float cameraPos = camera->GetTarget().x;
 	float ratio = cameraPos + fabs(mapStart);
-	mapPlayerPos.x = ratio / length;
-	mapPlayerPos.x *= miniMapLength.x;
+	mapPlayerPos.x = ratio / mapLength;
+	mapPlayerPos.x *= miniMapSize.x;
 	mapPlayerPos.x += miniMapPos.x;
 	mapPlayerPos.x -= 25.0f;
 }
@@ -71,5 +73,10 @@ void KochaEngine::MiniMap::ShowGUI()
 
 KochaEngine::GameObjectType KochaEngine::MiniMap::GetType()
 {
-	return GameObjectType();
+	return GameObjectType::MINI_MAP;
+}
+
+const float KochaEngine::MiniMap::GetCorrectionValue()
+{
+	return mapCorrectionValue;
 }
