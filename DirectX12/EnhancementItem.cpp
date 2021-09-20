@@ -71,17 +71,18 @@ void KochaEngine::EnhancementItem::Update()
 
 	SetObjParam();
 
+	//ç∂ï«Ç…Ç†ÇΩÇÈ
 	if (position.x <= pWall->GetMinPos().x)
 	{
 		Dead();
 		return;
 	}
-
-	if (position.x >= pWall->GetMaxPos().x + pWall->GetPlayableSize().x / 2)
+	//âEë§Ç…Ç®Ç¢ÇƒÇ¢Ç≠
+	/*if (position.x >= pWall->GetMaxPos().x + pWall->GetPlayableSize().x / 2)
 	{
 		Dead();
 		return;
-	}
+	}*/
 
 	gManager->HitObject(this, PLAYER);
 }
