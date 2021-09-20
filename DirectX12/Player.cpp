@@ -288,32 +288,7 @@ const bool KochaEngine::Player::IsInGame()
 }
 
 void KochaEngine::Player::InputMove()
-{
-	
-	/*if (Input::CheckKey(DIK_LSHIFT))
-	{
-		speed = 0.8f;
-	}
-	else
-	{
-		speed = 0.5f;
-	}
-	if (Input::CheckKey(DIK_W))
-	{
-		velocity.y = 1;
-	}
-	if (Input::CheckKey(DIK_S))
-	{
-		velocity.y = -1;
-	}
-	if (Input::CheckKey(DIK_A))
-	{
-		velocity.x = -1;
-	}
-	if (Input::CheckKey(DIK_D))
-	{
-		velocity.x = 1;
-	}*/
+{	
 	if (smash)
 	{		
 		//Input::Vibration(60000, 10);
@@ -380,6 +355,33 @@ void KochaEngine::Player::InputMove()
 		//動いていたら
 		pEmitter->MoveParticle(Vector3(position.x, position.y, position.z + 1.0f));
 	}
+
+	//衝突判定デバッグ用
+	/*velocity.Zero();
+	if (Input::CheckKey(DIK_LSHIFT))
+	{
+		speed = 0.8f;
+	}
+	else
+	{
+		speed = 0.5f;
+	}
+	if (Input::CheckKey(DIK_W))
+	{
+		velocity.y = 1;
+	}
+	if (Input::CheckKey(DIK_S))
+	{
+		velocity.y = -1;
+	}
+	if (Input::CheckKey(DIK_A))
+	{
+		velocity.x = -1;
+	}
+	if (Input::CheckKey(DIK_D))
+	{
+		velocity.x = 1;
+	}*/
 }
 
 void KochaEngine::Player::MoveX()

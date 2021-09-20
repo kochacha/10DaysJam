@@ -50,7 +50,7 @@ void KochaEngine::EnhancementItem::Initialize()
 
 	velocity.Zero();	
 
-	sphere.radius = 4.0f;
+	sphere.radius = 5.0f;
 	
 	SetObjParam();
 
