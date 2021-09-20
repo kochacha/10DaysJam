@@ -27,6 +27,8 @@ KochaEngine::GamePlay::GamePlay()
 	iManager = new ItemManager(camera, gManager);
 	sManager = new ScoreManager();
 	pauseManager = new PauseManager();
+	scrollManager = new ScrollManager();
+
 
 	bgm = new Audio();
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
@@ -50,6 +52,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete flameTexture;
 	delete controlUITexture;
 	delete rankingUITexture;
+	delete scrollManager;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -78,6 +81,7 @@ void KochaEngine::GamePlay::Initialize()
 	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	pauseManager->Initialize();
 	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
+	scrollManager->Initialize();
 
 	frameCount = 0;
 	seconds = 0;
@@ -108,7 +112,7 @@ void KochaEngine::GamePlay::Update()
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
-	
+	scrollManager->Update();
 	Scroll();
 	
 	
@@ -219,8 +223,8 @@ void KochaEngine::GamePlay::Scroll()
 			camera->MoveEye({ -10,0,0, });
 			wall->ScrollWall(-10);
 		}
-		camera->MoveEye({ scrollAmount,0,0, });
-		wall->ScrollWall(scrollAmount);
+		camera->MoveEye({ scrollManager->GetScrollAmount(),0,0, });
+		wall->ScrollWall(scrollManager->GetScrollAmount());
 	}
 	else
 	{

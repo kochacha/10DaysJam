@@ -22,6 +22,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	for (int i = 0; i < 10; i++)
 	{
 		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
+		emptyGauge[i] = new Texture2D("Resources/emptyGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
 		if (i < 5)
 		{
 			overDriveGauge[i] = new Texture2D("Resources/gauge.png", Vector2(0, 720), Vector2(65, 55), 0);
@@ -37,6 +38,7 @@ KochaEngine::Player::~Player()
 	for (int i = 0; i < 10; i++)
 	{
 		delete powarGauge[i];
+		delete emptyGauge[i];
 		if (i < 5)
 		{
 			delete overDriveGauge[i];
@@ -194,6 +196,10 @@ const bool KochaEngine::Player::IsFinishSmash()
 
 void KochaEngine::Player::SpriteDraw()
 {
+	/*for (int i = 0; i < MAX_SMASHPOWER; i++)
+	{
+		emptyGauge[i]->Draw();
+	}*/
 	for (int i = 0; i < smashPower; i++)
 	{
 		powarGauge[i]->Draw();
