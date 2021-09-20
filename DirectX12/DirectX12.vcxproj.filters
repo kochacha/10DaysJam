@@ -274,6 +274,9 @@
     <ClCompile Include="ScrollManager.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source\Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -577,6 +580,9 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ScrollManager.h">
       <Filter>Header\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header\Device</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

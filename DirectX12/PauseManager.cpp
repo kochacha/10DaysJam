@@ -1,8 +1,8 @@
 #include "PauseManager.h"
-#include "Input.h"
 #include "Application.h"
 #include "GameSetting.h"
 #include "Audio.h"
+#include "InputManager.h"
 
 KochaEngine::PauseManager::PauseManager()
 {
@@ -60,7 +60,7 @@ void KochaEngine::PauseManager::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_START))
+	if (InputManager::PauseKey())
 	{
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
 		PauseChange();
@@ -123,17 +123,17 @@ void KochaEngine::PauseManager::MenuTab()
 	{
 	case KochaEngine::PauseManager::BACK:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{
 			nowMenu = PauseManager::EXIT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{
 			nowMenu = PauseManager::RESET;;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A)) 
+		if (InputManager::DecisionKey())
 		{ 
 			PauseChange(); 
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -141,34 +141,34 @@ void KochaEngine::PauseManager::MenuTab()
 		break;
 	case KochaEngine::PauseManager::RESET:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 455));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{
 			nowMenu = PauseManager::BACK;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{
 			nowMenu = PauseManager::OPTION;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A)) 
+		if (InputManager::DecisionKey())
 		{ 
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::OPTION:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 550));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowMenu = PauseManager::RESET;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowMenu = PauseManager::EXIT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A)) 
+		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::OPTION_TAB;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -176,17 +176,17 @@ void KochaEngine::PauseManager::MenuTab()
 		break;
 	case KochaEngine::PauseManager::EXIT:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 645));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowMenu = PauseManager::OPTION;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowMenu = PauseManager::BACK;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A)) 
+		if (InputManager::DecisionKey())
 		{ 
 			Application::isExit = true;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -196,7 +196,7 @@ void KochaEngine::PauseManager::MenuTab()
 		break;
 	}
 
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+	if (InputManager::CancelKey())
 	{
 		PauseChange();
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -209,12 +209,12 @@ void KochaEngine::PauseManager::OptionTab()
 	{
 	case KochaEngine::PauseManager::COLOR_PALETTE:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
-		if (Input::TriggerPadLStickUp() || Input::TriggerPadLStickDown()) 
+		if (InputManager::UpCursorKey() || InputManager::DownCursorKey())
 		{ 
 			nowOption = PauseManager::SOUND_MIXER; 
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A)) 
+		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::COLOR_TAB;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -222,12 +222,12 @@ void KochaEngine::PauseManager::OptionTab()
 		break;
 	case KochaEngine::PauseManager::SOUND_MIXER:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 455));
-		if (Input::TriggerPadLStickUp() || Input::TriggerPadLStickDown()) 
+		if (InputManager::UpCursorKey() || InputManager::DownCursorKey())
 		{ 
 			nowOption = PauseManager::COLOR_PALETTE;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadButton(XINPUT_GAMEPAD_A)) 
+		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::SOUND_TAB;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -236,7 +236,7 @@ void KochaEngine::PauseManager::OptionTab()
 	default:
 		break;
 	}
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+	if (InputManager::CancelKey())
 	{
 		PauseChange();
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -250,12 +250,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::GAMEBOY:
 		Application::paletteType = KochaEngine::PaletteType::GAMEBOY;
 		cursor->SetPosition(Vector2(LEFT_POS_X, 360));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE10;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::SEPIA;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -264,12 +264,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::SEPIA:
 		Application::paletteType = KochaEngine::PaletteType::SEPIA;
 		cursor->SetPosition(Vector2(LEFT_POS_X, 455));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::GAMEBOY; 
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE1;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -278,12 +278,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE1:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE1;
 		cursor->SetPosition(Vector2(LEFT_POS_X, 550));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::SEPIA;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE2;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -292,12 +292,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE2:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE2;
 		cursor->SetPosition(Vector2(LEFT_POS_X, 645));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE1;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE3;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -306,12 +306,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE3:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE3;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE2;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE4;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -320,12 +320,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE4:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE4;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 455));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE3;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE5;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -334,12 +334,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE5:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE5;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 550));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE4;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE6;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -348,12 +348,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE6:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE6;
 		cursor->SetPosition(Vector2(CENTER_POS_X, 645));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE5;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE7;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -362,12 +362,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE7:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE7;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 360));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE6;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE8;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -376,12 +376,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE8:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE8;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 455));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE7;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE9;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -390,12 +390,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE9:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE9;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 550));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE8;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE10;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -404,12 +404,12 @@ void KochaEngine::PauseManager::ColorTab()
 	case KochaEngine::PauseManager::PALETTE10:
 		Application::paletteType = KochaEngine::PaletteType::PALETTE10;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 645));
-		if (Input::TriggerPadLStickUp()) 
+		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE9;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
-		if (Input::TriggerPadLStickDown()) 
+		if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::GAMEBOY;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -419,7 +419,7 @@ void KochaEngine::PauseManager::ColorTab()
 		break;
 	}
 
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_A) || Input::TriggerPadButton(XINPUT_GAMEPAD_B)) 
+	if (InputManager::DecisionKey() || InputManager::CancelKey())
 	{ 
 		PauseChange();
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -428,12 +428,12 @@ void KochaEngine::PauseManager::ColorTab()
 
 void KochaEngine::PauseManager::SoundTab()
 {
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+	if (InputManager::DecisionKey())
 	{
 		isSoundMixer = !isSoundMixer;
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
 	}
-	if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+	if (InputManager::CancelKey())
 	{
 		PauseChange();
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -445,12 +445,12 @@ void KochaEngine::PauseManager::SoundTab()
 		if (!isSoundMixer)
 		{
 			cursor->SetPosition(Vector2(CENTER_POS_X, 360));
-			if (Input::TriggerPadLStickUp()) 
+			if (InputManager::UpCursorKey())
 			{ 
 				nowSoundMixer = PauseManager::SE_VOLUME;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
 			}
-			if (Input::TriggerPadLStickDown()) 
+			if (InputManager::DownCursorKey())
 			{ 
 				nowSoundMixer = PauseManager::BGM_VOLUME;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -460,12 +460,12 @@ void KochaEngine::PauseManager::SoundTab()
 		{
 			cursor->SetPosition(Vector2(785, 360));
 			_cursor->SetPosition(Vector2(720, 360 + 32));
-			if (Input::TriggerPadLStickLeft()) 
+			if (InputManager::LeftKey()) 
 			{ 
 				GameSetting::masterVolume--;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
 			}
-			if (Input::TriggerPadLStickRight()) 
+			if (InputManager::RightKey())
 			{ 
 				GameSetting::masterVolume++;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -476,12 +476,12 @@ void KochaEngine::PauseManager::SoundTab()
 		if (!isSoundMixer)
 		{
 			cursor->SetPosition(Vector2(CENTER_POS_X, 455));
-			if (Input::TriggerPadLStickUp()) 
+			if (InputManager::UpCursorKey())
 			{ 
 				nowSoundMixer = PauseManager::MASTER_VOLUME;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
 			}
-			if (Input::TriggerPadLStickDown()) 
+			if (InputManager::DownCursorKey())
 			{ 
 				nowSoundMixer = PauseManager::SE_VOLUME;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -491,12 +491,12 @@ void KochaEngine::PauseManager::SoundTab()
 		{
 			cursor->SetPosition(Vector2(785, 455));
 			_cursor->SetPosition(Vector2(720, 455 + 32));
-			if (Input::TriggerPadLStickLeft()) 
+			if (InputManager::LeftKey())
 			{ 
 				GameSetting::bgmVolume--;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
 			}
-			if (Input::TriggerPadLStickRight()) 
+			if (InputManager::RightKey())
 			{ 
 				GameSetting::bgmVolume++; 
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -507,12 +507,12 @@ void KochaEngine::PauseManager::SoundTab()
 		if (!isSoundMixer)
 		{
 			cursor->SetPosition(Vector2(CENTER_POS_X, 550));
-			if (Input::TriggerPadLStickUp()) 
+			if (InputManager::UpCursorKey())
 			{ 
 				nowSoundMixer = PauseManager::BGM_VOLUME;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
 			}
-			if (Input::TriggerPadLStickDown()) 
+			if (InputManager::DownCursorKey())
 			{ 
 				nowSoundMixer = PauseManager::MASTER_VOLUME;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
@@ -522,12 +522,12 @@ void KochaEngine::PauseManager::SoundTab()
 		{
 			cursor->SetPosition(Vector2(785, 550));
 			_cursor->SetPosition(Vector2(720, 550 + 32));
-			if (Input::TriggerPadLStickLeft()) 
+			if (InputManager::LeftKey())
 			{ 
 				GameSetting::seVolume--;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
 			}
-			if (Input::TriggerPadLStickRight()) 
+			if (InputManager::RightKey())
 			{ 
 				GameSetting::seVolume++;
 				se->PlayWave("Resources/Sound/select.wav", seVolume);
