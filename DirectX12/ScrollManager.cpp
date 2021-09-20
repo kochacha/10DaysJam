@@ -1,15 +1,15 @@
 #include "ScrollManager.h"
 
-ScrollManager::ScrollManager()
+KochaEngine::ScrollManager::ScrollManager()
 {
 	Initialize();
 }
 
-ScrollManager::~ScrollManager()
+KochaEngine::ScrollManager::~ScrollManager()
 {
 }
 
-void ScrollManager::Initialize()
+void KochaEngine::ScrollManager::Initialize()
 {
 
 	scrollLevel = 1;
@@ -18,7 +18,7 @@ void ScrollManager::Initialize()
 	ScrollSpeedUp();
 }
 
-void ScrollManager::Update()
+void KochaEngine::ScrollManager::Update()
 {
 	if (time >= 5)
 	{
@@ -36,7 +36,7 @@ void ScrollManager::Update()
 	frameCount++;
 }
 
-void ScrollManager::ScrollSpeedUp()
+void KochaEngine::ScrollManager::ScrollSpeedUp()
 {
 	//ˆê‰‹æŠÔ‚²‚Æ‚É’l‚ğ’²®‚Å‚«‚é‚æ‚¤‚É‚µ‚Æ‚¢‚½
 	switch (scrollLevel)
@@ -71,12 +71,12 @@ void ScrollManager::ScrollSpeedUp()
 	}
 }
 
-const float ScrollManager::GetScrollAmount()
+const float KochaEngine::ScrollManager::GetScrollAmount()
 {
 	return scrollAmount;
 }
 
-const int ScrollManager::GetScrollLevel()
+const int KochaEngine::ScrollManager::GetScrollLevel()
 {
 	return scrollLevel;
 }

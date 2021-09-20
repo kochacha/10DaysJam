@@ -350,7 +350,7 @@
     <Filter Include="Source\Object\GameObject">
       <UniqueIdentifier>{1f2bd67d-77e1-4ff5-99e1-81ccb491b0f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Object\GameObject\GameObject">
+    <Filter Include="Header\Object\GameObject">
       <UniqueIdentifier>{d0c31d25-7612-4543-90df-05517a2c7e21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -524,59 +524,59 @@
       <Filter>Header\Object</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectManager.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Battle.h">
       <Filter>Header\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="FieldObject.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="CollisionBlock.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="FieldAlphaObject.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="EnhancementItem.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="JammingSpine.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="ItemManager.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="PauseManager.h">
       <Filter>Header\Util</Filter>
     </ClInclude>
     <ClInclude Include="ScoreManager.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameSetting.h">
       <Filter>Header\Util</Filter>
     </ClInclude>
     <ClInclude Include="DeadLine.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ScrollManager.h">
-      <Filter>Source\Object\GameObject\GameObject</Filter>
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

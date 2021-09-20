@@ -4,6 +4,7 @@
 #include "EnhancementItem.h"
 #include "JammingSpine.h"
 #include "Wall.h"
+#include "ScrollManager.h"
 const float KochaEngine::ItemManager::MARGIN_FRAME = 12.0f;
 
 KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager)
@@ -21,9 +22,10 @@ KochaEngine::ItemManager::~ItemManager()
 	jammingSpines.clear();
 }
 
-void KochaEngine::ItemManager::Initialize()
+void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
 {
 	pWall = gManager->GetWall();
+	scrollManager = arg_scrollManager;
 	enhancementItems.clear();
 	jammingSpines.clear();
 	CompareTheRightmost();

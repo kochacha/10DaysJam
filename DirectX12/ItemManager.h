@@ -7,6 +7,7 @@ namespace KochaEngine
 	class EnhancementItem;
 	class JammingSpine;
 	class Wall;
+	class ScrollManager;
 
 	enum class ItemEmitPosition
 	{
@@ -31,6 +32,7 @@ namespace KochaEngine
 		std::vector<JammingSpine*> jammingSpines;
 		Vector3 theRightmostPos;
 		Wall* pWall;
+		ScrollManager* scrollManager;
 		
 		unsigned int emitInterval;
 		unsigned int maxEmitInterval;		
@@ -47,7 +49,7 @@ namespace KochaEngine
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);
 		~ItemManager();
 
-		void Initialize();
+		void Initialize(ScrollManager* arg_scrollManager);
 		void Update();
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
 		void AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);

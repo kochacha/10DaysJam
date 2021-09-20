@@ -77,7 +77,7 @@ void KochaEngine::GamePlay::Initialize()
 	gManager->AddObject(miniMap);
 	gManager->GetWall()->ScrollWall(miniMap->GetCorrectionValue());
 	gManager->AddObject(new Player(camera, gManager, emitter,sManager, Vector3(miniMap->GetCorrectionValue(), 0, 0),&inGame));
-	iManager->Initialize();	
+	iManager->Initialize(scrollManager);	
 	iManager->AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	pauseManager->Initialize();
 	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
