@@ -37,6 +37,16 @@ void KochaEngine::MiniMap::Update()
 	float x = camera->GetTarget().x + fabs(wall->GetLimitLeftPos()); //300
 	float ratio = x / length; //0.5f
 	mapPlayerPos.x = (miniMapLength.x) * ratio -25; //140
+
+	//ŽŽ‚µ
+	/*float mapStart = wall->GetLimitLeftPos() + wall->GetPlayableSize().x / 2;
+	float mapEnd = (wall->GetLimitRightPos() + 5.0f) + wall->GetPlayableSize().x / 2;
+	float length = fabs(mapStart) + fabs(mapEnd);
+	float cameraPos = camera->GetTarget().x;
+	float ratio = cameraPos + fabs(mapStart);
+	mapPlayerPos.x = ratio / length;
+	mapPlayerPos.x *= miniMapLength.x;
+	mapPlayerPos.x += miniMapPos.x;*/
 }
 
 void KochaEngine::MiniMap::Hit()
@@ -55,6 +65,7 @@ void KochaEngine::MiniMap::SpriteDraw()
 
 void KochaEngine::MiniMap::ShowGUI()
 {
+	ImGui::InputFloat("##MapPlayerPosX", &mapPlayerPos.x);
 }
 
 KochaEngine::GameObjectType KochaEngine::MiniMap::GetType()

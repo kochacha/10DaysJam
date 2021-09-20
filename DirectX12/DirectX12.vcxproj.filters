@@ -270,7 +270,9 @@
     <ClCompile Include="DeadLine.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>Source\Object\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -571,6 +573,8 @@
     <ClInclude Include="DeadLine.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="MiniMap.h">
+      <Filter>Header\Object\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
