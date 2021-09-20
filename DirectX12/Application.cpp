@@ -201,6 +201,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/mapUI.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/playerUI.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/emptyGauge.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/star.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/arrow.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
