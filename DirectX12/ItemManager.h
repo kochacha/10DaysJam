@@ -34,8 +34,7 @@ namespace KochaEngine
 		Wall* pWall;
 		ScrollManager* scrollManager;
 		
-		unsigned int emitInterval;
-		unsigned int maxEmitInterval;		
+		unsigned int emitInterval;		
 
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
 		void DeleteFromSpines(JammingSpine* arg_jamSpine);
@@ -44,6 +43,7 @@ namespace KochaEngine
 		void EmitItemsSmashing();
 
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
+		const unsigned int GetMaxEmitInterval();
 
 	public:
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);

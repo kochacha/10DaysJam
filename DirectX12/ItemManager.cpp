@@ -32,8 +32,7 @@ void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
 
 	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
 	AddJamSpine(Vector3(-30, -20, 0), ItemEmitPosition::FROM_CENTER);*/
-	emitInterval = 0;
-	maxEmitInterval = 240;
+	emitInterval = 0;	
 
 	//生成座標レーンの初期化
 	arrayEmitHight[0] = pWall->GetPlayableSize().y / 2;
@@ -204,7 +203,7 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 	//生成インターバル加算
 	emitInterval++;
 	//インターバルが足りなかったら
-	if (emitInterval < maxEmitInterval) return;
+	if (emitInterval < GetMaxEmitInterval()) return;
 
 	//一番右のアイテムが中心より右にあったら
 	//if (theRightmostPos.x > pWall->GetCenterPos().x) return;
@@ -290,4 +289,30 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 	}
 
 	return emitPos;
+}
+
+const unsigned int KochaEngine::ItemManager::GetMaxEmitInterval()
+{
+	unsigned int answerVal = 0;
+	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
+	switch (scrollLevel)
+	{
+	case 1:
+		answerVal = 240;
+		break;
+	case 2:
+		answerVal = 200;
+		break;
+	case 3:
+		answerVal = 160;
+		break;
+	case 4:
+		answerVal = 120;
+		break;
+	default:
+		answerVal = 120;
+		break;
+	}
+
+	return answerVal;
 }
