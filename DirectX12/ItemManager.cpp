@@ -209,22 +209,7 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 	//if (theRightmostPos.x > pWall->GetCenterPos().x) return;
 
 	//生成処理
-	static int rndMax = 5;
-	static int rndCoefficient = 4;
-	int rnd = Util::GetRandInt(rndMax);
-	
-	//強化アイテム生成
-	if (rnd < rndCoefficient)
-	{
-		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);		
-		AddEnhItem(emitPos, ItemEmitPosition::MORE_THAN_RIGHTSIDE);
-	}
-	//おじゃまトゲ生成
-	else
-	{
-		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);		
-		AddJamSpine(emitPos, ItemEmitPosition::MORE_THAN_RIGHTSIDE);
-	}
+	GeneralEmitCommand(ItemEmitPosition::MORE_THAN_RIGHTSIDE, ItemEmitOption::NORMAL);
 
 	//インターバルリセット
 	emitInterval = 0;
@@ -241,21 +226,26 @@ void KochaEngine::ItemManager::EmitItemsSmashing()
 	if ((playerBackCount % 6) != 0) return;
 
 	//生成処理
-	static int rndMax = 5;
-	static int rndCoefficient = 4;
+	GeneralEmitCommand(ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
+}
+
+void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
+{
+	const unsigned int rndMax = 20;
+	const unsigned int rndCoefficient = GetEmitTypeCoefficient();
 	int rnd = Util::GetRandInt(rndMax);
 
 	//強化アイテム生成
 	if (rnd < rndCoefficient)
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
-		AddEnhItem(emitPos, ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
+		AddEnhItem(emitPos, arg_emitPosition, arg_emitOption);
 	}
 	//おじゃまトゲ生成
 	else
 	{
 		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
-		AddJamSpine(emitPos, ItemEmitPosition::FROM_CENTER, ItemEmitOption::SMASHING_WALL);
+		AddJamSpine(emitPos, arg_emitPosition, arg_emitOption);
 	}
 }
 
@@ -315,6 +305,32 @@ const unsigned int KochaEngine::ItemManager::GetMaxEmitInterval()
 		break;
 	default:
 		answerVal = 120;
+		break;
+	}
+
+	return answerVal;
+}
+
+const unsigned int KochaEngine::ItemManager::GetEmitTypeCoefficient()
+{
+	unsigned int answerVal = 0;
+	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
+	switch (scrollLevel)
+	{
+	case 1:
+		answerVal = 16;
+		break;
+	case 2:
+		answerVal = 16;
+		break;
+	case 3:
+		answerVal = 16;
+		break;
+	case 4:
+		answerVal = 16;
+		break;
+	default:
+		answerVal = 16;
 		break;
 	}
 

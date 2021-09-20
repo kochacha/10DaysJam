@@ -41,9 +41,11 @@ namespace KochaEngine
 		void CompareTheRightmost();
 		void EmitItemsNormalTime();
 		void EmitItemsSmashing();
+		void GeneralEmitCommand(const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption);
 
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
 		const unsigned int GetMaxEmitInterval();
+		const unsigned int GetEmitTypeCoefficient();
 
 	public:
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);
