@@ -196,10 +196,10 @@ const bool KochaEngine::Player::IsFinishSmash()
 
 void KochaEngine::Player::SpriteDraw()
 {
-	/*for (int i = 0; i < MAX_SMASHPOWER; i++)
+	for (int i = 0; i < MAX_SMASHPOWER; i++)
 	{
 		emptyGauge[i]->Draw();
-	}*/
+	}
 	for (int i = 0; i < smashPower; i++)
 	{
 		powarGauge[i]->Draw();
