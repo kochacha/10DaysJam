@@ -24,5 +24,7 @@ namespace KochaEngine
 
 		void MoveParticle(const Vector3& arg_position);
 		void SmashStar(const Vector3& arg_position);
+		void PowerUp(const Vector3& arg_position);
+		void PowerDown(const Vector3& arg_position);
 	};
 }

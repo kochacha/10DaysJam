@@ -232,6 +232,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			sManager->AddScore(100);
 		}
 		se->PlayWave("Resources/Sound/item.wav", seVolume);
+		pEmitter->PowerUp(position);
 		smashPower++;
 	}
 	//スマッシュでおじゃまトゲを巻き込んだ時
@@ -244,6 +245,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			sManager->AddScore(300);
 		}
 		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
+		pEmitter->PowerUp(position);
 		overDirveSmashPower += 1;
 
 		if (overDirveSmashPower > MAX_OVERDRIVE)
@@ -256,6 +258,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 void KochaEngine::Player::PowerDown()
 {
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
+	pEmitter->PowerDown(position);
 	smashPower -= 3;
 	if (smashPower < 0)
 	{
@@ -380,6 +383,10 @@ void KochaEngine::Player::InputMove()
 			velocity.Zero();
 			velocity.x = -1;
 			speed = 10;
+		}
+		else if (Input::TriggerPadButton(XINPUT_GAMEPAD_B))
+		{
+			se->PlayWave("Resources/Sound/feild.wav", seVolume);
 		}
 	}
 	velocity.normalize();	
