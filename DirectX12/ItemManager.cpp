@@ -206,15 +206,27 @@ void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emi
 	//強化アイテム生成
 	if (rnd < rndCoefficient)
 	{
-		Vector3 emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
-		FixEmitPositionByCondition(emitPos, arg_emitPosition);
+		Vector3 emitPos;
+		while (true)
+		{
+			emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
+			FixEmitPositionByCondition(emitPos, arg_emitPosition);
+
+			if (!IsHitExistingItems(GameObjectType::ENHANCEMENT_ITEM, emitPos)) break;
+		}
 		AddEnhItem(emitPos, arg_emitPosition, arg_emitOption);
 	}
 	//おじゃまトゲ生成
 	else
 	{
-		Vector3 emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
-		FixEmitPositionByCondition(emitPos, arg_emitPosition);
+		Vector3 emitPos;
+		while (true)
+		{
+			emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
+			FixEmitPositionByCondition(emitPos, arg_emitPosition);
+
+			if (!IsHitExistingItems(GameObjectType::JAMMING_SPINE, emitPos)) break;
+		}
 		AddJamSpine(emitPos, arg_emitPosition, arg_emitOption);
 	}
 }
@@ -271,6 +283,44 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 	}
 
 	return emitPos;
+}
+
+const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position)
+{
+	_Sphere sphere;
+	sphere.position = arg_position;
+	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)
+	{
+		sphere.radius = 5.0f;
+	}
+	else if (arg_objType == GameObjectType::JAMMING_SPINE)
+	{
+		sphere.radius = 4.0f;
+	}
+	else
+	{
+		assert(0);
+	}
+
+	//強化アイテムとの判定
+	for (auto item : enhancementItems)
+	{
+		if (Collision::HitSphereToSphere(sphere, item->GetSphere()))
+		{
+			return true;
+		}
+	}
+
+	//おじゃまトゲとの判定
+	for (auto spine : jammingSpines)
+	{
+		if (Collision::HitSphereToSphere(sphere, spine->GetSphere()))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 const unsigned int KochaEngine::ItemManager::GetMaxEmitInterval()

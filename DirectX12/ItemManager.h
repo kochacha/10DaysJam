@@ -44,6 +44,8 @@ namespace KochaEngine
 		void GeneralEmitCommand(const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption);
 		void FixEmitPositionByCondition(Vector3& arg_position, const ItemEmitPosition arg_emitPosition);
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
+		//égÇ¢Ç∑Ç¨íçà”
+		const bool IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position);
 		const unsigned int GetMaxEmitInterval();
 		const unsigned int GetEmitTypeCoefficient();
 
