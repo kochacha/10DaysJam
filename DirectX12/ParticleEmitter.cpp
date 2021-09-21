@@ -101,3 +101,47 @@ void KochaEngine::ParticleEmitter::PowerDown(const Vector3& arg_position)
 		pManager->AddParticle(new Particle(param));
 	}
 }
+
+void KochaEngine::ParticleEmitter::SmashScore(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = arg_position;
+
+	auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
+	param.life = 30;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(8, 8, 1);
+	param.textureName = "Resources/wallPush.png";
+	param.velocity = Vector3(0, randY, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 180);
+
+	pManager->AddParticle(new Particle(param));
+}
+
+void KochaEngine::ParticleEmitter::HitScore(const Vector3& arg_position, const bool arg_flag)
+{
+	ParticleParam param;
+	param.position = Vector3(arg_position.x, arg_position.y + 6.0f, arg_position.z);
+
+	param.life = 40;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(-16, 8, 1);
+	if (arg_flag)
+	{
+		param.textureName = "Resources/togeGet.png";
+	}
+	else
+	{
+		param.textureName = "Resources/itemGet.png";
+	}
+	param.velocity = Vector3(0, 0.25f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}

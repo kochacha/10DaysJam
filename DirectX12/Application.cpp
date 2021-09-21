@@ -206,6 +206,9 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/arrow.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/way.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/smashLine.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wallPush.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/togeGet.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/itemGet.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");

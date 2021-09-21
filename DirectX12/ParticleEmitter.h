@@ -26,5 +26,7 @@ namespace KochaEngine
 		void SmashStar(const Vector3& arg_position);
 		void PowerUp(const Vector3& arg_position);
 		void PowerDown(const Vector3& arg_position);
+		void SmashScore(const Vector3& arg_position);
+		void HitScore(const Vector3& arg_position, const bool arg_flag);
 	};
 }

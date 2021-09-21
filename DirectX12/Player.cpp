@@ -104,7 +104,6 @@ void KochaEngine::Player::Initialize()
 void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
-	gManager->HitObject(this, COLLISION_BLOCK);
 
 	if (asobiCount > 0) asobiCount--;
 
@@ -116,7 +115,11 @@ void KochaEngine::Player::Update()
 		pEmitter->SmashStar(position);
 		if (*inGame)
 		{
-			sManager->AddScore(addSmashScore * 15);
+			sManager->AddScore(addSmashScore * 30);
+			if (pManager->IsDisplayScore())
+			{
+				pEmitter->SmashScore(position);
+			}
 		}
 
 		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPos())
@@ -257,17 +260,37 @@ void KochaEngine::Player::SpriteDraw()
 
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 {
+	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
+	{
+		if (*inGame)
+		{
+			sManager->AddScore(1000);
+			if (pManager->IsDisplayScore())
+			{
+				pEmitter->HitScore(position, false);
+			}
+		}
+		se->PlayWave("Resources/Sound/item.wav", seVolume);
+	}
+	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
+	{
+		if (*inGame)
+		{
+			sManager->AddScore(5000);
+			if (pManager->IsDisplayScore())
+			{
+				pEmitter->HitScore(position, true);
+			}
+		}
+		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
+	}
+
 	//ãŒÀ’l‚È‚çreturn
 	if (smashPower >= MAX_SMASHPOWER) return;
 
 	//‹­‰»ƒAƒCƒeƒ€Žæ“¾Žž
 	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
 	{
-		if (*inGame)
-		{
-			sManager->AddScore(100);
-		}
-		se->PlayWave("Resources/Sound/item.wav", seVolume);
 		pEmitter->PowerUp(position);
 		smashPower++;
 	}
@@ -276,11 +299,6 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	{
 		isHitStop = true;
 		hitStopCount = 20;
-		if (*inGame)
-		{
-			sManager->AddScore(300);
-		}
-		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
 		pEmitter->PowerUp(position);
 		overDirveSmashPower += 1;
 
@@ -352,7 +370,7 @@ void KochaEngine::Player::InputMove()
 			position.x = wallPosX;
 			if (*inGame)
 			{
-				backCount = (smashPower * 3.0f) + (overDirveSmashPower * 9.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+				backCount = (smashPower * 5.0f) + (overDirveSmashPower * 10.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
 			}
 			else
 			{
