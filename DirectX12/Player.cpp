@@ -5,6 +5,7 @@
 #include "ScoreManager.h"
 #include "Util.h"
 #include "InputManager.h"
+#include "PauseManager.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 {
@@ -60,6 +61,7 @@ void KochaEngine::Player::Initialize()
 	velocity.Zero();
 	speed = 0.5f;
 	wayRotate = 0;
+	asobiCount = 0;
 	isWayDraw = false;
 	smash = false;
 	isStun = false;
@@ -103,6 +105,8 @@ void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	gManager->HitObject(this, COLLISION_BLOCK);
+
+	if (asobiCount > 0) asobiCount--;
 
 	if (backCount > 0)
 	{
@@ -183,12 +187,16 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 	if (arg_camera == nullptr) return;
 	if (arg_lightManager == nullptr) return;
 
-	if (isWayDraw)
+	if (isWayDraw && pManager->IsDisplayDash())
 	{
 		wayObj->Draw(arg_camera, arg_lightManager);
 	}
 
-	smashLine->Draw(arg_camera, arg_lightManager);
+	if (pManager->IsDisplaySmash())
+	{
+		smashLine->Draw(arg_camera, arg_lightManager);
+	}
+
 
 	obj->Draw(arg_camera, arg_lightManager);
 
@@ -311,6 +319,12 @@ void KochaEngine::Player::HitStopTimer()
 
 }
 
+void KochaEngine::Player::SetPauseManager(PauseManager* arg_pManager)
+{
+	if (arg_pManager == nullptr) return;
+	pManager = arg_pManager;
+}
+
 const int KochaEngine::Player::GetBackCount()
 {
 	return backCount;
@@ -377,9 +391,14 @@ void KochaEngine::Player::InputMove()
 			}
 		}
 	}	
+
+	if (InputManager::SmashKey())
+	{
+		asobiCount = 7;
+	}
 	if (speed <= 0 && !smash)
 	{
-		if (InputManager::SmashKey() && smashPower > 0)
+		if (asobiCount != 0 && smashPower > 0)
 		{
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		
@@ -387,7 +406,7 @@ void KochaEngine::Player::InputMove()
 			velocity.x = -1;
 			speed = 10;
 		}
-		else if (InputManager::SmashKey())
+		else if (asobiCount == 1)
 		{
 			se->PlayWave("Resources/Sound/feild.wav", seVolume);
 		}

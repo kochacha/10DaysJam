@@ -14,6 +14,7 @@ namespace KochaEngine
 			OPTION_TAB,
 			COLOR_TAB,
 			SOUND_TAB,
+			SUPPORT_TAB,
 		};
 
 		enum Menu
@@ -28,6 +29,7 @@ namespace KochaEngine
 		{
 			COLOR_PALETTE,
 			SOUND_MIXER,
+			SUPPORT,
 		};
 
 		enum ColorPalette
@@ -53,9 +55,17 @@ namespace KochaEngine
 			SE_VOLUME,
 		};
 
+		enum Support
+		{
+			DASH_SUPPORT,
+			SMASH_SUPPORT,
+		};
+
 	private:
 		bool isPause;
 		bool isSoundMixer;
+		bool isDisplayDash;
+		bool isDisplaySmash;
 
 		float seVolume;
 
@@ -63,9 +73,10 @@ namespace KochaEngine
 		const float CENTER_POS_X = 490;
 		const float RIGHT_POS_X = 890;
 
-		Sprite* menu[4];
+		Sprite* menu[5];
 		Sprite* cursor;
 		Sprite* _cursor;
+		Sprite* checkBox[2];
 
 		Audio* se;
 
@@ -76,11 +87,13 @@ namespace KochaEngine
 		Option nowOption;
 		ColorPalette nowColorPalette;
 		SoundMixer nowSoundMixer;
+		Support nowSupport;
 
 		void MenuTab();
 		void OptionTab();
 		void ColorTab();
 		void SoundTab();
+		void SupportTab();
 
 		void PauseChange();
 
@@ -93,5 +106,7 @@ namespace KochaEngine
 		void Draw();
 
 		bool IsPause() { return isPause; }
+		bool IsDisplayDash() { return isDisplayDash; }
+		bool IsDisplaySmash() { return isDisplaySmash; }
 	};
 }

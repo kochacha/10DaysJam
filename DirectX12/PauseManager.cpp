@@ -10,8 +10,11 @@ KochaEngine::PauseManager::PauseManager()
 	menu[1] = new Sprite("Resources/Menu2.png", Vector2(440, 200), Vector2(400, 600), 0);
 	menu[2] = new Sprite("Resources/Menu3.png", Vector2(40, 200), Vector2(1200, 600), 0);
 	menu[3] = new Sprite("Resources/Menu4.png", Vector2(440, 200), Vector2(400, 600), 0);
+	menu[4] = new Sprite("Resources/Menu5.png", Vector2(440, 200), Vector2(400, 600), 0);
 	cursor = new Sprite("Resources/cursor.png", Vector2(0, 0), Vector2(32, 32), 0);
 	_cursor = new Sprite("Resources/cursor.png", Vector2(0, 0), Vector2(32, 32), 180);
+	checkBox[0] = new Sprite("Resources/black.png", Vector2(760, 360), Vector2(32, 32), 0);
+	checkBox[1] = new Sprite("Resources/black.png", Vector2(760, 460), Vector2(32, 32), 0);
 	soundNum[0] = new Number(Vector2(720, 360), Vector2(32, 32), 2);
 	soundNum[1] = new Number(Vector2(720, 455), Vector2(32, 32), 2);
 	soundNum[2] = new Number(Vector2(720, 550), Vector2(32, 32), 2);
@@ -23,13 +26,17 @@ KochaEngine::PauseManager::PauseManager()
 
 KochaEngine::PauseManager::~PauseManager()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		delete menu[i];
 	}
 	for (int i = 0; i < 3; i++)
 	{
 		delete soundNum[i];
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		delete checkBox[i];
 	}
 	delete cursor;
 	delete _cursor;
@@ -40,6 +47,8 @@ void KochaEngine::PauseManager::Initialize()
 {
 	isPause = false;
 	isSoundMixer = false;
+	isDisplayDash = true;
+	isDisplaySmash = true;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -51,6 +60,7 @@ void KochaEngine::PauseManager::Initialize()
 	nowOption = PauseManager::Option::COLOR_PALETTE;
 	nowColorPalette = PauseManager::ColorPalette::GAMEBOY;
 	nowSoundMixer = PauseManager::SoundMixer::MASTER_VOLUME;
+	nowSupport = PauseManager::Support::DASH_SUPPORT;
 
 	se->Init();
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
@@ -82,6 +92,9 @@ void KochaEngine::PauseManager::Update()
 	case KochaEngine::PauseManager::PauseUI::SOUND_TAB:
 		SoundTab();
 		break;
+	case KochaEngine::PauseManager::PauseUI::SUPPORT_TAB:
+		SupportTab();
+		break;
 	default:
 		break;
 	}
@@ -107,14 +120,19 @@ void KochaEngine::PauseManager::Draw()
 		soundNum[0]->Draw(GameSetting::masterVolume);
 		soundNum[1]->Draw(GameSetting::bgmVolume);
 		soundNum[2]->Draw(GameSetting::seVolume);
+		if (!isSoundMixer) break;
+		_cursor->Draw();
+		break;
+	case KochaEngine::PauseManager::PauseUI::SUPPORT_TAB:
+		menu[4]->Draw();
+		if (isDisplayDash) checkBox[0]->Draw();
+		if (isDisplaySmash) checkBox[1]->Draw();
 		break;
 	default:
 		break;
 	}
 
 	cursor->Draw();
-	if (!isSoundMixer) return;
-	_cursor->Draw();
 }
 
 void KochaEngine::PauseManager::MenuTab()
@@ -209,9 +227,14 @@ void KochaEngine::PauseManager::OptionTab()
 	{
 	case KochaEngine::PauseManager::COLOR_PALETTE:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
-		if (InputManager::UpCursorKey() || InputManager::DownCursorKey())
+		if (InputManager::UpCursorKey())
 		{ 
-			nowOption = PauseManager::SOUND_MIXER; 
+			nowOption = PauseManager::SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DownCursorKey())
+		{
+			nowOption = PauseManager::SOUND_MIXER;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		if (InputManager::DecisionKey())
@@ -222,14 +245,37 @@ void KochaEngine::PauseManager::OptionTab()
 		break;
 	case KochaEngine::PauseManager::SOUND_MIXER:
 		cursor->SetPosition(Vector2(CENTER_POS_X, 455));
-		if (InputManager::UpCursorKey() || InputManager::DownCursorKey())
+		if (InputManager::UpCursorKey())
 		{ 
 			nowOption = PauseManager::COLOR_PALETTE;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DownCursorKey())
+		{
+			nowOption = PauseManager::SUPPORT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::SOUND_TAB;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		break;
+	case KochaEngine::PauseManager::SUPPORT:
+		cursor->SetPosition(Vector2(CENTER_POS_X, 550));
+		if (InputManager::UpCursorKey())
+		{
+			nowOption = PauseManager::SOUND_MIXER;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DownCursorKey())
+		{
+			nowOption = PauseManager::COLOR_PALETTE;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DecisionKey())
+		{
+			menuType = PauseManager::PauseUI::SUPPORT_TAB;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		break;
@@ -545,6 +591,47 @@ void KochaEngine::PauseManager::SoundTab()
 	if (GameSetting::bgmVolume > MAX_VOLUME) GameSetting::bgmVolume = MAX_VOLUME;
 	if (GameSetting::seVolume < 0) GameSetting::seVolume = 0;
 	if (GameSetting::seVolume > MAX_VOLUME) GameSetting::seVolume = MAX_VOLUME;
+}
+
+void KochaEngine::PauseManager::SupportTab()
+{
+	if (InputManager::CancelKey())
+	{
+		PauseChange();
+		se->PlayWave("Resources/Sound/select.wav", seVolume);
+	}
+
+	switch (nowSupport)
+	{
+	case KochaEngine::PauseManager::DASH_SUPPORT:
+		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
+		if (InputManager::UpCursorKey() || InputManager::DownCursorKey())
+		{
+			nowSupport = PauseManager::SMASH_SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DecisionKey())
+		{
+			isDisplayDash = !isDisplayDash;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		break;
+	case KochaEngine::PauseManager::SMASH_SUPPORT:
+		cursor->SetPosition(Vector2(CENTER_POS_X, 455));
+		if (InputManager::UpCursorKey() || InputManager::DownCursorKey())
+		{
+			nowSupport = PauseManager::DASH_SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DecisionKey())
+		{
+			isDisplaySmash = !isDisplaySmash;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void KochaEngine::PauseManager::PauseChange()

@@ -35,15 +35,15 @@ void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
 	emitInterval = 0;	
 
 	//¶¬À•WƒŒ[ƒ“‚Ì‰Šú‰»
-	arrayEmitHight[0] = pWall->GetPlayableSize().y / 2;
+	arrayEmitHight[0] = pWall->GetPlayableSize().y * 0.5f;
 	arrayEmitHight[5] = 0;
-	arrayEmitHight[10] = -pWall->GetPlayableSize().y / 2;
+	arrayEmitHight[10] = -pWall->GetPlayableSize().y * 0.5f;
 
-	float unitHeight = pWall->GetPlayableSize().y / 10;
+	float unitHeight = pWall->GetPlayableSize().y * 0.1f;
 	for (int i = 1; i <= 4; i++)
 	{
-		arrayEmitHight[i] = pWall->GetPlayableSize().y / 2 - unitHeight * i;
-		arrayEmitHight[10 - i] = -pWall->GetPlayableSize().y / 2 + unitHeight * i;
+		arrayEmitHight[i] = pWall->GetPlayableSize().y * 0.5f - unitHeight * i;
+		arrayEmitHight[10 - i] = -pWall->GetPlayableSize().y * 0.5f + unitHeight * i;
 	}
 }
 
@@ -273,13 +273,13 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 	emitPos.y += rnd;
 
 	//yÀ•W‚ð˜g‚Ì“à‘¤‚ÉŽû‚ß‚é
-	if (emitPos.y > pWall->GetPlayableSize().y / 2)
+	if (emitPos.y > pWall->GetPlayableSize().y * 0.5f)
 	{
-		emitPos.y = pWall->GetPlayableSize().y / 2;
+		emitPos.y = pWall->GetPlayableSize().y * 0.5f;
 	}
-	else if (emitPos.y < -pWall->GetPlayableSize().y / 2)
+	else if (emitPos.y < -pWall->GetPlayableSize().y * 0.5f)
 	{
-		emitPos.y = -pWall->GetPlayableSize().y / 2;
+		emitPos.y = -pWall->GetPlayableSize().y * 0.5f;
 	}
 
 	return emitPos;

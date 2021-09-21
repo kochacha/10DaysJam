@@ -28,13 +28,13 @@ void KochaEngine::Wall::Initialize()
 
 	obj->SetTexture("Resources/wall.png");
 	obj->SetScale(Vector3(-70, 120, 1));
-	obj->SetPosition(Vector3(minPos.x - 9.5f, 0, 0));
+	obj->SetPosition(Vector3(minPos.x - 11.0f, 0, 0));
 	isAlpha = true;
 }
 
 void KochaEngine::Wall::Update()
 {
-	currMinPos.x = Util::EaseIn(currMinPos.x, minPos.x - 9.5f, 0.55f);
+	currMinPos.x = Util::EaseIn(currMinPos.x, minPos.x - 11.0f, 0.55f);
 	obj->SetPosition(Vector3(currMinPos.x, 0, 0));
 
 	wchar_t str[256];
