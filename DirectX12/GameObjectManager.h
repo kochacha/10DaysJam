@@ -37,6 +37,7 @@ namespace KochaEngine
 		DeadLine* GetDeadLine();
 
 		void Remove();
+		void RemoveItem();
 		void RemoveAll();
 	};
 }

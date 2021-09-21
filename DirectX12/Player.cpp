@@ -63,11 +63,14 @@ void KochaEngine::Player::Initialize()
 	wayRotate = 0;
 	asobiCount = 0;
 	isWayDraw = false;
+	isFinish = false;
+	isOnce = false;
 	smash = false;
 	isStun = false;
 	stunCount = 0;
 	backCount = 0;
 	addSmashScore = 0;
+	stackCount = 30;
 	hitWall = false;
 	isHitStop = false;
 	ResetPower();
@@ -76,7 +79,7 @@ void KochaEngine::Player::Initialize()
 	sphere.radius = 4.0f;
 	sphere.position = this->position;
 
-	scale = Vector3(10, 10, 10);
+	scale = Vector3(0, 0, 10);
 	endScale = Vector3(10, 10, 10);
 
 	obj->SetPosition(position);
@@ -99,11 +102,24 @@ void KochaEngine::Player::Initialize()
 
 	se->Init();
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
+
+	pEmitter->SpawnParticle(position);
 }
 
 void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
+	if(stackCount > 0) stackCount--;
+
+	if (isFinish)
+	{
+		if (!isOnce)
+		{
+			isOnce = true;
+			se->PlayWave("Resources/Sound/finish.wav", seVolume);
+			pEmitter->DeadParticle(position);
+		}
+	}
 
 	if (asobiCount > 0) asobiCount--;
 
@@ -190,6 +206,10 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 	if (arg_camera == nullptr) return;
 	if (arg_lightManager == nullptr) return;
 
+	obj->Draw(arg_camera, arg_lightManager);
+
+	if (isFinish) return;
+
 	if (isWayDraw && pManager->IsDisplayDash())
 	{
 		wayObj->Draw(arg_camera, arg_lightManager);
@@ -199,9 +219,6 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 	{
 		smashLine->Draw(arg_camera, arg_lightManager);
 	}
-
-
-	obj->Draw(arg_camera, arg_lightManager);
 
 	/*ImGui::Begin("smashPower");
 	ImGui::Text("smashPowar %f", smashPower);
@@ -270,7 +287,14 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 				pEmitter->HitScore(position, false);
 			}
 		}
-		se->PlayWave("Resources/Sound/item.wav", seVolume);
+		if (smashPower >= MAX_SMASHPOWER)
+		{
+			se->PlayWave("Resources/Sound/powerMax.wav", seVolume);
+		}
+		else
+		{
+			se->PlayWave("Resources/Sound/item.wav", seVolume);
+		}
 	}
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
@@ -282,7 +306,16 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 				pEmitter->HitScore(position, true);
 			}
 		}
-		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
+		if (smashPower >= MAX_SMASHPOWER)
+		{
+			se->PlayWave("Resources/Sound/powerMax.wav", seVolume);
+		}
+		else
+		{
+			se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
+		}
+		isHitStop = true;
+		hitStopCount = 20;
 	}
 
 	//上限値ならreturn
@@ -297,8 +330,6 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	//スマッシュでおじゃまトゲを巻き込んだ時
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
-		isHitStop = true;
-		hitStopCount = 20;
 		pEmitter->PowerUp(position);
 		overDirveSmashPower += 1;
 
@@ -360,6 +391,8 @@ const bool KochaEngine::Player::IsInGame()
 
 void KochaEngine::Player::InputMove()
 {	
+	if (isFinish || stackCount > 0) return;
+
 	if (smash)
 	{		
 		//Input::Vibration(60000, 10);
@@ -433,7 +466,6 @@ void KochaEngine::Player::InputMove()
 
 	if (velocity.x != 0 || velocity.y != 0)
 	{
-		//動いていたら
 		pEmitter->MoveParticle(Vector3(position.x, position.y, position.z + 1.0f));
 	}
 
@@ -508,6 +540,10 @@ void KochaEngine::Player::MoveY()
 
 void KochaEngine::Player::ScaleAnimation()
 {
+	if (isFinish)
+	{
+		endScale = Vector3(0, 0, 0);
+	}
 	scale.x = Util::EaseIn(scale.x, endScale.x, 0.4f);
 	scale.y = Util::EaseIn(scale.y, endScale.y, 0.4f);
 }

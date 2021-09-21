@@ -59,7 +59,7 @@ void KochaEngine::GamePlay::Initialize()
 {
 	isEnd = false;
 	isGameOver = false;
-
+	isOnce = false;
 	inGame = false;
 
 	gManager->RemoveAll();	
@@ -124,7 +124,7 @@ void KochaEngine::GamePlay::Update()
 	
 	lightManager->Update();
 
-	if (inGame)
+	if (inGame && !player->IsFinish())
 	{
 		iManager->Update();
 	}
@@ -142,9 +142,16 @@ void KochaEngine::GamePlay::Update()
 	//ƒQ[ƒ€I—¹
 	if (gManager->GetWall()->GetMinPos().x >= gManager->GetDeadLine()->GetPosition().x + 5)
 	{
-		float x = gManager->GetWall()->GetMaxPos().x;
-		sManager->SaveScore();
-		Initialize();
+		//float x = gManager->GetWall()->GetMaxPos().x;
+		if (!isOnce)
+		{
+			isOnce = true;
+			sManager->SaveScore();
+			gManager->RemoveItem();
+			player->Finish();
+			//Initialize();
+		}
+
 	}
 }
 
@@ -218,6 +225,7 @@ void KochaEngine::GamePlay::Scroll()
 	auto wall = gManager->GetWall();
 	auto player = gManager->GetPlayer();
 
+	if (player->IsFinish()) return;
 	if (inGame)
 	{
 		if (player->GetBackCount() > 0 && player->IsHitWall())

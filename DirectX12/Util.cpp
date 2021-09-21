@@ -103,12 +103,12 @@ DirectX::XMFLOAT3 KochaEngine::Util::Normalize(DirectX::XMFLOAT3 a)
 	}
 	return a;
 }
-DirectX::XMVECTOR KochaEngine::Util::AngleToVector2(float angle)
+KochaEngine::Vector2 KochaEngine::Util::AngleToVector2(float angle)
 {
-	DirectX::XMVECTOR result;
+	Vector2 result;
 	float radian = angle * (M_PI / 180);
-	result = { cos(radian), 0,sin(radian) };
-	DirectX::XMVector3Normalize(result);
+	result = Vector2(cos(radian), sin(radian));
+	result.normalize();
 	return result;
 }
 

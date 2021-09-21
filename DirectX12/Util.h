@@ -2,7 +2,7 @@
 #include <string>
 #include <cassert>
 #include <codecvt>
-#include <DirectXMath.h>
+#include "Vector2.h"
 
 namespace KochaEngine
 {
@@ -29,7 +29,7 @@ namespace KochaEngine
 		static float Length(DirectX::XMFLOAT3 a);
 		static DirectX::XMFLOAT3 Normalize(DirectX::XMFLOAT3 a);
 
-		static DirectX::XMVECTOR AngleToVector2(float angle);
+		static Vector2 AngleToVector2(float angle);
 
 
 		static float Vector2ToAngle(DirectX::XMFLOAT3 vector);

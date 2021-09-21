@@ -30,7 +30,7 @@ bool KochaEngine::Window::Create()
 	//ウィンドウクラス生成＆登録
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;//コールバック関数の指定
-	w.lpszClassName = L"Salvaprastar";//アプリケーションクラス名(適当でいいです)
+	w.lpszClassName = L"302_Salvaprastar";//アプリケーションクラス名(適当でいいです)
 	w.hInstance = GetModuleHandle(0);//ハンドルの取得
 	RegisterClassEx(&w);//アプリケーションクラス(こういうの作るからよろしくってOSに予告する)
 
@@ -38,7 +38,7 @@ bool KochaEngine::Window::Create()
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);//ウィンドウのサイズはちょっと面倒なので関数を使って補正する
 	//ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(w.lpszClassName,//クラス名指定
-		L"Salvaprastar",//タイトルバーの文字
+		L"302_Salvaprastar",//タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,//タイトルバーと境界線があるウィンドウです
 		CW_USEDEFAULT,//表示X座標はOSにお任せします
 		CW_USEDEFAULT,//表示Y座標はOSにお任せします

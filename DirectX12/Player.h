@@ -25,8 +25,11 @@ namespace KochaEngine
 		float wayRotate;
 		bool smash;
 		bool isWayDraw;
+		bool isFinish;
+		bool isOnce;
 		int testCount;
 		int asobiCount;
+		int stackCount;
 		//スマッシュのパワー
 		int smashPower;
 		int overDirveSmashPower;
@@ -83,6 +86,8 @@ namespace KochaEngine
 		//通常時のおじゃまトゲとの衝突時処理
 		void PowerDown();
 
+		bool IsFinish() { return isFinish; }
+		void Finish() { isFinish = true; }
 		bool IsHitStop() { return isHitStop; }
 		void HitStopTimer();
 

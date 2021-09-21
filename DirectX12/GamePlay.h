@@ -39,6 +39,7 @@ namespace KochaEngine
 		bool isShowRank;
 		bool fadeFlag;
 		bool inGame;
+		bool isOnce;
 		float fadeAlpha;
 		float bgmVolume;
 

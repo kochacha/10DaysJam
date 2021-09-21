@@ -28,5 +28,7 @@ namespace KochaEngine
 		void PowerDown(const Vector3& arg_position);
 		void SmashScore(const Vector3& arg_position);
 		void HitScore(const Vector3& arg_position, const bool arg_flag);
+		void SpawnParticle(const Vector3& arg_position);
+		void DeadParticle(const Vector3& arg_position);
 	};
 }

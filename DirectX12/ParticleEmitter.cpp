@@ -145,3 +145,47 @@ void KochaEngine::ParticleEmitter::HitScore(const Vector3& arg_position, const b
 
 	pManager->AddParticle(new Particle(param));
 }
+
+void KochaEngine::ParticleEmitter::SpawnParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.life = 30;
+	param.textureName = "Resources/circle.png";
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(5.0f / 30.0f, 5.0f / 30.0f, 0);
+	param.scale = Vector3(0, 0, 1);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	for (int i = 0; i < 24; i++)
+	{
+		Vector2 vel = Util::AngleToVector2(15.0f * i);
+		param.velocity = Vector3(-vel.x, -vel.y, 0);
+		param.position = Vector3(arg_position.x + vel.x * 30, arg_position.y + vel.y * 30, arg_position.z + 0.1f);
+
+		pManager->AddParticle(new Particle(param));
+	}
+}
+
+void KochaEngine::ParticleEmitter::DeadParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = Vector3(arg_position.x, arg_position.y, arg_position.z + 0.1f);
+	param.life = 120;
+	param.textureName = "Resources/circle.png";
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(-5.0f / 120.0f, -5.0f / 120.0f, 0);
+	param.scale = Vector3(5, 5, 1);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	for (int i = 0; i < 24; i++)
+	{
+		Vector2 vel = Util::AngleToVector2(15.0f * i);
+		param.velocity = Vector3(vel.x * 0.5f, vel.y * 0.5f, 0);
+
+		pManager->AddParticle(new Particle(param));
+	}
+}
