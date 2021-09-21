@@ -8,6 +8,7 @@ namespace KochaEngine
 	class Audio;
 	class ItemManager;
 	class ScoreManager;
+	class PauseManager;
 
 	class Player : public GameObject
 	{
@@ -15,11 +16,17 @@ namespace KochaEngine
 		GameObjectManager* gManager;
 		ParticleEmitter* pEmitter;
 		ScoreManager* sManager;
-		Audio* se;		
+		PauseManager* pManager;
+		Audio* se;	
+		Object* wayObj;
+		Object* smashLine;
 
 		float speed;
+		float wayRotate;
 		bool smash;
+		bool isWayDraw;
 		int testCount;
+		int asobiCount;
 		//スマッシュのパワー
 		int smashPower;
 		int overDirveSmashPower;
@@ -78,6 +85,8 @@ namespace KochaEngine
 
 		bool IsHitStop() { return isHitStop; }
 		void HitStopTimer();
+
+		void SetPauseManager(PauseManager* arg_pManager);
 
 		const int GetBackCount();
 		const bool IsHitWall();

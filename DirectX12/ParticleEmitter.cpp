@@ -35,7 +35,7 @@ void KochaEngine::ParticleEmitter::SmashStar(const Vector3& arg_position)
 	param.position = arg_position;
 
 	auto randScale = (float)Util::GetIntRand(5, 8);
-	auto randY = (float)(Util::GetIntRand(0, 30) - 15) / 10.0f;
+	auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
 	param.life = 40;
 	param.moveColor = Vector4(0, 0, 0, 0);
 	param.moveRotate = Vector3(0, 0, randY);
@@ -55,8 +55,8 @@ void KochaEngine::ParticleEmitter::PowerUp(const Vector3& arg_position)
 
 	for (int i = 0; i < 3; i++)
 	{
-		auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) / 5.0f;
-		auto randPosY = (float)(Util::GetIntRand(0, 30) - 15) / 15.0f;
+		auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) * 0.2f;
+		auto randPosY = (float)(Util::GetIntRand(0, 30) - 15) * 0.07f;
 		param.position = Vector3(arg_position.x + randPosX, arg_position.y + randPosY, arg_position.z + 0.1f);
 		auto randLife = Util::GetIntRand(15, 30);
 		param.life = randLife;
@@ -66,7 +66,7 @@ void KochaEngine::ParticleEmitter::PowerUp(const Vector3& arg_position)
 		auto randScale = (float)Util::GetIntRand(3, 5);
 		param.scale = Vector3(randScale, randScale, 1);
 		param.textureName = "Resources/arrow.png";
-		auto randVelY = (float)Util::GetIntRand(20, 30) / 30.0f;
+		auto randVelY = (float)Util::GetIntRand(20, 30) * 0.03f;
 		param.velocity = Vector3(0, randVelY, 0);
 		param.color = Vector4(1, 1, 1, 1);
 		param.rotate = Vector3(0, 0, 0);
@@ -82,8 +82,8 @@ void KochaEngine::ParticleEmitter::PowerDown(const Vector3& arg_position)
 
 	for (int i = 0; i < 3; i++)
 	{
-		auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) / 5.0f;
-		auto randPosY = (float)(Util::GetIntRand(0, 30) - 15) / 15.0f;
+		auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) * 0.2f;
+		auto randPosY = (float)(Util::GetIntRand(0, 30) - 15) * 0.07f;
 		param.position = Vector3(arg_position.x + randPosX, arg_position.y + randPosY, arg_position.z + 0.1f);
 		auto randLife = Util::GetIntRand(15, 30);
 		param.life = randLife;
@@ -93,7 +93,7 @@ void KochaEngine::ParticleEmitter::PowerDown(const Vector3& arg_position)
 		auto randScale = (float)Util::GetIntRand(3, 5);
 		param.scale = Vector3(randScale, randScale, 1);
 		param.textureName = "Resources/arrow.png";
-		auto randVelY = (float)(Util::GetIntRand(0,10) - 20) / 30.0f;
+		auto randVelY = (float)(Util::GetIntRand(0,10) - 20) * 0.03f;
 		param.velocity = Vector3(0, randVelY, 0);
 		param.color = Vector4(1, 1, 1, 1);
 		param.rotate = Vector3(0, 0, 180);

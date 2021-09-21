@@ -5,6 +5,7 @@
 #include "ScoreManager.h"
 #include "Util.h"
 #include "InputManager.h"
+#include "PauseManager.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 {
@@ -20,6 +21,8 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	this->inGame = inGameFlag;
 
 	obj = new Object("plane");
+	wayObj = new Object("plane");
+	smashLine = new Object("plane");
 	se = new Audio();
 	for (int i = 0; i < 10; i++)
 	{
@@ -37,6 +40,8 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 KochaEngine::Player::~Player()
 {
 	delete obj;
+	delete wayObj;
+	delete smashLine;
 	for (int i = 0; i < 10; i++)
 	{
 		delete powarGauge[i];
@@ -55,6 +60,9 @@ void KochaEngine::Player::Initialize()
 
 	velocity.Zero();
 	speed = 0.5f;
+	wayRotate = 0;
+	asobiCount = 0;
+	isWayDraw = false;
 	smash = false;
 	isStun = false;
 	stunCount = 0;
@@ -77,6 +85,18 @@ void KochaEngine::Player::Initialize()
 	obj->SetTexture("Resources/player0.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 
+	wayObj->SetPosition(Vector3(position.x, position.y, position.z + 0.1f));
+	wayObj->SetRotate(Vector3(0, 0, 0));
+	wayObj->SetScale(Vector3(30, 30, 1));
+	wayObj->SetTexture("Resources/way.png");
+	wayObj->SetBillboardType(KochaEngine::Object::BILLBOARD);
+
+	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
+	smashLine->SetRotate(Vector3(0, 0, 0));
+	smashLine->SetScale(Vector3(180, 4, 1));
+	smashLine->SetTexture("Resources/smashLine.png");
+	smashLine->SetBillboardType(KochaEngine::Object::BILLBOARD);
+
 	se->Init();
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 }
@@ -85,6 +105,8 @@ void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	gManager->HitObject(this, COLLISION_BLOCK);
+
+	if (asobiCount > 0) asobiCount--;
 
 	if (backCount > 0)
 	{
@@ -163,6 +185,19 @@ void KochaEngine::Player::Hit()
 void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
 {
 	if (arg_camera == nullptr) return;
+	if (arg_lightManager == nullptr) return;
+
+	if (isWayDraw && pManager->IsDisplayDash())
+	{
+		wayObj->Draw(arg_camera, arg_lightManager);
+	}
+
+	if (pManager->IsDisplaySmash())
+	{
+		smashLine->Draw(arg_camera, arg_lightManager);
+	}
+
+
 	obj->Draw(arg_camera, arg_lightManager);
 
 	/*ImGui::Begin("smashPower");
@@ -284,6 +319,12 @@ void KochaEngine::Player::HitStopTimer()
 
 }
 
+void KochaEngine::Player::SetPauseManager(PauseManager* arg_pManager)
+{
+	if (arg_pManager == nullptr) return;
+	pManager = arg_pManager;
+}
+
 const int KochaEngine::Player::GetBackCount()
 {
 	return backCount;
@@ -350,9 +391,14 @@ void KochaEngine::Player::InputMove()
 			}
 		}
 	}	
+
+	if (InputManager::SmashKey())
+	{
+		asobiCount = 7;
+	}
 	if (speed <= 0 && !smash)
 	{
-		if (InputManager::SmashKey() && smashPower > 0)
+		if (asobiCount != 0 && smashPower > 0)
 		{
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		
@@ -360,7 +406,7 @@ void KochaEngine::Player::InputMove()
 			velocity.x = -1;
 			speed = 10;
 		}
-		else if (InputManager::SmashKey())
+		else if (asobiCount == 1)
 		{
 			se->PlayWave("Resources/Sound/feild.wav", seVolume);
 		}
@@ -452,7 +498,6 @@ void KochaEngine::Player::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
-
 	if (velocity.x >= 0)
 	{
 		obj->SetScale(Vector3(-scale.x, scale.y, scale.z));
@@ -461,6 +506,21 @@ void KochaEngine::Player::SetObjParam()
 	{
 		obj->SetScale(scale);
 	}
+
+	Vector3 inputVec = Vector3(Input::GetLStickDirection().x, Input::GetLStickDirection().y, 0);
+	if (inputVec.x != 0 || inputVec.y != 0)
+	{
+		isWayDraw = true;
+	}
+	else
+	{
+		isWayDraw = false;
+	}
+	wayRotate = 360 - Util::Vector2ToAngle(inputVec);
+	wayObj->SetPosition(Vector3(position.x, position.y, position.z + 0.1f));
+	wayObj->SetRotate(Vector3(0, 0, wayRotate));
+
+	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
 }
 
 void KochaEngine::Player::MoveWallPos()

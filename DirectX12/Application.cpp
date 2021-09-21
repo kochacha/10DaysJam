@@ -192,6 +192,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu2.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu5.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/normalGauge.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/gauge.png");
@@ -203,6 +204,8 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/emptyGauge.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/star.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/arrow.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/way.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/smashLine.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
