@@ -352,7 +352,7 @@ void KochaEngine::Player::InputMove()
 			position.x = wallPosX;
 			if (*inGame)
 			{
-				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 5.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+				backCount = (smashPower * 3.0f) + (overDirveSmashPower * 9.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
 			}
 			else
 			{
