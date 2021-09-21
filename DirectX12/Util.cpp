@@ -115,7 +115,7 @@ DirectX::XMVECTOR KochaEngine::Util::AngleToVector2(float angle)
 float KochaEngine::Util::Vector2ToAngle(DirectX::XMFLOAT3 vector)
 {
 	float angle;
-	angle = acos(vector.z / sqrt(vector.z*vector.z + vector.x * vector.x));
+	angle = acos(vector.y / sqrt(vector.y*vector.y + vector.x * vector.x));
 	angle = angle * 180.0 / M_PI;
 	if (vector.x < 0) angle = 360.0f - angle;
 	return angle;

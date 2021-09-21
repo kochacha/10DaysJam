@@ -15,10 +15,14 @@ namespace KochaEngine
 		GameObjectManager* gManager;
 		ParticleEmitter* pEmitter;
 		ScoreManager* sManager;
-		Audio* se;		
+		Audio* se;	
+		Object* wayObj;
+		Object* smashLine;
 
 		float speed;
+		float wayRotate;
 		bool smash;
+		bool isWayDraw;
 		int testCount;
 		//スマッシュのパワー
 		int smashPower;
