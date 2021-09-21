@@ -23,7 +23,7 @@ void KochaEngine::DeadLine::Initialize()
 {
 	obj->SetTexture("Resources/endLine.png");
 	obj->SetScale(Vector3(-10, 120, 1));
-	obj->SetPosition(position);
+	obj->SetPosition(Vector3(position.x - 2.0f, position.y, position.z));
 	isAlpha = true;
 }
 
