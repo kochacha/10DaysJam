@@ -60,6 +60,7 @@ namespace KochaEngine
 			DASH_SUPPORT,
 			SMASH_SUPPORT,
 			SCORE_SUPPORT,
+			VIVE_SUPPORT,
 		};
 
 	private:
@@ -68,6 +69,7 @@ namespace KochaEngine
 		bool isDisplayDash;
 		bool isDisplaySmash;
 		bool isDisplayScore;
+		bool isVib;
 
 		float seVolume;
 
@@ -78,7 +80,7 @@ namespace KochaEngine
 		Sprite* menu[5];
 		Sprite* cursor;
 		Sprite* _cursor;
-		Sprite* checkBox[3];
+		Sprite* checkBox[4];
 
 		Audio* se;
 
@@ -111,5 +113,6 @@ namespace KochaEngine
 		bool IsDisplayDash() { return isDisplayDash; }
 		bool IsDisplaySmash() { return isDisplaySmash; }
 		bool IsDisplayScore() { return isDisplayScore; }
+		bool IsVib() { return isVib; }
 	};
 }

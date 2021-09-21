@@ -3,6 +3,7 @@
 #include "GameSetting.h"
 #include "Audio.h"
 #include "InputManager.h"
+#include "Input.h"
 
 KochaEngine::PauseManager::PauseManager()
 {
@@ -18,6 +19,7 @@ KochaEngine::PauseManager::PauseManager()
 	checkBox[0] = new Sprite("Resources/black.png", Vector2(760, 360), Vector2(32, 32), 0);
 	checkBox[1] = new Sprite("Resources/black.png", Vector2(760, 460), Vector2(32, 32), 0);
 	checkBox[2] = new Sprite("Resources/black.png", Vector2(760, 550), Vector2(32, 32), 0);
+	checkBox[3] = new Sprite("Resources/black.png", Vector2(760, 645), Vector2(32, 32), 0);
 
 	soundNum[0] = new Number(Vector2(720, 360), Vector2(32, 32), 2);
 	soundNum[1] = new Number(Vector2(720, 455), Vector2(32, 32), 2);
@@ -34,10 +36,13 @@ KochaEngine::PauseManager::~PauseManager()
 	{
 		delete menu[i];
 	}
+	for (int i = 0; i < 4; i++)
+	{
+		delete checkBox[i];
+	}
 	for (int i = 0; i < 3; i++)
 	{
 		delete soundNum[i];
-		delete checkBox[i];
 	}
 
 	delete cursor;
@@ -52,6 +57,7 @@ void KochaEngine::PauseManager::Initialize()
 	isDisplayDash = true;
 	isDisplaySmash = true;
 	isDisplayScore = true;
+	isVib = true;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -131,6 +137,7 @@ void KochaEngine::PauseManager::Draw()
 		if (isDisplayDash) checkBox[0]->Draw();
 		if (isDisplaySmash) checkBox[1]->Draw();
 		if (isDisplayScore) checkBox[2]->Draw();
+		if (isVib) checkBox[3]->Draw();
 		break;
 	default:
 		break;
@@ -652,12 +659,31 @@ void KochaEngine::PauseManager::SupportTab()
 		}
 		else if (InputManager::DownCursorKey())
 		{
-			nowSupport = PauseManager::DASH_SUPPORT;
+			nowSupport = PauseManager::VIVE_SUPPORT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		if (InputManager::DecisionKey())
 		{
 			isDisplayScore = !isDisplayScore;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		break;
+	case KochaEngine::PauseManager::VIVE_SUPPORT:
+		cursor->SetPosition(Vector2(CENTER_POS_X, 645));
+		if (InputManager::UpCursorKey())
+		{
+			nowSupport = PauseManager::SCORE_SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		else if (InputManager::DownCursorKey())
+		{
+			nowSupport = PauseManager::DASH_SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DecisionKey())
+		{
+			isVib = !isVib;
+			if (isVib) Input::Vibration(60000, 20);
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		break;

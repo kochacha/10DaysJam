@@ -77,3 +77,11 @@ bool KochaEngine::InputManager::RightKey()
         || Input::TriggerKey(DIK_D);
     return result;
 }
+
+bool KochaEngine::InputManager::RankingCheckKey()
+{
+    bool result = 
+        Input::TriggerKey(DIK_Q) 
+        || Input::TriggerPadButton(XINPUT_GAMEPAD_X);
+    return result;
+}

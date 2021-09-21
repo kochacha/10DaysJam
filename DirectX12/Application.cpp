@@ -210,6 +210,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/togeGet.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/itemGet.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/circle.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/endLine.png");
 
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");

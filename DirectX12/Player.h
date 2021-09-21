@@ -62,6 +62,7 @@ namespace KochaEngine
 		void ScaleAnimation();
 		void SetObjParam();
 		void MoveWallPos();
+		void CommonVib(const int arg_time);
 		//パワーのリセット
 		void ResetPower();
 

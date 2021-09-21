@@ -145,6 +145,7 @@ void KochaEngine::Player::Update()
 		
 		if (backCount == 0)
 		{
+			CommonVib(20);
 			addSmashScore = 0;
 			camera->SetShake(1.00f);
 			se->PlayWave("Resources/Sound/hit.wav", seVolume);
@@ -342,9 +343,10 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 
 void KochaEngine::Player::PowerDown()
 {
+	CommonVib(10);
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
 	pEmitter->PowerDown(position);
-	smashPower -= 3;
+	smashPower--;
 	if (smashPower < 0)
 	{
 		smashPower = 0;
@@ -395,7 +397,6 @@ void KochaEngine::Player::InputMove()
 
 	if (smash)
 	{		
-		//Input::Vibration(60000, 10);
 		int wallPosX = gManager->GetWall()->GetMinPos().x;
 		if (position.x <= wallPosX )
 		{
@@ -451,6 +452,7 @@ void KochaEngine::Player::InputMove()
 	{
 		if (asobiCount != 0 && smashPower > 0)
 		{
+			CommonVib(10);
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
 			smash = true;		
 			velocity.Zero();
@@ -580,6 +582,13 @@ void KochaEngine::Player::SetObjParam()
 void KochaEngine::Player::MoveWallPos()
 {
 
+}
+
+void KochaEngine::Player::CommonVib(const int arg_time)
+{
+	if (!pManager->IsVib()) return;
+
+	Input::Vibration(60000, arg_time);
 }
 
 void KochaEngine::Player::ResetPower()

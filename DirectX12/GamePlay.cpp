@@ -1,5 +1,4 @@
 #include "GamePlay.h"
-#include "Input.h"
 #include "Util.h"
 #include "Map.h"
 #include "LightManager.h"
@@ -13,6 +12,7 @@
 #include "Audio.h"
 #include "GameSetting.h"
 #include "MiniMap.h"
+#include "InputManager.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -72,7 +72,7 @@ void KochaEngine::GamePlay::Initialize()
 	//map->CreateMap(0);
 	const float STAGE_SIZE = 300.0f;
 	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
-	gManager->AddObject(new DeadLine(camera, gManager, emitter, { STAGE_SIZE - 5.0f,0,0, }));
+	gManager->AddObject(new DeadLine(camera, gManager, emitter, { STAGE_SIZE - 5.0f,0,0.1f, }));
 	MiniMap* miniMap = new MiniMap(camera, gManager, emitter);
 	gManager->AddObject(miniMap);
 	gManager->GetWall()->ScrollWall(miniMap->GetCorrectionValue());
@@ -134,7 +134,7 @@ void KochaEngine::GamePlay::Update()
 		Title();
 	}
 
-	if (Input::TriggerKey(DIK_Q) || Input::TriggerPadButton(XINPUT_GAMEPAD_X))
+	if (InputManager::RankingCheckKey())
 	{
 		isShowRank = !isShowRank;
 	}
