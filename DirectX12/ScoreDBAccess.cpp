@@ -1,4 +1,5 @@
 #include "ScoreDBAccess.h"
+#pragma comment( lib, "ws2_32.lib" )
 
 KochaEngine::ScoreDBAccess::ScoreDBAccess()
 {
