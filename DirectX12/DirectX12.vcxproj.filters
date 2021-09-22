@@ -270,7 +270,6 @@
     <ClCompile Include="DeadLine.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="ScrollManager.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
@@ -282,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,7 +582,6 @@
     <ClInclude Include="DeadLine.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ScrollManager.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
@@ -595,6 +596,9 @@
     </ClInclude>
     <ClInclude Include="ScoreDBAccess.h">
       <Filter>Header\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

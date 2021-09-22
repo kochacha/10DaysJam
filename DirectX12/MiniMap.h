@@ -5,23 +5,26 @@ namespace KochaEngine
 {
 	class GameObjectManager;
 	class ParticleEmitter;
-	class MiniMap :
-		public GameObject
+	class MiniMap : public GameObject
 	{
 	private:
 		GameObjectManager* gManager;
 		ParticleEmitter* pEmitter;
-
+		//表示用の画像
 		Texture2D* mapBar;
 		Texture2D* mapPlayer;
-
+		//表示座標
 		Vector2 miniMapPos;
 		Vector2 mapPlayerPos;
+		//ミニマップを表示するピクセルサイズ
 		Vector2 miniMapSize;
-
-		float mapStart;
-		float mapEnd;
+		//ミニマップの左端
+		float mapStartX;
+		//ミニマップの右端
+		float mapEndX;
+		//ミニマップの幅
 		float mapLength;
+		//ミニマップの広さによる他クラスで使う補正値
 		float mapCorrectionValue;
 
 	public:
