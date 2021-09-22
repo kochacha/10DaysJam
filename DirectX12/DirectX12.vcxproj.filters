@@ -277,6 +277,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source\Device</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -583,6 +586,9 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

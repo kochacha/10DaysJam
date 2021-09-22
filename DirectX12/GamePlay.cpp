@@ -13,6 +13,7 @@
 #include "GameSetting.h"
 #include "MiniMap.h"
 #include "InputManager.h"
+#include "Text.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
