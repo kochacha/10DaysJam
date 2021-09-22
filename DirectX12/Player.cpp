@@ -13,11 +13,16 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 sManager(nullptr),
 	 pManager(nullptr),
 	 se(nullptr),
+	 seVolume(0.1f),
+	 scale(Vector3()),
+	 endScale(Vector3()),
 	 wayObj(nullptr),
 	 smashLine(nullptr),
 	 isFinish(false),
 	 isHitStop(false),
-	 hitStopCount(0)
+	 hitStopCount(0),
+	 isOnce(false),
+	 inGame(nullptr)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -68,16 +73,42 @@ KochaEngine::Player::~Player()
 
 void KochaEngine::Player::Initialize()
 {
-	isFinish = false;
+	//パーティクル
+	pEmitter->SpawnParticle(position);
 
+	//SE
+	se->Init();
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
+	
+	//表示用
+	scale = Vector3(0, 0, 10);
+	endScale = Vector3(10, 10, 10);
+	obj->SetPosition(position);
+	obj->SetRotate(Vector3(0, 0, 0));
+	obj->SetScale(scale);
+	obj->SetTexture("Resources/player0.png");
+	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
+	wayObj->SetPosition(Vector3(position.x, position.y, position.z + 0.1f));
+	wayObj->SetRotate(Vector3(0, 0, 0));
+	wayObj->SetScale(Vector3(30, 30, 1));
+	wayObj->SetTexture("Resources/way.png");
+	wayObj->SetBillboardType(KochaEngine::Object::BILLBOARD);
+	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
+	smashLine->SetRotate(Vector3(0, 0, 0));
+	smashLine->SetScale(Vector3(180, 4, 1));
+	smashLine->SetTexture("Resources/smashLine.png");
+	smashLine->SetBillboardType(KochaEngine::Object::BILLBOARD);
 	isAlpha = true;
 
-	velocity.Zero();
+	isFinish = false;
+	isHitStop = false;
+	hitStopCount = 0;
+	isOnce = false;
+
 	speed = 0.5f;
 	wayRotate = 0;
 	asobiCount = 0;
 	isWayDraw = false;
-	isOnce = false;
 	smash = false;
 	isStun = false;
 	stunCount = 0;
@@ -85,37 +116,11 @@ void KochaEngine::Player::Initialize()
 	addSmashScore = 0;
 	stackCount = 30;
 	hitWall = false;
-	isHitStop = false;
 	ResetPower();
-	
+
+	velocity.Zero();
 	sphere.radius = 4.0f;
 	sphere.position = this->position;
-
-	scale = Vector3(0, 0, 10);
-	endScale = Vector3(10, 10, 10);
-
-	obj->SetPosition(position);
-	obj->SetRotate(Vector3(0, 0, 0));
-	obj->SetScale(scale);
-	obj->SetTexture("Resources/player0.png");
-	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
-
-	wayObj->SetPosition(Vector3(position.x, position.y, position.z + 0.1f));
-	wayObj->SetRotate(Vector3(0, 0, 0));
-	wayObj->SetScale(Vector3(30, 30, 1));
-	wayObj->SetTexture("Resources/way.png");
-	wayObj->SetBillboardType(KochaEngine::Object::BILLBOARD);
-
-	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
-	smashLine->SetRotate(Vector3(0, 0, 0));
-	smashLine->SetScale(Vector3(180, 4, 1));
-	smashLine->SetTexture("Resources/smashLine.png");
-	smashLine->SetBillboardType(KochaEngine::Object::BILLBOARD);
-
-	se->Init();
-	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
-
-	pEmitter->SpawnParticle(position);
 }
 
 void KochaEngine::Player::Update()
@@ -192,7 +197,7 @@ void KochaEngine::Player::Update()
 		}
 		stunCount++;*/
 	}
-	MoveWallPos();
+	
 	InputMove();
 	MoveX();
 	MoveY();
@@ -200,13 +205,13 @@ void KochaEngine::Player::Update()
 	ScaleAnimation();
 	SetObjParam();
 
-	wchar_t str[256];
+	//デバッグ出力用
+	/*wchar_t str[256];
 	swprintf_s(str, L"smashPower %d\n", smashPower);
 	OutputDebugString(str);
 
 	swprintf_s(str, L"backCount %d\n", backCount);
-	OutputDebugString(str);
-	
+	OutputDebugString(str);*/
 }
 
 void KochaEngine::Player::Hit()
@@ -231,33 +236,7 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 	if (pManager->IsDisplaySmash())
 	{
 		smashLine->Draw(arg_camera, arg_lightManager);
-	}
-
-	/*ImGui::Begin("smashPower");
-	ImGui::Text("smashPowar %f", smashPower);
-	ImGui::End();*/
-}
-
-void KochaEngine::Player::ShowGUI()
-{
-	float _position[3] = { position.x, position.y, position.z };
-	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
-	ImGui::InputInt("##PlayerBackCount", &backCount);
-}
-
-KochaEngine::GameObjectType KochaEngine::Player::GetType()
-{
-	return PLAYER;
-}
-
-const bool KochaEngine::Player::IsSmashing()
-{
-	return smash;
-}
-
-const bool KochaEngine::Player::IsStuning()
-{
-	return isStun;
+	}	
 }
 
 void KochaEngine::Player::SpriteDraw()
@@ -275,6 +254,18 @@ void KochaEngine::Player::SpriteDraw()
 	{
 		overDriveGauge[i]->Draw(Vector2(150 + ((70 * smashPower) + (70 * i)), 720));
 	}
+}
+
+void KochaEngine::Player::ShowGUI()
+{
+	float _position[3] = { position.x, position.y, position.z };
+	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
+	ImGui::InputInt("##PlayerBackCount", &backCount);
+}
+
+KochaEngine::GameObjectType KochaEngine::Player::GetType()
+{
+	return GameObjectType::PLAYER;
 }
 
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
@@ -385,10 +376,25 @@ void KochaEngine::Player::HitStopTimer()
 	}
 }
 
+const bool KochaEngine::Player::IsInGame()
+{
+	return *inGame;
+}
+
 void KochaEngine::Player::SetPauseManager(PauseManager* arg_pManager)
 {
 	if (arg_pManager == nullptr) return;
 	pManager = arg_pManager;
+}
+
+const bool KochaEngine::Player::IsSmashing()
+{
+	return smash;
+}
+
+const bool KochaEngine::Player::IsStuning()
+{
+	return isStun;
 }
 
 const int KochaEngine::Player::GetBackCount()
@@ -399,11 +405,6 @@ const int KochaEngine::Player::GetBackCount()
 const bool KochaEngine::Player::IsHitWall()
 {
 	return hitWall;
-}
-
-const bool KochaEngine::Player::IsInGame()
-{
-	return *inGame;
 }
 
 void KochaEngine::Player::InputMove()
@@ -592,11 +593,6 @@ void KochaEngine::Player::SetObjParam()
 	wayObj->SetRotate(Vector3(0, 0, wayRotate));
 
 	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
-}
-
-void KochaEngine::Player::MoveWallPos()
-{
-
 }
 
 void KochaEngine::Player::CommonVib(const int arg_time)

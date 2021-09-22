@@ -18,6 +18,10 @@ namespace KochaEngine
 		ScoreManager* sManager;
 		PauseManager* pManager;
 		Audio* se;
+		float seVolume;
+		//スケールアニメーション用
+		Vector3 scale;
+		Vector3 endScale;
 		//移動方向の矢印表示用
 		Object* wayObj;
 		//スマッシュの軌道表示用
@@ -36,12 +40,15 @@ namespace KochaEngine
 		bool isHitStop;
 		//ヒットストップしている時間
 		int hitStopCount;
+		//ゲームオーバーしたときに一度だけ処理を行う用
+		bool isOnce;
+		//ゲーム中かどうか
+		bool* inGame;
 
 		float speed;
 		float wayRotate;
 		bool smash;
 		bool isWayDraw;
-		bool isOnce;
 		int testCount;
 		int asobiCount;
 		int stackCount;
@@ -50,8 +57,6 @@ namespace KochaEngine
 		int overDirveSmashPower;
 		const int MAX_SMASHPOWER = 10;
 		const int MAX_OVERDRIVE = 5;
-		Vector3 scale;
-		Vector3 endScale;
 
 		bool isStun;
 		int stunCount;
@@ -59,18 +64,14 @@ namespace KochaEngine
 
 		int backCount;
 		int addSmashScore;
-		bool hitWall;
-
-		float seVolume;		
-
-		bool* inGame;
+		bool hitWall;	
 
 		void InputMove();
 		void MoveX();
 		void MoveY();
 		void ScaleAnimation();
 		void SetObjParam();
-		void MoveWallPos();
+		//コントローラ振動
 		void CommonVib(const int arg_time);
 		//パワーのリセット
 		void ResetPower();
@@ -86,9 +87,6 @@ namespace KochaEngine
 		void SpriteDraw() override;
 		void ShowGUI() override;
 		GameObjectType GetType();
-		//スマッシュしているかどうか
-		const bool IsSmashing();
-		const bool IsStuning();
 
 		//パワーアップ
 		void PowerUp(const GameObjectType arg_objectType);
@@ -99,12 +97,15 @@ namespace KochaEngine
 		//外側から動的にisFinishをtrueにする
 		void Finish();
 		const bool IsHitStop();
+		//ヒットストップの時間を管理
 		void HitStopTimer();
-
+		const bool IsInGame();
 		void SetPauseManager(PauseManager* arg_pManager);
 
+		//スマッシュしているかどうか
+		const bool IsSmashing();
+		const bool IsStuning();
 		const int GetBackCount();
 		const bool IsHitWall();
-		const bool IsInGame();
 	};
 }
