@@ -1,3 +1,4 @@
+#define _WINSOCKAPI_
 #include "Ending.h"
 #include "Input.h"
 #include "GamePlay.h"

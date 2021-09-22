@@ -1,3 +1,4 @@
+#define _WINSOCKAPI_
 #include "GamePlay.h"
 #include "Util.h"
 #include "Map.h"
@@ -30,7 +31,7 @@ KochaEngine::GamePlay::GamePlay()
 	sManager = new ScoreManager();
 	pauseManager = new PauseManager();
 	scrollManager = new ScrollManager();
-
+	scoreDBAccessDev = new ScoreDBAccess();
 
 	bgm = new Audio();
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
@@ -58,6 +59,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete rankingUITexture;
 	delete scrollManager;
 	delete iText;
+	delete scoreDBAccessDev;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -87,6 +89,8 @@ void KochaEngine::GamePlay::Initialize()
 	pauseManager->Initialize();
 	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
 	scrollManager->Initialize();
+
+	scoreDBAccessDev->Initialize();
 
 	gManager->GetPlayer()->SetPauseManager(pauseManager);
 

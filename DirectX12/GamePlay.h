@@ -9,6 +9,7 @@
 #include "Texture2D.h"
 #include "ItemManager.h"
 #include "ScrollManager.h"
+#include "ScoreDBAccess.h"
 
 namespace KochaEngine
 {
@@ -18,6 +19,7 @@ namespace KochaEngine
 	class PauseManager;
 	class Text;
 	class InputText;
+	class ScoreDBAccess;
 
 	class GamePlay : public Scene
 	{
@@ -32,6 +34,7 @@ namespace KochaEngine
 		ScoreManager* sManager;
 		PauseManager* pauseManager;
 		ScrollManager* scrollManager;
+		ScoreDBAccess* scoreDBAccessDev;
 
 		Audio* bgm;
 		Texture2D* flameTexture;
