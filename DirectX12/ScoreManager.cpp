@@ -32,11 +32,9 @@ void KochaEngine::ScoreManager::Initialize()
 	}
 	scoreTex->Init();
 
-	
-
 	score = 0;
 
-	
+	LoadRankData();
 }
 
 void KochaEngine::ScoreManager::Draw(bool arg_isShow)

@@ -1,3 +1,4 @@
+#define _WINSOCKAPI_
 #include "GamePlay.h"
 #include "Util.h"
 #include "Map.h"
@@ -30,12 +31,13 @@ KochaEngine::GamePlay::GamePlay()
 	sManager = new ScoreManager();
 	pauseManager = new PauseManager();
 	scrollManager = new ScrollManager();
-
+	scoreDBAccessDev = new ScoreDBAccess();
 
 	bgm = new Audio();
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
+	finishTexture = new Texture2D("Resources/finish.png", Vector2(850, 900), Vector2(256, 64), 0);
 
 	iText = new InputText();
 }
@@ -58,6 +60,8 @@ KochaEngine::GamePlay::~GamePlay()
 	delete rankingUITexture;
 	delete scrollManager;
 	delete iText;
+	delete finishTexture;
+	delete scoreDBAccessDev;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -87,12 +91,19 @@ void KochaEngine::GamePlay::Initialize()
 	pauseManager->Initialize();
 	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
 	scrollManager->Initialize();
+	iText->Initialize();
+	sManager->Initialize();
+
+	scoreDBAccessDev->Initialize();
 
 	gManager->GetPlayer()->SetPauseManager(pauseManager);
 
 	frameCount = 0;
 	seconds = 0;
+	resetCount = 100;
+	displayRankingCount = 180;
 	
+	isDisplayRanking = false;
 	isShowRank = false;
 	fadeFlag = true;
 	fadeAlpha = 1;
@@ -108,41 +119,71 @@ void KochaEngine::GamePlay::Update()
 {
 	
 	Fade();
-
-	pauseManager->Update();
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	bgm->SetVolume(bgmVolume);
 
+	auto player = gManager->GetPlayer();
+	if (!player->IsFinish())
+	{
+		pauseManager->Update();
+	}
+
 	if (pauseManager->IsPause()) return; //ポーズ中
 
-	auto player = gManager->GetPlayer();
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
 	scrollManager->Update();
 	Scroll();
-	
-	
+		
 	gManager->Update();
 	pManager->Update();
-	camera->Update();
-	iText->Update();
-	
+	camera->Update();	
 	lightManager->Update();
 
 	if (inGame && !player->IsFinish())
 	{
 		iManager->Update();
 	}
+
+	if (player->IsFinish() && !pauseManager->IsReset())
+	{
+		iText->Update();
+	}
+	if (iText->IsNext())
+	{
+		isShowRank = true;
+		isDisplayRanking = true;
+
+		if (displayRankingCount > 0)
+		{
+			displayRankingCount--;
+		}
+		else
+		{
+			Initialize();
+		}
+	}
+	if (pauseManager->IsReset())
+	{
+		player->Finish();
+		if (resetCount > 0)
+		{
+			resetCount--;
+		}
+		else
+		{
+			Initialize();
+		}
+	}
 	
 	if (!inGame)
 	{
 		Title();
-	}
-
-	if (InputManager::RankingCheckKey())
-	{
-		isShowRank = !isShowRank;
+		if (InputManager::RankingCheckKey() && !iText->IsNext())
+		{
+			isShowRank = !isShowRank;
+		}
 	}
 
 	//ゲーム終了
@@ -155,7 +196,6 @@ void KochaEngine::GamePlay::Update()
 			sManager->SaveScore();
 			gManager->RemoveItem();
 			player->Finish();
-			//Initialize();
 		}
 
 	}
@@ -169,7 +209,11 @@ void KochaEngine::GamePlay::SpriteDraw()
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
 	pauseManager->Draw();
-	iText->Draw();
+
+	if (gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset())
+	{
+		iText->Draw();
+	}
 }
 
 void KochaEngine::GamePlay::ObjDraw()
@@ -258,6 +302,7 @@ void KochaEngine::GamePlay::Title()
 	auto wall = gManager->GetWall();
 	if (wall->GetMinPos().x <= wall->GetLimitLeftPosX())
 	{
+		isShowRank = false;
 		inGame = true;
 		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
 		sManager->Initialize();

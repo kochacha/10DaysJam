@@ -9,6 +9,7 @@
 #include "Texture2D.h"
 #include "ItemManager.h"
 #include "ScrollManager.h"
+#include "ScoreDBAccess.h"
 
 namespace KochaEngine
 {
@@ -18,6 +19,7 @@ namespace KochaEngine
 	class PauseManager;
 	class Text;
 	class InputText;
+	class ScoreDBAccess;
 
 	class GamePlay : public Scene
 	{
@@ -32,11 +34,13 @@ namespace KochaEngine
 		ScoreManager* sManager;
 		PauseManager* pauseManager;
 		ScrollManager* scrollManager;
+		ScoreDBAccess* scoreDBAccessDev;
 
 		Audio* bgm;
 		Texture2D* flameTexture;
 		Texture2D* controlUITexture;
 		Texture2D* rankingUITexture;
+		Texture2D* finishTexture;
 
 		InputText* iText;
 
@@ -44,12 +48,15 @@ namespace KochaEngine
 		bool fadeFlag;
 		bool inGame;
 		bool isOnce;
+		bool isDisplayRanking;
 		float fadeAlpha;
 		float bgmVolume;
 
 		int frameCount;
 		int seconds;
 		int endCount;
+		int resetCount;
+		int displayRankingCount;
 
 		const float scrollAmount = 0.25f;
 	public:
