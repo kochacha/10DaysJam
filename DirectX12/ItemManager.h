@@ -48,6 +48,7 @@ namespace KochaEngine
 		const bool IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position);
 		const unsigned int GetMaxEmitInterval();
 		const unsigned int GetEmitTypeCoefficient();
+		const bool GetIsSpineMove();
 
 	public:
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);

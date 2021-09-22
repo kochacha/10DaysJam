@@ -91,7 +91,7 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const Ite
 
 void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
 {
-	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this, arg_emitOption, true);
+	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this, arg_emitOption, GetIsSpineMove());
 	gManager->AddObject(spine);
 	jammingSpines.push_back(spine);
 	CompareTheRightmost();
@@ -373,4 +373,38 @@ const unsigned int KochaEngine::ItemManager::GetEmitTypeCoefficient()
 	}
 
 	return answerVal;
+}
+
+const bool KochaEngine::ItemManager::GetIsSpineMove()
+{
+	unsigned int cofficient = 0;
+	const unsigned int rndMax = 20;
+	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
+	switch (scrollLevel)
+	{
+	case 1:
+		cofficient = 17;
+		break;
+	case 2:
+		cofficient = 15;
+		break;
+	case 3:
+		cofficient = 13;
+		break;
+	case 4:
+		cofficient = 11;
+		break;
+	default:
+		cofficient = 9;
+		break;
+	}
+
+	if (Util::GetRandInt(rndMax) > cofficient)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
