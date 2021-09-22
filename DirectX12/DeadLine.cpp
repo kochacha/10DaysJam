@@ -1,10 +1,13 @@
 #include "DeadLine.h"
 
 KochaEngine::DeadLine::DeadLine(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position)
+	:gManager(nullptr),
+	 pEmitter(nullptr)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
 	if (arg_pEmitter == nullptr) return;
+	
 	camera = arg_camera;
 	gManager = arg_gManager;
 	pEmitter = arg_pEmitter;
@@ -42,5 +45,5 @@ void KochaEngine::DeadLine::ObjDraw(Camera* arg_camera, LightManager* arg_lightM
 
 KochaEngine::GameObjectType KochaEngine::DeadLine::GetType()
 {
-	return DEADLINE;
+	return GameObjectType::DEADLINE;
 }
