@@ -37,7 +37,7 @@ KochaEngine::GamePlay::GamePlay()
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
-	finishTexture = new Texture2D("Resources/finish.png", Vector2(850, 900), Vector2(256, 64), 0);
+	finishTexture = new Texture2D("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
 
 	iText = new InputText();
 }
@@ -108,6 +108,7 @@ void KochaEngine::GamePlay::Initialize()
 	fadeFlag = true;
 	fadeAlpha = 1;
 	endCount = 180;
+	dethWaitCount = 120;
 
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	bgm->Init();
@@ -148,7 +149,14 @@ void KochaEngine::GamePlay::Update()
 
 	if (player->IsFinish() && !pauseManager->IsReset())
 	{
-		iText->Update();
+		if (dethWaitCount > 0)
+		{
+			dethWaitCount--;
+		}
+		else
+		{
+			iText->Update();
+		}
 	}
 	if (iText->IsNext())
 	{
@@ -239,9 +247,22 @@ void KochaEngine::GamePlay::SpriteDraw()
 	
 	pauseManager->Draw();
 
-	if (gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset())
+
+
+
+
+
+	bool isFinishFrame = gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset();
+	if (isFinishFrame)
 	{
-		iText->Draw();
+		if (dethWaitCount <= 0)
+		{
+			iText->Draw();
+		}
+		else
+		{
+			finishTexture->Draw();
+		}
 	}
 }
 

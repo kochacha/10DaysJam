@@ -169,6 +169,15 @@ void KochaEngine::InputText::InputDecision()
 		else if(texNum == MAX_TEX_NUM) //OK‚Ì‚Íname‚ÖŠi”[‚µ‚È‚¢
 		{
 			//“ü—Íó•tI—¹ˆ—
+			if (indexNum == 0)
+			{
+				name[0] = 'N';
+				name[1] = 'o';
+				name[2] = 'N';
+				name[3] = 'a';
+				name[4] = 'm';
+				name[5] = 'e';
+			}
 			isNext = true;
 		}
 		else if(indexNum < MAX_INDEX_NUM && texNum != 69)

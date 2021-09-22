@@ -17,51 +17,73 @@ namespace KochaEngine
 		ParticleEmitter* pEmitter;
 		ScoreManager* sManager;
 		PauseManager* pManager;
-		Audio* se;	
+		Audio* se;
+		float seVolume;
+		//スケールアニメーション用
+		Vector3 scale;
+		Vector3 endScale;
+		//移動方向の矢印表示用
 		Object* wayObj;
-		Object* smashLine;
-
-		float speed;
-		float wayRotate;
-		bool smash;
+		//矢印を表示するかどうか
 		bool isWayDraw;
+		//矢印回転角度
+		float wayRotate;
+		//スマッシュの軌道表示用
+		Object* smashLine;
+		//パワーゲージ表示用
+		//内側黄色
+		Texture2D* powarGauge[10];
+		//外枠
+		Texture2D* emptyGauge[10];
+		//内側黒
+		Texture2D* overDriveGauge[5];
+
+		//ゲーム1プレイが終わっているか
 		bool isFinish;
+		//ヒットストップ中か
+		bool isHitStop;
+		//ヒットストップしている時間
+		int hitStopCount;
+		//ゲームオーバーしたときに一度だけ処理を行う用
 		bool isOnce;
-		int testCount;
-		int asobiCount;
+		//ゲーム中かどうか
+		bool* inGame;
+		//生成されてからの時間　InputMove()を通さないために使う
 		int stackCount;
+		//速度にかけて使う
+		float speed;
+		//壁に接触しているかどうか
+		bool isHitWall;
+
+		//スマッシュ関連
 		//スマッシュのパワー
 		int smashPower;
 		int overDirveSmashPower;
 		const int MAX_SMASHPOWER = 10;
 		const int MAX_OVERDRIVE = 5;
-		Vector3 scale;
-		Vector3 endScale;
-
-		bool isStun;
-		int stunCount;
-		const int stunTime = 30;
-
+		//スマッシュ操作の猶予フレーム
+		int asobiCount;
+		//スマッシュ中かどうか
+		bool isSmashing;
+		//壁を押し戻す距離
 		int backCount;
+		//押し戻し中の追加スコア保存用
 		int addSmashScore;
-		bool hitWall;
 
-		Texture2D* powarGauge[10];
-		Texture2D* emptyGauge[10];
-		Texture2D* overDriveGauge[5];
-
-		float seVolume;
-		bool isHitStop;
-		int hitStopCount;
-
-		bool* inGame;
+		//スタン関連
+		//スタンしているかどうか
+		bool isStun;
+		//スタン時間計上用
+		int stunCount;
+		//スタン最大時間
+		const int stunTime = 30;		
 
 		void InputMove();
 		void MoveX();
 		void MoveY();
 		void ScaleAnimation();
 		void SetObjParam();
-		void MoveWallPos();
+		//コントローラ振動
 		void CommonVib(const int arg_time);
 		//パワーのリセット
 		void ResetPower();
@@ -77,25 +99,25 @@ namespace KochaEngine
 		void SpriteDraw() override;
 		void ShowGUI() override;
 		GameObjectType GetType();
-		//スマッシュしているかどうか
-		const bool IsSmashing();
-		const bool IsStuning();
-		const bool IsFinishSmash();
 
 		//パワーアップ
 		void PowerUp(const GameObjectType arg_objectType);
 		//通常時のおじゃまトゲとの衝突時処理
 		void PowerDown();
 
-		bool IsFinish() { return isFinish; }
-		void Finish() { isFinish = true; }
-		bool IsHitStop() { return isHitStop; }
+		const bool IsFinish();
+		//外側から動的にisFinishをtrueにする
+		void Finish();
+		const bool IsHitStop();
+		//ヒットストップの時間を管理
 		void HitStopTimer();
-
+		const bool IsInGame();
 		void SetPauseManager(PauseManager* arg_pManager);
 
+		//スマッシュしているかどうか
+		const bool IsSmashing();
+		const bool IsStuning();
 		const int GetBackCount();
 		const bool IsHitWall();
-		const bool IsInGame();
 	};
 }

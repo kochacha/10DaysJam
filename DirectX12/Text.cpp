@@ -6,12 +6,20 @@ KochaEngine::Text::Text(const char* arg_text, const Vector2& arg_position, const
     fontSize = arg_fontSize;
 
     const char* text = arg_text;
-    incrementSize = GetStrLength(text);
+    incrementSize = 10;//GetStrLength(text);
     for (int i = 0; i < incrementSize; i++)
     {
         //ここでコンバート
         int texNum = ConvertAscii(*(text + i));
-        textures[i] = new Texture2D("Resources/font.png", 10, 7, texNum, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
+        if (*(text + i) == '\0' || texNum < 1 || texNum > 70)
+        {
+            textures[i] = new Texture2D("Resources/font.png", 10, 7, 68, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
+        }
+        else
+        {
+            textures[i] = new Texture2D("Resources/font.png", 10, 7, texNum, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
+        }
+
     }
 }
 
@@ -36,6 +44,24 @@ void KochaEngine::Text::SetLeadText(const int arg_texNum)
     textures[0]->SetTexNum(arg_texNum);
 }
 
+void KochaEngine::Text::SetText(const char* arg_text)
+{
+    for (int i = 0; i < incrementSize; i++)
+    {
+        //ここでコンバート
+        int texNum = ConvertAscii(*(arg_text + i));
+        if (*(arg_text + i) == '\0' || texNum < 1 || texNum > 70)
+        {
+            textures[i]->SetTexNum(68);
+        }
+        else
+        {
+            textures[i]->SetTexNum(texNum);
+        }
+
+    }
+}
+
 const int KochaEngine::Text::ConvertAscii(const char arg_charcter)
 {
     int n = arg_charcter;
@@ -58,9 +84,14 @@ const int KochaEngine::Text::ConvertAscii(const char arg_charcter)
         n -= 65;
         return n % 10 + (n / 10) * 10 + 11;
     }
-    //小文字
-    n -= 97;
-    return n % 10 + (n / 10) * 10 + 41;
+    else if (n < 123)
+    {
+        //小文字
+        n -= 97;
+        return n % 10 + (n / 10) * 10 + 41;
+    }
+
+    return 68;
 }
 
 const unsigned int KochaEngine::Text::GetStrLength(const char* arg_strBegin)
