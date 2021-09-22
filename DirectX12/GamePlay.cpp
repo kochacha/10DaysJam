@@ -36,6 +36,7 @@ KochaEngine::GamePlay::GamePlay()
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
+	finishTexture = new Texture2D("Resources/finish.png", Vector2(850, 900), Vector2(256, 64), 0);
 
 	iText = new InputText();
 }
@@ -58,6 +59,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete rankingUITexture;
 	delete scrollManager;
 	delete iText;
+	delete finishTexture;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -126,13 +128,17 @@ void KochaEngine::GamePlay::Update()
 	gManager->Update();
 	pManager->Update();
 	camera->Update();
-	iText->Update();
 	
 	lightManager->Update();
 
 	if (inGame && !player->IsFinish())
 	{
 		iManager->Update();
+	}
+
+	if (player->IsFinish())
+	{
+		iText->Update();
 	}
 	
 	if (!inGame)
@@ -169,7 +175,11 @@ void KochaEngine::GamePlay::SpriteDraw()
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
 	pauseManager->Draw();
-	iText->Draw();
+
+	if (gManager->GetPlayer()->IsFinish())
+	{
+		iText->Draw();
+	}
 }
 
 void KochaEngine::GamePlay::ObjDraw()
