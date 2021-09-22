@@ -63,7 +63,8 @@ bool KochaEngine::InputManager::DownCursorKey()
 bool KochaEngine::InputManager::LeftKey()
 {
     bool result =
-        Input::TriggerPadButton(XINPUT_GAMEPAD_DPAD_LEFT)
+        Input::TriggerPadLStickLeft()
+        || Input::TriggerPadButton(XINPUT_GAMEPAD_DPAD_LEFT)
         || Input::TriggerKey(DIK_LEFT)
         || Input::TriggerKey(DIK_A);
     return result;
@@ -72,9 +73,30 @@ bool KochaEngine::InputManager::LeftKey()
 bool KochaEngine::InputManager::RightKey()
 {
     bool result =
-        Input::TriggerPadButton(XINPUT_GAMEPAD_DPAD_RIGHT)
+        Input::TriggerPadLStickRight()
+        || Input::TriggerPadButton(XINPUT_GAMEPAD_DPAD_RIGHT)
         || Input::TriggerKey(DIK_RIGHT)
         || Input::TriggerKey(DIK_D);
+    return result;
+}
+
+bool KochaEngine::InputManager::DownKey()
+{
+    bool result =
+        Input::TriggerPadLStickDown()
+        || Input::TriggerPadButton(XINPUT_GAMEPAD_DPAD_DOWN)
+        || Input::TriggerKey(DIK_DOWN)
+        || Input::TriggerKey(DIK_S);
+    return result;
+}
+
+bool KochaEngine::InputManager::UpKey()
+{
+    bool result =
+        Input::TriggerPadLStickUp()
+        || Input::TriggerPadButton(XINPUT_GAMEPAD_DPAD_UP)
+        || Input::TriggerKey(DIK_UP)
+        || Input::TriggerKey(DIK_W);
     return result;
 }
 

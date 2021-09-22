@@ -17,6 +17,7 @@ namespace KochaEngine
 	class ScoreManager;
 	class PauseManager;
 	class Text;
+	class InputText;
 
 	class GamePlay : public Scene
 	{
@@ -36,6 +37,8 @@ namespace KochaEngine
 		Texture2D* flameTexture;
 		Texture2D* controlUITexture;
 		Texture2D* rankingUITexture;
+
+		InputText* iText;
 
 		bool isShowRank;
 		bool fadeFlag;

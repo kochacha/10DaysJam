@@ -202,6 +202,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InputText.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="JammingSpine.cpp" />
     <ClCompile Include="LightManager.cpp" />
@@ -503,6 +504,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputText.h" />
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="JammingSpine.h" />
     <ClInclude Include="LightManager.h" />

@@ -21,5 +21,6 @@ namespace KochaEngine
 		~Text();
 
 		void Draw();
+		void SetLeadText(const int arg_texNum);
 	};
 }
