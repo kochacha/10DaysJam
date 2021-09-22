@@ -97,7 +97,9 @@ void KochaEngine::GamePlay::Initialize()
 	frameCount = 0;
 	seconds = 0;
 	resetCount = 100;
+	displayRankingCount = 180;
 	
+	isDisplayRanking = false;
 	isShowRank = false;
 	fadeFlag = true;
 	fadeAlpha = 1;
@@ -129,12 +131,10 @@ void KochaEngine::GamePlay::Update()
 
 	scrollManager->Update();
 	Scroll();
-	
-	
+		
 	gManager->Update();
 	pManager->Update();
-	camera->Update();
-	
+	camera->Update();	
 	lightManager->Update();
 
 	if (inGame && !player->IsFinish())
@@ -148,7 +148,17 @@ void KochaEngine::GamePlay::Update()
 	}
 	if (iText->IsNext())
 	{
-		Initialize();
+		isShowRank = true;
+		isDisplayRanking = true;
+
+		if (displayRankingCount > 0)
+		{
+			displayRankingCount--;
+		}
+		else
+		{
+			Initialize();
+		}
 	}
 	if (pauseManager->IsReset())
 	{
@@ -166,11 +176,10 @@ void KochaEngine::GamePlay::Update()
 	if (!inGame)
 	{
 		Title();
-	}
-
-	if (InputManager::RankingCheckKey())
-	{
-		isShowRank = !isShowRank;
+		if (InputManager::RankingCheckKey() && !iText->IsNext())
+		{
+			isShowRank = !isShowRank;
+		}
 	}
 
 	//ƒQ[ƒ€I—¹
@@ -289,6 +298,7 @@ void KochaEngine::GamePlay::Title()
 	auto wall = gManager->GetWall();
 	if (wall->GetMinPos().x <= wall->GetLimitLeftPosX())
 	{
+		isShowRank = false;
 		inGame = true;
 		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
 		sManager->Initialize();
