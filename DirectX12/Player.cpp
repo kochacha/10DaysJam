@@ -17,12 +17,25 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 scale(Vector3()),
 	 endScale(Vector3()),
 	 wayObj(nullptr),
+	 isWayDraw(false),
+	 wayRotate(0),
 	 smashLine(nullptr),
 	 isFinish(false),
 	 isHitStop(false),
 	 hitStopCount(0),
 	 isOnce(false),
-	 inGame(nullptr)
+	 inGame(nullptr),
+	 stackCount(0),
+	 speed(0.0f),
+	 isHitWall(false),
+	 smashPower(0),
+	 overDirveSmashPower(0),
+	 asobiCount(0),
+	 isSmashing(false),
+	 backCount(0),
+	 addSmashScore(0),
+	 isStun(false),
+	 stunCount(0)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -93,6 +106,8 @@ void KochaEngine::Player::Initialize()
 	wayObj->SetScale(Vector3(30, 30, 1));
 	wayObj->SetTexture("Resources/way.png");
 	wayObj->SetBillboardType(KochaEngine::Object::BILLBOARD);
+	isWayDraw = false;
+	wayRotate = 0;
 	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
 	smashLine->SetRotate(Vector3(0, 0, 0));
 	smashLine->SetScale(Vector3(180, 4, 1));
@@ -104,19 +119,18 @@ void KochaEngine::Player::Initialize()
 	isHitStop = false;
 	hitStopCount = 0;
 	isOnce = false;
-
+	stackCount = 30;
 	speed = 0.5f;
-	wayRotate = 0;
+	isHitWall = false;
+
+	ResetPower();
 	asobiCount = 0;
-	isWayDraw = false;
-	smash = false;
-	isStun = false;
-	stunCount = 0;
+	isSmashing = false;
 	backCount = 0;
 	addSmashScore = 0;
-	stackCount = 30;
-	hitWall = false;
-	ResetPower();
+
+	isStun = false;
+	stunCount = 0;
 
 	velocity.Zero();
 	sphere.radius = 4.0f;
@@ -126,8 +140,13 @@ void KochaEngine::Player::Initialize()
 void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
-	if(stackCount > 0) stackCount--;
+	//生成されてからの数フレームでInputMove()を通さない
+	if (stackCount > 0)
+	{
+		stackCount--;
+	}
 
+	//プレイ終了後、初めて通ったなら
 	if (isFinish)
 	{
 		if (!isOnce)
@@ -138,16 +157,23 @@ void KochaEngine::Player::Update()
 		}
 	}
 
-	if (asobiCount > 0) asobiCount--;
+	//スマッシュ操作の猶予フレーム計上
+	if (asobiCount > 0)
+	{
+		asobiCount--;
+	}
 
+	//壁押し戻し距離が残っているなら
 	if (backCount > 0)
 	{
 		scale = Vector3(12, 4, 10);
 		addSmashScore++;
 		backCount--;
 		pEmitter->SmashStar(position);
+		//ゲーム中なら
 		if (*inGame)
 		{
+			//スコア加算
 			sManager->AddScore(addSmashScore * 30);
 			if (pManager->IsDisplayScore())
 			{
@@ -155,39 +181,41 @@ void KochaEngine::Player::Update()
 			}
 		}
 
+		//壁の実体が一番左まで来たら
 		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPosX())
 		{
+			//押し戻し距離を強制的に0にする
 			backCount = 0;			
 		}
-		
+		//押し戻し距離が0なら
 		if (backCount == 0)
 		{
-			CommonVib(20);
+			CommonVib(20);			
 			addSmashScore = 0;
 			camera->SetShake(1.00f);
 			se->PlayWave("Resources/Sound/hit.wav", seVolume);
 			scale = Vector3(1,20,10);
 		}
 	}
-	if (backCount <= 0 && position.x >= gManager->GetWall()->GetMinPos().x)
+
+	//押し戻し中でなく,Wallより左にいれば
+	if (backCount <= 0 && position.x > gManager->GetWall()->GetMinPos().x)
 	{
-		hitWall = false;
+		//壁に接触していない
+		isHitWall = false;
 	}
 	/*if (backCount > 0 && position.x >= gManager->GetWall()->GetMinPos().x)
 	{
 		speed = 0;
 	}*/
-	else
-	{
-		
-	}
 
-	
-	
+	//スタンしているとき
 	if (isStun)
-	{
+	{   
+		//速度が0以下なら
 		if (speed <= 0)
 		{
+			//スタン状態終了
 			isStun = false;
 		}
 		/*if (stunCount >= stunTime)
@@ -226,6 +254,7 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 
 	obj->Draw(arg_camera, arg_lightManager);
 
+	//プレイが終わっていれば、以降を表示しない
 	if (isFinish) return;
 
 	if (isWayDraw && pManager->IsDisplayDash())
@@ -389,7 +418,7 @@ void KochaEngine::Player::SetPauseManager(PauseManager* arg_pManager)
 
 const bool KochaEngine::Player::IsSmashing()
 {
-	return smash;
+	return isSmashing;
 }
 
 const bool KochaEngine::Player::IsStuning()
@@ -404,19 +433,19 @@ const int KochaEngine::Player::GetBackCount()
 
 const bool KochaEngine::Player::IsHitWall()
 {
-	return hitWall;
+	return isHitWall;
 }
 
 void KochaEngine::Player::InputMove()
 {	
 	if (isFinish || stackCount > 0) return;
 
-	if (smash)
+	if (isSmashing)
 	{		
 		int wallPosX = gManager->GetWall()->GetMinPos().x;
 		if (position.x <= wallPosX )
 		{
-			smash = false;
+			isSmashing = false;
 			position.x = wallPosX;
 			if (*inGame)
 			{
@@ -427,14 +456,14 @@ void KochaEngine::Player::InputMove()
 				backCount = 10000;
 			}
 			
-			hitWall = true;
+			isHitWall = true;
 			
 			//仮置き
 			ResetPower();
 		
 		}
 	}
-	if (!smash)
+	if (!isSmashing)
 	{
 		if (backCount <= 0)
 		{
@@ -464,16 +493,17 @@ void KochaEngine::Player::InputMove()
 	{
 		asobiCount = 7;
 	}
-	if (speed <= 0 && !smash)
+	if (speed <= 0 && !isSmashing)
 	{
 		if (asobiCount != 0 && smashPower > 0)
 		{
 			CommonVib(10);
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
-			smash = true;		
+			isSmashing = true;
 			velocity.Zero();
 			velocity.x = -1;
 			speed = 10;
+			asobiCount = 0;
 		}
 		else if (asobiCount == 1)
 		{

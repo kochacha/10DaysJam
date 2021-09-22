@@ -24,6 +24,10 @@ namespace KochaEngine
 		Vector3 endScale;
 		//移動方向の矢印表示用
 		Object* wayObj;
+		//矢印を表示するかどうか
+		bool isWayDraw;
+		//矢印回転角度
+		float wayRotate;
 		//スマッシュの軌道表示用
 		Object* smashLine;
 		//パワーゲージ表示用
@@ -44,27 +48,35 @@ namespace KochaEngine
 		bool isOnce;
 		//ゲーム中かどうか
 		bool* inGame;
-
-		float speed;
-		float wayRotate;
-		bool smash;
-		bool isWayDraw;
-		int testCount;
-		int asobiCount;
+		//生成されてからの時間　InputMove()を通さないために使う
 		int stackCount;
+		//速度にかけて使う
+		float speed;
+		//壁に接触しているかどうか
+		bool isHitWall;
+
+		//スマッシュ関連
 		//スマッシュのパワー
 		int smashPower;
 		int overDirveSmashPower;
 		const int MAX_SMASHPOWER = 10;
 		const int MAX_OVERDRIVE = 5;
-
-		bool isStun;
-		int stunCount;
-		const int stunTime = 30;
-
+		//スマッシュ操作の猶予フレーム
+		int asobiCount;
+		//スマッシュ中かどうか
+		bool isSmashing;
+		//壁を押し戻す距離
 		int backCount;
+		//押し戻し中の追加スコア保存用
 		int addSmashScore;
-		bool hitWall;	
+
+		//スタン関連
+		//スタンしているかどうか
+		bool isStun;
+		//スタン時間計上用
+		int stunCount;
+		//スタン最大時間
+		const int stunTime = 30;		
 
 		void InputMove();
 		void MoveX();
