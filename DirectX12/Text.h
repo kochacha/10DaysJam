@@ -8,7 +8,7 @@ namespace KochaEngine
 	class Text
 	{
 	private:
-		Texture2D* textures[10];
+		Texture2D* textures[11];
 		Vector2 position;
 		Vector2 fontSize;
 		int incrementSize;

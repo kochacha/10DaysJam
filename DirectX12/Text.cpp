@@ -11,7 +11,7 @@ KochaEngine::Text::Text(const char* arg_text, const Vector2& arg_position, const
     {
         //ここでコンバート
         int texNum = ConvertAscii(*(text + i));
-        if (*(text + i) == '\0')
+        if (*(text + i) == '\0' || texNum < 1 || texNum > 70)
         {
             textures[i] = new Texture2D("Resources/font.png", 10, 7, 68, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
         }
@@ -50,7 +50,7 @@ void KochaEngine::Text::SetText(const char* arg_text)
     {
         //ここでコンバート
         int texNum = ConvertAscii(*(arg_text + i));
-        if (*(arg_text + i) == '\0')
+        if (*(arg_text + i) == '\0' || texNum < 1 || texNum > 70)
         {
             textures[i]->SetTexNum(68);
         }
@@ -84,9 +84,14 @@ const int KochaEngine::Text::ConvertAscii(const char arg_charcter)
         n -= 65;
         return n % 10 + (n / 10) * 10 + 11;
     }
-    //小文字
-    n -= 97;
-    return n % 10 + (n / 10) * 10 + 41;
+    else if (n < 123)
+    {
+        //小文字
+        n -= 97;
+        return n % 10 + (n / 10) * 10 + 41;
+    }
+
+    return 68;
 }
 
 const unsigned int KochaEngine::Text::GetStrLength(const char* arg_strBegin)
