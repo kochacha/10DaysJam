@@ -17,11 +17,15 @@ namespace KochaEngine
 		Vector3 emittedPlayerPosition;
 		Vector3 prearrangedPosition;
 		int moveCount;
+		//è„â∫à⁄ìÆÇ∑ÇÈÇ©Ç«Ç§Ç©
+		bool isVerticalMove;
+		float velVertical;
 
 		void SetObjParam();
+		void MoveVertical();
 
 	public:
-		JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option);
+		JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove);
 		~JammingSpine() override;
 
 		void Initialize() override;

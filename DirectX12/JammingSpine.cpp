@@ -4,7 +4,7 @@
 #include "Wall.h"
 #include "Util.h"
 
-KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option)
+KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -14,6 +14,8 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	gManager = arg_gManager;	
 	iManager = arg_iManager;
 	pWall = gManager->GetWall();
+	isVerticalMove = arg_isVMove;
+	velVertical = 0.3f;
 
 	switch (arg_option)
 	{
@@ -67,6 +69,8 @@ void KochaEngine::JammingSpine::Update()
 
 		moveCount--;
 	}
+
+	MoveVertical();
 
 	SetObjParam();
 
@@ -128,4 +132,25 @@ void KochaEngine::JammingSpine::SetObjParam()
 {
 	sphere.position = this->position;
 	obj->SetPosition(position);
+}
+
+void KochaEngine::JammingSpine::MoveVertical()
+{
+	if (!isVerticalMove) return;
+	if (moveCount > 0) return;
+
+	position.y += velVertical;
+
+	//è„í[Ç≈ÇÃê‹ÇËï‘Çµ
+	if (position.y >= pWall->GetMaxPos().y)
+	{
+		position.y = pWall->GetMaxPos().y;
+		velVertical *= -1;
+	}
+	//â∫í[Ç≈ÇÃê‹ÇËï‘Çµ
+	else if (position.y <= pWall->GetMinPos().y)
+	{
+		position.y = pWall->GetMinPos().y;
+	    velVertical *= -1;
+	}
 }

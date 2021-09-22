@@ -91,7 +91,7 @@ void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const Ite
 
 void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
 {
-	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this, arg_emitOption);
+	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this, arg_emitOption, true);
 	gManager->AddObject(spine);
 	jammingSpines.push_back(spine);
 	CompareTheRightmost();
