@@ -54,4 +54,3 @@ namespace KochaEngine
 		std::vector<int> GetRankingScore();
 	};
 }
-
