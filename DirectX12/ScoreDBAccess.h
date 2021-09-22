@@ -50,6 +50,8 @@ namespace KochaEngine
 
 		void Disconnect();
 
+		const bool IsOnline() { return online; }
+
 		std::vector<std::string> GetRankingName();
 		std::vector<int> GetRankingScore();
 	};

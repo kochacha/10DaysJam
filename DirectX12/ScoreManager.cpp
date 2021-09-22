@@ -8,6 +8,9 @@ KochaEngine::ScoreManager::ScoreManager()
 	{
 		rankNumTex[i] = new Number(Vector2(400, 180 + 48 * i), Vector2(32, 32), 2);
 		rankScoreTex[i] = new Number(Vector2(500, 180 + 48 * i), Vector2(32, 32), 8);
+		char displayChar[3] = { '_' };
+		nameTexts[i] = new Text(displayChar, Vector2(380 + 52 * i, 200), Vector2(32, 32));
+		
 	}
 	scoreTex = new Number(Vector2(950, 75), Vector2(32, 32), 8);
 	Initialize();
@@ -19,6 +22,7 @@ KochaEngine::ScoreManager::~ScoreManager()
 	{
 		delete rankNumTex[i];
 		delete rankScoreTex[i];
+		delete nameTexts[i];
 	}
 	delete scoreTex;
 }
@@ -48,6 +52,22 @@ void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 		}
 	}
 	scoreTex->Draw(score);
+}
+
+void KochaEngine::ScoreManager::DrawOnlineRinking(bool arg_isShow, std::vector<std::string> arg_rankNames, std::vector<int> arg_rankScores)
+{
+	if (arg_isShow)
+	{
+		std::vector<std::string> rankNames = arg_rankNames;
+		std::vector<int> rankScores = arg_rankScores;
+
+		for (int i = 0; i < RANK_COUNT; i++)
+		{
+			rankScoreTex[i]->Draw(rankScores[i]);
+		}
+	}
+	
+
 }
 
 void KochaEngine::ScoreManager::UpdateRanking(const int arg_score)

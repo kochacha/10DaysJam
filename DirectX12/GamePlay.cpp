@@ -152,6 +152,14 @@ void KochaEngine::GamePlay::Update()
 	}
 	if (iText->IsNext())
 	{
+		scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+
+		if (scoreDBAccessDev->IsOnline())
+		{
+			scoreDBAccessDev->GetRankingByAddScoreDB(iText->GetName(), sManager->GetScore()); //サーバーにデータを送る
+		}
+	
+
 		isShowRank = true;
 		isDisplayRanking = true;
 
@@ -181,8 +189,20 @@ void KochaEngine::GamePlay::Update()
 	{
 		Title();
 		if (InputManager::RankingCheckKey() && !iText->IsNext())
-		{
+		{	
 			isShowRank = !isShowRank;
+			if (isShowRank)
+			{
+				scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+			}
+			else
+			{
+				scoreDBAccessDev->Disconnect();
+			}				
+			if (scoreDBAccessDev->IsOnline())
+			{
+				scoreDBAccessDev->LoadDBRanking();
+			}
 		}
 	}
 
@@ -196,6 +216,7 @@ void KochaEngine::GamePlay::Update()
 			sManager->SaveScore();
 			gManager->RemoveItem();
 			player->Finish();
+			scoreDBAccessDev->Disconnect();
 		}
 
 	}
@@ -207,7 +228,15 @@ void KochaEngine::GamePlay::SpriteDraw()
 	controlUITexture->Draw();
 	rankingUITexture->Draw();
 	gManager->SpriteDraw();
-	sManager->Draw(isShowRank);
+	if (scoreDBAccessDev->IsOnline())
+	{
+		sManager->DrawOnlineRinking(isShowRank, scoreDBAccessDev->GetRankingName(), scoreDBAccessDev->GetRankingScore());
+	}
+	else
+	{
+		sManager->Draw(isShowRank);
+	}
+	
 	pauseManager->Draw();
 
 	if (gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset())

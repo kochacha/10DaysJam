@@ -38,7 +38,7 @@ namespace KochaEngine
 		void Update();
 		void Draw();
 
-		std::string GetName();
+		char* GetName();
 		bool IsNext() { return isNext; }
 	};
 }

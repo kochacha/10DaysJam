@@ -69,10 +69,9 @@ void KochaEngine::InputText::Draw()
 	cursorTexture->Draw(cursorPos);
 }
 
-std::string KochaEngine::InputText::GetName()
+char* KochaEngine::InputText::GetName()
 {
-	std::string result = name;
-	return result;
+	return name;
 }
 
 void KochaEngine::InputText::FixNumbers()
