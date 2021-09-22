@@ -5,6 +5,12 @@
 #include "Util.h"
 
 KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option)
+	:gManager(nullptr),
+	 iManager(nullptr),
+	 pWall(nullptr),
+	 emittedPlayerPosition(Vector3()),
+	 prearrangedPosition(Vector3()),
+	 moveCount(0)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -24,6 +30,7 @@ KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectMana
 	case ItemEmitOption::SMASHING_WALL:
 		emittedPlayerPosition = gManager->GetPlayer()->GetPosition();
 		position = emittedPlayerPosition;
+		//スマッシュ中生成時の目標座標
 		prearrangedPosition = arg_position;
 		moveCount = 5;
 		break;
@@ -62,8 +69,10 @@ void KochaEngine::EnhancementItem::Initialize()
 
 void KochaEngine::EnhancementItem::Update()
 {
+	//スマッシュ中に生成されていたら
 	if (moveCount > 0)
 	{
+		//線形補間で目標座標まで移動
 		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
 
 		moveCount--;
@@ -76,13 +85,7 @@ void KochaEngine::EnhancementItem::Update()
 	{
 		Dead();
 		return;
-	}
-	//右側においていく
-	/*if (position.x >= pWall->GetMaxPos().x + pWall->GetPlayableSize().x / 2)
-	{
-		Dead();
-		return;
-	}*/
+	}	
 
 	gManager->HitObject(this, PLAYER);
 }
@@ -92,12 +95,14 @@ void KochaEngine::EnhancementItem::Hit()
 	//自身が移動している間
 	if (moveCount > 0) return;
 
+	//プレイヤーはパワーアップし、自身は消滅
 	gManager->GetPlayer()->PowerUp(GetType());
 	Dead();
 }
 
 void KochaEngine::EnhancementItem::Dead()
 {
+	//ItemManagerに登録されている自身を削除要請
 	iManager->DeleteFromVector(this, GetType());
 	isDelete = true;
 }

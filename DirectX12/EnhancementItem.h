@@ -5,8 +5,10 @@ namespace KochaEngine
 {
 	class GameObjectManager;
 	class ItemManager;
-	enum class ItemEmitOption;
 	class Wall;
+
+	enum class ItemEmitOption;
+
 	class EnhancementItem : public GameObject
 	{
 	private:
@@ -17,7 +19,7 @@ namespace KochaEngine
 		Vector3 emittedPlayerPosition;
 		Vector3 prearrangedPosition;
 		int moveCount;
-
+		
 		void SetObjParam();
 
 	public:
