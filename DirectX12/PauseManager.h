@@ -70,6 +70,7 @@ namespace KochaEngine
 		bool isDisplaySmash;
 		bool isDisplayScore;
 		bool isVib;
+		bool isReset;
 
 		float seVolume;
 
@@ -114,5 +115,6 @@ namespace KochaEngine
 		bool IsDisplaySmash() { return isDisplaySmash; }
 		bool IsDisplayScore() { return isDisplayScore; }
 		bool IsVib() { return isVib; }
+		bool IsReset() { return isReset; }
 	};
 }

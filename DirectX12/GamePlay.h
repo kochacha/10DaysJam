@@ -48,12 +48,15 @@ namespace KochaEngine
 		bool fadeFlag;
 		bool inGame;
 		bool isOnce;
+		bool isDisplayRanking;
 		float fadeAlpha;
 		float bgmVolume;
 
 		int frameCount;
 		int seconds;
 		int endCount;
+		int resetCount;
+		int displayRankingCount;
 
 		const float scrollAmount = 0.25f;
 	public:

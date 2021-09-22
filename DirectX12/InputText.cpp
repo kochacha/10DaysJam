@@ -59,6 +59,7 @@ void KochaEngine::InputText::Update()
 
 void KochaEngine::InputText::Draw()
 {
+	if (isNext) return;
 	for (int i = 0; i < MAX_INDEX_NUM; i++)
 	{
 		if (i == indexNum && isChange) continue; //Œ»Ý“ü—Í‰Â”\•¶Žš“_–Åˆ—

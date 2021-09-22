@@ -58,6 +58,7 @@ void KochaEngine::PauseManager::Initialize()
 	isDisplaySmash = true;
 	isDisplayScore = true;
 	isVib = true;
+	isReset = false;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -183,6 +184,8 @@ void KochaEngine::PauseManager::MenuTab()
 		if (InputManager::DecisionKey())
 		{ 
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			PauseChange();
+			isReset = true;
 		}
 		break;
 	case KochaEngine::PauseManager::OPTION:

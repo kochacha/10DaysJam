@@ -1,6 +1,5 @@
 #pragma once
 #include <dinput.h>
-#include <Windows.h>
 #include <Xinput.h>
 #define DIRECTINPUT_VERSION 0x0800 
 #define KEY_MAX 256
