@@ -16,6 +16,7 @@ namespace KochaEngine
 	class LightManager;
 	class ScoreManager;
 	class PauseManager;
+	class Text;
 
 	class GamePlay : public Scene
 	{
