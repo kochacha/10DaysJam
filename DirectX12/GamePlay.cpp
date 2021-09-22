@@ -89,6 +89,8 @@ void KochaEngine::GamePlay::Initialize()
 	pauseManager->Initialize();
 	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
 	scrollManager->Initialize();
+	iText->Initialize();
+	sManager->Initialize();
 
 	gManager->GetPlayer()->SetPauseManager(pauseManager);
 
@@ -140,6 +142,10 @@ void KochaEngine::GamePlay::Update()
 	{
 		iText->Update();
 	}
+	if (iText->IsNext())
+	{
+		Initialize();
+	}
 	
 	if (!inGame)
 	{
@@ -161,7 +167,6 @@ void KochaEngine::GamePlay::Update()
 			sManager->SaveScore();
 			gManager->RemoveItem();
 			player->Finish();
-			//Initialize();
 		}
 
 	}

@@ -21,6 +21,7 @@ namespace KochaEngine
 		int texNum;
 		const int MAX_TEX_NUM = 70;
 		const float FONT_SIZE = 48;
+		bool isNext;
 		bool isChange;
 		int count;
 
@@ -38,5 +39,6 @@ namespace KochaEngine
 		void Draw();
 
 		std::string GetName();
+		bool IsNext() { return isNext; }
 	};
 }

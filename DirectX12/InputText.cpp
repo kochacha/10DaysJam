@@ -37,10 +37,12 @@ void KochaEngine::InputText::Initialize()
 	texNum = 1;
 	count = 0;
 	isChange = false;
+	isNext = false;
 }
 
 void KochaEngine::InputText::Update()
 {
+	if (isNext) return;
 	InputCursor();
 	FixNumbers();
 	InputDecision();
@@ -167,7 +169,7 @@ void KochaEngine::InputText::InputDecision()
 		else if(texNum == MAX_TEX_NUM) //OK‚Ì‚Íname‚ÖŠi”[‚µ‚È‚¢
 		{
 			//“ü—Íó•tI—¹ˆ—
-
+			isNext = true;
 		}
 		else if(indexNum < MAX_INDEX_NUM && texNum != 69)
 		{
