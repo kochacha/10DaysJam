@@ -106,7 +106,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)Effekseer\include\Effekseer;$(SolutionDir)Effekseer\include\EffekseerRendererDX12</AdditionalIncludeDirectories>
@@ -221,6 +221,7 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScoreDBAccess.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScrollManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -522,6 +523,7 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScoreDBAccess.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScrollManager.h" />
     <ClInclude Include="Sprite.h" />
