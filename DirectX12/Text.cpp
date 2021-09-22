@@ -44,7 +44,7 @@ const int KochaEngine::Text::ConvertAscii(const char arg_charcter)
     //アンダーバーかどうか
     if (n == 95)
     {
-        return 66;
+        return 67;
     }
 
     //数字かどうか

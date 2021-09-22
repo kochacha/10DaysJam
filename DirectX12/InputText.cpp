@@ -8,9 +8,9 @@ KochaEngine::InputText::InputText()
 {
 	for (int i = 0; i < MAX_INDEX_NUM; i++)
 	{
-		char displayChar[3] = { 94 };
+		char displayChar[3] = { '_' };
 
-		text[i] = new Text(displayChar, Vector2(300 + 34 * i, 200), Vector2(32, 32));
+		text[i] = new Text(displayChar, Vector2(300 + 52 * i, 200), Vector2(48, 48));
 	}
 
 	Initialize();
@@ -136,7 +136,7 @@ void KochaEngine::InputText::InputDecision()
 		{
 			indexNum--;
 			name[indexNum] = '\0';
-			text[indexNum]->SetLeadText(68);
+			text[indexNum]->SetLeadText(67);
 		}
 		else if(texNum == MAX_TEX_NUM) //OKの時はnameへ格納しない
 		{
@@ -156,7 +156,7 @@ void KochaEngine::InputText::InputDecision()
 		{
 			indexNum--;
 			name[indexNum] = '\0';
-			text[indexNum]->SetLeadText(68);
+			text[indexNum]->SetLeadText(67);
 		}
 	}
 }
@@ -164,7 +164,7 @@ void KochaEngine::InputText::InputDecision()
 const int KochaEngine::InputText::ConvertInt(const int arg_texNum)
 {
 	//アンダーバーかどうか
-	if (arg_texNum == 66)
+	if (arg_texNum == 67)
 	{
 		return 95;
 	}
