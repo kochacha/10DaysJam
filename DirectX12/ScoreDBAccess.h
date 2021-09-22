@@ -21,7 +21,7 @@ namespace KochaEngine
 		const char server[256] = "cafeserver.php.xdomain.jp";
 		char uploadURL[256] = "/upload.php";
 		char loadOnlyURL[256] = "/only_load.php";
-		char rcv[256];
+		char rcv[1000];
 		const char portNumber[8] = "80";
 		char str[1000];
 		unsigned short port_no;

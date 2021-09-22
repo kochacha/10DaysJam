@@ -7,6 +7,8 @@ KochaEngine::ScoreDBAccess::ScoreDBAccess()
 
 KochaEngine::ScoreDBAccess::~ScoreDBAccess()
 {
+	Disconnect();
+	
 }
 
 void KochaEngine::ScoreDBAccess::Initialize()
@@ -47,13 +49,26 @@ void KochaEngine::ScoreDBAccess::Initialize()
 	sock_add.sin_port = htons(port_no);
 	sock_add.sin_addr = *((LPIN_ADDR)*lp_host->h_addr_list);
 
+	//StartConnection();
+
 }
 
 void KochaEngine::ScoreDBAccess::StartConnection()
 {
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	if (sock == INVALID_SOCKET)
+	{
+		online = false;
+		return;
+	}
+
+	memset(&sock_add, 0, sizeof(sock_add));
+	sock_add.sin_family = AF_INET;
+	sock_add.sin_port = htons(port_no);
+	sock_add.sin_addr = *((LPIN_ADDR)*lp_host->h_addr_list);
+
 	if (connect(sock, (PSOCKADDR)&sock_add, sizeof(sock_add)) != 0)
 	{
-		printf("ソケットに接続失敗\n");
 		closesocket(sock);
 		online = false;
 		return;
@@ -134,6 +149,10 @@ void KochaEngine::ScoreDBAccess::LoadDBRanking()
 	sprintf_s(str, "GET http://%s%s HTTP/1.0\r\n\r\n”", server, loadOnlyURL, 1000);
 	result = send(sock, str, (int)strlen(str), 0);
 
+	memset(rcv, 0, sizeof(rcv));
+
+	result = recv(sock, rcv, (int)sizeof(rcv) - 1, 0);
+
 	int i = 0;
 	int a = 0;
 	for (i = 0; rcv[i] != '\0'; i++)
@@ -193,13 +212,12 @@ void KochaEngine::ScoreDBAccess::LoadDBRanking()
 
 void KochaEngine::ScoreDBAccess::Disconnect()
 {
-	// ⑨．シャットダウン
 	if (shutdown(sock, SD_BOTH) != 0)
 	{
 		printf("シャットダウンに失敗しました\n");
 	}
-	// ⑩．ソケットを閉じる
 	closesocket(sock);
+
 	online = false;
 }
 

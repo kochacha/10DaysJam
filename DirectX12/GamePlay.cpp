@@ -95,6 +95,7 @@ void KochaEngine::GamePlay::Initialize()
 	sManager->Initialize();
 
 	scoreDBAccessDev->Initialize();
+	isSend = false;
 
 	gManager->GetPlayer()->SetPauseManager(pauseManager);
 
@@ -160,12 +161,18 @@ void KochaEngine::GamePlay::Update()
 	}
 	if (iText->IsNext())
 	{
-		scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
-
-		if (scoreDBAccessDev->IsOnline())
+		if (!isSend)
 		{
-			scoreDBAccessDev->GetRankingByAddScoreDB(iText->GetName(), sManager->GetScore()); //サーバーにデータを送る
+			scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+
+			if (scoreDBAccessDev->IsOnline())
+			{
+				scoreDBAccessDev->GetRankingByAddScoreDB(iText->GetName(), sManager->GetScore()); //サーバーにデータを送る
+				isSend = true;
+			}
+
 		}
+		
 	
 
 		isShowRank = true;

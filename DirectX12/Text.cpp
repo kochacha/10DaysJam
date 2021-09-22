@@ -46,13 +46,20 @@ void KochaEngine::Text::SetLeadText(const int arg_texNum)
 
 void KochaEngine::Text::SetText(const char* arg_text)
 {
+    bool isSpace = false;
     for (int i = 0; i < incrementSize; i++)
     {
+        if (isSpace)
+        {
+            textures[i]->SetTexNum(68);
+            continue;
+        }
         //ここでコンバート
         int texNum = ConvertAscii(*(arg_text + i));
         if (*(arg_text + i) == '\0' || texNum < 1 || texNum > 70)
         {
             textures[i]->SetTexNum(68);
+            isSpace = true;
         }
         else
         {

@@ -217,5 +217,5 @@ const int KochaEngine::InputText::ConvertInt(const int arg_texNum)
 		return arg_texNum + 54;
 	}
 	//¬•¶š
-	return arg_texNum + 46;
+	return arg_texNum + 56;
 }
