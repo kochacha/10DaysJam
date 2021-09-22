@@ -14,6 +14,7 @@
 #include "MiniMap.h"
 #include "InputManager.h"
 #include "Text.h"
+#include "InputText.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -35,6 +36,8 @@ KochaEngine::GamePlay::GamePlay()
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
+
+	iText = new InputText();
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -54,6 +57,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete controlUITexture;
 	delete rankingUITexture;
 	delete scrollManager;
+	delete iText;
 }
 
 void KochaEngine::GamePlay::Initialize()
@@ -122,6 +126,7 @@ void KochaEngine::GamePlay::Update()
 	gManager->Update();
 	pManager->Update();
 	camera->Update();
+	iText->Update();
 	
 	lightManager->Update();
 
@@ -164,6 +169,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 	gManager->SpriteDraw();
 	sManager->Draw(isShowRank);
 	pauseManager->Draw();
+	iText->Draw();
 }
 
 void KochaEngine::GamePlay::ObjDraw()
