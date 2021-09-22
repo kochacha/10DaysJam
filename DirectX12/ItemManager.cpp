@@ -5,15 +5,24 @@
 #include "JammingSpine.h"
 #include "Wall.h"
 #include "ScrollManager.h"
-const float KochaEngine::ItemManager::MARGIN_FRAME = 12.0f;
 
 KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager)
+	:camera(nullptr),
+	 gManager(nullptr),
+	 pWall(nullptr),
+	 scrollManager(nullptr),
+	 emitInterval(0),
+	 MARGIN_FRAME(12.0f)
 {
 	if (!arg_camera) return;
 	if (!arg_gManager) return;
 
 	camera = arg_camera;
 	gManager = arg_gManager;
+
+	enhancementItems.clear();
+	jammingSpines.clear();
+	memset(arrayEmitHight, 0.0f, sizeof(arrayEmitHight));
 }
 
 KochaEngine::ItemManager::~ItemManager()
@@ -28,17 +37,13 @@ void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
 	scrollManager = arg_scrollManager;
 	enhancementItems.clear();
 	jammingSpines.clear();
-	CompareTheRightmost();
 
-	/*AddEnhItem(Vector3(20, 10, 0), ItemEmitPosition::FROM_CENTER);
-	AddJamSpine(Vector3(-30, -20, 0), ItemEmitPosition::FROM_CENTER);*/
 	emitInterval = 0;	
 
 	//生成座標レーンの初期化
 	arrayEmitHight[0] = pWall->GetPlayableSize().y * 0.5f;
 	arrayEmitHight[5] = 0;
 	arrayEmitHight[10] = -pWall->GetPlayableSize().y * 0.5f;
-
 	float unitHeight = pWall->GetPlayableSize().y * 0.1f;
 	for (int i = 1; i <= 4; i++)
 	{
@@ -49,7 +54,6 @@ void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
 
 void KochaEngine::ItemManager::Update()
 {
-	CompareTheRightmost();
 	EmitItemsNormalTime();
 	EmitItemsSmashing();
 
@@ -81,29 +85,9 @@ void KochaEngine::ItemManager::Update()
 #endif _DEBUG
 }
 
-void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
-{
-	EnhancementItem* item = new EnhancementItem(camera, gManager, arg_position, this, arg_emitOption);
-	gManager->AddObject(item);
-	enhancementItems.push_back(item);
-	CompareTheRightmost();
-}
-
-void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
-{
-	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this, arg_emitOption, GetIsSpineMove());
-	gManager->AddObject(spine);
-	jammingSpines.push_back(spine);
-	CompareTheRightmost();
-}
-
-const unsigned int KochaEngine::ItemManager::GetScrollLevel()
-{
-	return scrollManager->GetScrollLevel();
-}
-
 void KochaEngine::ItemManager::DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType)
 {
+	//第二引数によって何を削除するか決める
 	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)
 	{
 		DeleteFromItems(static_cast<EnhancementItem*>(arg_pObj));
@@ -112,14 +96,39 @@ void KochaEngine::ItemManager::DeleteFromVector(GameObject* arg_pObj, const Game
 	{
 		DeleteFromSpines(static_cast<JammingSpine*>(arg_pObj));
 	}
+	//アイテムでもトゲでもなければ警告
 	else
 	{
 		assert(0);
 	}
 }
 
+void KochaEngine::ItemManager::AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
+{
+	EnhancementItem* item = new EnhancementItem(camera, gManager, arg_position, this, arg_emitOption);
+	//ゲームオブジェクトマネージャーに登録
+	gManager->AddObject(item);
+	//自身の持つ配列にも登録
+	enhancementItems.push_back(item);
+}
+
+void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
+{
+	JammingSpine* spine = new JammingSpine(camera, gManager, arg_position, this, arg_emitOption, GetIsSpineMove());
+	//ゲームオブジェクトマネージャーに登録
+	gManager->AddObject(spine);
+	//自身の持つ配列にも登録
+	jammingSpines.push_back(spine);
+}
+
+const unsigned int KochaEngine::ItemManager::GetScrollLevel()
+{
+	return scrollManager->GetScrollLevel();
+}
+
 void KochaEngine::ItemManager::DeleteFromItems(EnhancementItem* arg_enhItem)
 {
+	//削除予定のアイテムがあるか検索
 	std::vector<EnhancementItem*>::iterator itr = enhancementItems.begin();
 	for (; itr != enhancementItems.end(); itr++)
 	{
@@ -128,14 +137,16 @@ void KochaEngine::ItemManager::DeleteFromItems(EnhancementItem* arg_enhItem)
 			break;
 		}		
 	}
+	//なかったら警告
 	assert(itr != enhancementItems.end());
 
+	//削除実行
 	enhancementItems.erase(itr);
-	CompareTheRightmost();
 }
 
 void KochaEngine::ItemManager::DeleteFromSpines(JammingSpine* arg_jamSpine)
 {	
+	//削除予定のトゲがあるか検索
 	std::vector<JammingSpine*>::iterator itr = jammingSpines.begin();
 	for (; itr != jammingSpines.end(); itr++)
 	{
@@ -144,31 +155,11 @@ void KochaEngine::ItemManager::DeleteFromSpines(JammingSpine* arg_jamSpine)
 			break;
 		}
 	}
+	//なかったら警告
 	assert(itr != jammingSpines.end());	
 
+	//削除実行
 	jammingSpines.erase(itr);
-	CompareTheRightmost();
-}
-
-void KochaEngine::ItemManager::CompareTheRightmost()
-{
-	Vector2 wallPos = pWall->GetCenterPos();
-	theRightmostPos = Vector3(wallPos.x, wallPos.y, 0);
-
-	for (std::vector<EnhancementItem*>::iterator itr = enhancementItems.begin(); itr != enhancementItems.end(); itr++)
-	{
-		if ((*itr)->GetPosition().x > theRightmostPos.x)
-		{
-			theRightmostPos = (*itr)->GetPosition();
-		}
-	}
-	for (std::vector<JammingSpine*>::iterator itr = jammingSpines.begin(); itr != jammingSpines.end(); itr++)
-	{
-		if ((*itr)->GetPosition().x > theRightmostPos.x)
-		{
-			theRightmostPos = (*itr)->GetPosition();
-		}
-	}
 }
 
 void KochaEngine::ItemManager::EmitItemsNormalTime()
@@ -176,10 +167,7 @@ void KochaEngine::ItemManager::EmitItemsNormalTime()
 	//生成インターバル加算
 	emitInterval++;
 	//インターバルが足りなかったら
-	if (emitInterval < GetMaxEmitInterval()) return;
-
-	//一番右のアイテムが中心より右にあったら
-	//if (theRightmostPos.x > pWall->GetCenterPos().x) return;
+	if (emitInterval < GetMaxEmitInterval()) return;	
 
 	//生成処理
 	GeneralEmitCommand(ItemEmitPosition::MORE_THAN_RIGHTSIDE, ItemEmitOption::NORMAL);
@@ -192,10 +180,11 @@ void KochaEngine::ItemManager::EmitItemsSmashing()
 {
 	Player* pPlayer = gManager->GetPlayer();
 	int playerBackCount = pPlayer->GetBackCount();
+	//プレイヤーが壁押し込みをしていなかったら
 	if (playerBackCount <= 0) return;
-
+	//疑似タイトル画面だったら
 	if (!pPlayer->IsInGame()) return;
-
+	//生成間隔管理
 	if ((playerBackCount % 6) != 0) return;
 
 	//生成処理
@@ -204,6 +193,7 @@ void KochaEngine::ItemManager::EmitItemsSmashing()
 
 void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
 {
+	//アイテムとトゲのどちらを生成するか
 	const unsigned int rndMax = 20;
 	const unsigned int rndCoefficient = GetEmitTypeCoefficient();
 	int rnd = Util::GetRandInt(rndMax);
@@ -212,6 +202,7 @@ void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emi
 	if (rnd < rndCoefficient)
 	{
 		Vector3 emitPos;
+		//既存のオブジェクトと重ならないように座標決定
 		while (true)
 		{
 			emitPos = DetermineEmitPos(GameObjectType::ENHANCEMENT_ITEM);
@@ -219,12 +210,14 @@ void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emi
 
 			if (!IsHitExistingItems(GameObjectType::ENHANCEMENT_ITEM, emitPos)) break;
 		}
+		//生成実行
 		AddEnhItem(emitPos, arg_emitPosition, arg_emitOption);
 	}
 	//おじゃまトゲ生成
 	else
 	{
 		Vector3 emitPos;
+		//既存のオブジェクトと重ならないように座標決定
 		while (true)
 		{
 			emitPos = DetermineEmitPos(GameObjectType::JAMMING_SPINE);
@@ -232,6 +225,7 @@ void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emi
 
 			if (!IsHitExistingItems(GameObjectType::JAMMING_SPINE, emitPos)) break;
 		}
+		//生成実行
 		AddJamSpine(emitPos, arg_emitPosition, arg_emitOption);
 	}
 }
@@ -239,13 +233,16 @@ void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emi
 void KochaEngine::ItemManager::FixEmitPositionByCondition(Vector3& arg_position, const ItemEmitPosition arg_emitPosition)
 {
 	switch (arg_emitPosition)
-	{
+	{	
 	case ItemEmitPosition::ABSOLUTE_WORLDPOS:
+		//ワールド座標としてそのままに
 		break;
 	case ItemEmitPosition::FROM_CENTER:
+		//画面の中心からどれだけ離れているかに変換
 		arg_position += Vector3(pWall->GetCenterPos().x, pWall->GetCenterPos().y, 0);
 		break;
 	case ItemEmitPosition::MORE_THAN_RIGHTSIDE:
+		//y座標はそのままで右端から出てくるように変換
 		arg_position.x = MARGIN_FRAME;
 		arg_position += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
 		break;
@@ -260,19 +257,24 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 	int rndMax = 0;
 	int rnd = 0;
 
+	//強化アイテムなら
 	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)
 	{	
+		//9レーンの中からランダム
 		rndMax = 9;
 		rnd = Util::GetRandInt(rndMax);
 		emitPos = Vector3(0, arrayEmitHight[rnd + 1], 0);
 	}
+	//トゲなら
 	else if (arg_objType == GameObjectType::JAMMING_SPINE)
 	{
+		//5レーンの中からランダム
 		rndMax = 5;
 		rnd = Util::GetRandInt(rndMax);
 		emitPos = Vector3(0, arrayEmitHight[rnd * 2 + 1], 0);
 	}
 
+	//わずかにy座標をばらけさせる
 	rndMax = 5;
 	rnd = Util::GetRandInt(rndMax) - 2;
 	emitPos.y += rnd;
@@ -292,6 +294,7 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 
 const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position)
 {
+	//これから生成予定の衝突判定を再現
 	_Sphere sphere;
 	sphere.position = arg_position;
 	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)
@@ -302,8 +305,10 @@ const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg
 	{
 		sphere.radius = 4.0f;
 	}
+	//アイテムかトゲ以外を生成させようとしていたら
 	else
 	{
+		//警告
 		assert(0);
 	}
 
