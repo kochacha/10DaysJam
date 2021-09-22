@@ -60,6 +60,8 @@ namespace KochaEngine
 		void AddEnhItem(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);
 		void AddJamSpine(const Vector3& arg_position, const ItemEmitPosition arg_emitPosition = ItemEmitPosition::ABSOLUTE_WORLDPOS, const ItemEmitOption arg_emitOption = ItemEmitOption::NORMAL);		
 
+		const unsigned int GetScrollLevel();
+
 		static const float MARGIN_FRAME;
 		float arrayEmitHight[11];
 	};

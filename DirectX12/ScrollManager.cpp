@@ -20,7 +20,7 @@ void KochaEngine::ScrollManager::Initialize()
 
 void KochaEngine::ScrollManager::Update()
 {
-	if (time >= 5)
+	if (time >= 10)
 	{
 		scrollLevel += 1;
 		ScrollSpeedUp();

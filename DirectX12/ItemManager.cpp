@@ -97,6 +97,11 @@ void KochaEngine::ItemManager::AddJamSpine(const Vector3& arg_position, const It
 	CompareTheRightmost();
 }
 
+const unsigned int KochaEngine::ItemManager::GetScrollLevel()
+{
+	return scrollManager->GetScrollLevel();
+}
+
 void KochaEngine::ItemManager::DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType)
 {
 	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)

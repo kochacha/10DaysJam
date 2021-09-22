@@ -23,6 +23,7 @@ namespace KochaEngine
 
 		void SetObjParam();
 		void MoveVertical();
+		const float GetVerticalMoveSpeed();
 
 	public:
 		JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove);

@@ -15,7 +15,7 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	iManager = arg_iManager;
 	pWall = gManager->GetWall();
 	isVerticalMove = arg_isVMove;
-	velVertical = 0.3f;
+	velVertical = 1.0f;
 
 	switch (arg_option)
 	{
@@ -139,7 +139,7 @@ void KochaEngine::JammingSpine::MoveVertical()
 	if (!isVerticalMove) return;
 	if (moveCount > 0) return;
 
-	position.y += velVertical;
+	position.y += velVertical * GetVerticalMoveSpeed();
 
 	//ã’[‚Å‚ÌÜ‚è•Ô‚µ
 	if (position.y >= pWall->GetMaxPos().y)
@@ -153,4 +153,31 @@ void KochaEngine::JammingSpine::MoveVertical()
 		position.y = pWall->GetMinPos().y;
 	    velVertical *= -1;
 	}
+}
+
+const float KochaEngine::JammingSpine::GetVerticalMoveSpeed()
+{
+	const unsigned int scrollLevel = iManager->GetScrollLevel() / 2 + 1;
+	float answerVal = 0.0f;
+
+	switch (scrollLevel)
+	{
+	case 1:
+		answerVal = 0.3f;
+		break;
+	case 2:
+		answerVal = 0.45f;
+		break;
+	case 3:
+		answerVal = 0.6f;
+		break;
+	case 4:
+		answerVal = 0.75f;
+		break;
+	default:
+		answerVal = 0.9f;
+		break;
+	}
+
+	return answerVal;
 }
