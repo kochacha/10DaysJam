@@ -1,6 +1,10 @@
 #include "ScrollManager.h"
 
 KochaEngine::ScrollManager::ScrollManager()
+	:scrollAmount(0.0f),
+	 frameCount(0),
+	 time(0),
+	 scrollLevel(0)
 {
 	Initialize();
 }
@@ -11,7 +15,6 @@ KochaEngine::ScrollManager::~ScrollManager()
 
 void KochaEngine::ScrollManager::Initialize()
 {
-
 	scrollLevel = 1;
 	frameCount = 0;
 	time = 0;
@@ -20,20 +23,22 @@ void KochaEngine::ScrollManager::Initialize()
 
 void KochaEngine::ScrollManager::Update()
 {
+	//指定秒数経ったら
 	if (time >= 10)
 	{
+		//レベルを上げる
 		scrollLevel += 1;
 		ScrollSpeedUp();
 		time = 0;
 	}
 
+	//60フレームで1秒
+	frameCount++;
 	if (frameCount >= 60)
 	{
 		time++;
-		frameCount = 0;
-		return;
+		frameCount = 0;		
 	}
-	frameCount++;
 }
 
 void KochaEngine::ScrollManager::ScrollSpeedUp()

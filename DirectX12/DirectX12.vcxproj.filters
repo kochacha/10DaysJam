@@ -591,13 +591,13 @@
     <ClInclude Include="Text.h">
       <Filter>Header\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreManager.h">
-      <Filter>Source\Device</Filter>
-    </ClInclude>
     <ClInclude Include="ScoreDBAccess.h">
       <Filter>Header\Device</Filter>
     </ClInclude>
     <ClInclude Include="MiniMap.h">
+      <Filter>Header\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
