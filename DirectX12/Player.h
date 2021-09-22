@@ -17,15 +17,30 @@ namespace KochaEngine
 		ParticleEmitter* pEmitter;
 		ScoreManager* sManager;
 		PauseManager* pManager;
-		Audio* se;	
+		Audio* se;
+		//移動方向の矢印表示用
 		Object* wayObj;
+		//スマッシュの軌道表示用
 		Object* smashLine;
+		//パワーゲージ表示用
+		//内側黄色
+		Texture2D* powarGauge[10];
+		//外枠
+		Texture2D* emptyGauge[10];
+		//内側黒
+		Texture2D* overDriveGauge[5];
+
+		//ゲーム1プレイが終わっているか
+		bool isFinish;
+		//ヒットストップ中か
+		bool isHitStop;
+		//ヒットストップしている時間
+		int hitStopCount;
 
 		float speed;
 		float wayRotate;
 		bool smash;
 		bool isWayDraw;
-		bool isFinish;
 		bool isOnce;
 		int testCount;
 		int asobiCount;
@@ -46,13 +61,7 @@ namespace KochaEngine
 		int addSmashScore;
 		bool hitWall;
 
-		Texture2D* powarGauge[10];
-		Texture2D* emptyGauge[10];
-		Texture2D* overDriveGauge[5];
-
-		float seVolume;
-		bool isHitStop;
-		int hitStopCount;
+		float seVolume;		
 
 		bool* inGame;
 
@@ -80,16 +89,16 @@ namespace KochaEngine
 		//スマッシュしているかどうか
 		const bool IsSmashing();
 		const bool IsStuning();
-		const bool IsFinishSmash();
 
 		//パワーアップ
 		void PowerUp(const GameObjectType arg_objectType);
 		//通常時のおじゃまトゲとの衝突時処理
 		void PowerDown();
 
-		bool IsFinish() { return isFinish; }
-		void Finish() { isFinish = true; }
-		bool IsHitStop() { return isHitStop; }
+		const bool IsFinish();
+		//外側から動的にisFinishをtrueにする
+		void Finish();
+		const bool IsHitStop();
 		void HitStopTimer();
 
 		void SetPauseManager(PauseManager* arg_pManager);

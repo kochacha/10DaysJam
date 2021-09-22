@@ -8,6 +8,16 @@
 #include "PauseManager.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
+	:gManager(nullptr),
+	 pEmitter(nullptr),
+	 sManager(nullptr),
+	 pManager(nullptr),
+	 se(nullptr),
+	 wayObj(nullptr),
+	 smashLine(nullptr),
+	 isFinish(false),
+	 isHitStop(false),
+	 hitStopCount(0)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -17,13 +27,12 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	gManager = arg_gManager;
 	pEmitter = arg_pEmitter;
 	sManager = arg_sManager;
-	position = arg_position;
-	this->inGame = inGameFlag;
+	se = new Audio();
 
+	//表示用オブジェクトの生成
 	obj = new Object("plane");
 	wayObj = new Object("plane");
 	smashLine = new Object("plane");
-	se = new Audio();
 	for (int i = 0; i < 10; i++)
 	{
 		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
@@ -32,13 +41,17 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 		{
 			overDriveGauge[i] = new Texture2D("Resources/gauge.png", Vector2(0, 720), Vector2(65, 55), 0);
 		}
-		
 	}
+
+	position = arg_position;
+	this->inGame = inGameFlag;
+	
 	Initialize();
 }
 
 KochaEngine::Player::~Player()
 {
+	delete se;
 	delete obj;
 	delete wayObj;
 	delete smashLine;
@@ -51,11 +64,12 @@ KochaEngine::Player::~Player()
 			delete overDriveGauge[i];
 		}
 	}
-	delete se;
 }
 
 void KochaEngine::Player::Initialize()
 {
+	isFinish = false;
+
 	isAlpha = true;
 
 	velocity.Zero();
@@ -63,7 +77,6 @@ void KochaEngine::Player::Initialize()
 	wayRotate = 0;
 	asobiCount = 0;
 	isWayDraw = false;
-	isFinish = false;
 	isOnce = false;
 	smash = false;
 	isStun = false;
@@ -75,7 +88,6 @@ void KochaEngine::Player::Initialize()
 	isHitStop = false;
 	ResetPower();
 	
-
 	sphere.radius = 4.0f;
 	sphere.position = this->position;
 
@@ -248,17 +260,6 @@ const bool KochaEngine::Player::IsStuning()
 	return isStun;
 }
 
-const bool KochaEngine::Player::IsFinishSmash()
-{
-	Wall* pWall = gManager->GetWall();
-
-	if (backCount != 1) return false;
-	if (position.x < pWall->GetMinPos().x) return false;
-	if (!hitWall) return false;
-
-	return true;
-}
-
 void KochaEngine::Player::SpriteDraw()
 {
 	for (int i = 0; i < MAX_SMASHPOWER; i++)
@@ -357,6 +358,21 @@ void KochaEngine::Player::PowerDown()
 	isStun = true;
 }
 
+const bool KochaEngine::Player::IsFinish()
+{
+	return isFinish;
+}
+
+void KochaEngine::Player::Finish()
+{
+	isFinish = true;
+}
+
+const bool KochaEngine::Player::IsHitStop()
+{
+	return isHitStop;
+}
+
 void KochaEngine::Player::HitStopTimer()
 {
 	if (hitStopCount > 0)
@@ -367,7 +383,6 @@ void KochaEngine::Player::HitStopTimer()
 	{
 		isHitStop = false;
 	}
-
 }
 
 void KochaEngine::Player::SetPauseManager(PauseManager* arg_pManager)
