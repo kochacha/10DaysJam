@@ -31,6 +31,11 @@ void KochaEngine::Text::Draw()
     }
 }
 
+void KochaEngine::Text::SetLeadText(const int arg_texNum)
+{
+    textures[0]->SetTexNum(arg_texNum);
+}
+
 const int KochaEngine::Text::ConvertAscii(const char arg_charcter)
 {
     int n = arg_charcter;
@@ -39,7 +44,7 @@ const int KochaEngine::Text::ConvertAscii(const char arg_charcter)
     //アンダーバーかどうか
     if (n == 95)
     {
-        return 66;
+        return 67;
     }
 
     //数字かどうか

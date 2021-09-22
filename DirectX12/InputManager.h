@@ -14,6 +14,8 @@ namespace KochaEngine
 		static bool DownCursorKey();
 		static bool LeftKey();
 		static bool RightKey();
+		static bool DownKey();
+		static bool UpKey();
 		static bool RankingCheckKey();
 	};
 }
