@@ -277,6 +277,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source\Device</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreDBAccess.cpp">
+      <Filter>Source\Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicShaderHeader.hlsli">
@@ -568,9 +571,6 @@
     <ClInclude Include="PauseManager.h">
       <Filter>Header\Util</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreManager.h">
-      <Filter>Header\Object\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameSetting.h">
       <Filter>Header\Util</Filter>
     </ClInclude>
@@ -582,6 +582,12 @@
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
+      <Filter>Header\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
+      <Filter>Source\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDBAccess.h">
       <Filter>Header\Device</Filter>
     </ClInclude>
   </ItemGroup>
