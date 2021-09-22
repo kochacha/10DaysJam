@@ -40,6 +40,7 @@ namespace KochaEngine
 		Texture2D* flameTexture;
 		Texture2D* controlUITexture;
 		Texture2D* rankingUITexture;
+		Texture2D* finishTexture;
 
 		InputText* iText;
 
