@@ -138,7 +138,7 @@ void KochaEngine::Player::Update()
 			}
 		}
 
-		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPos())
+		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPosX())
 		{
 			backCount = 0;			
 		}

@@ -16,8 +16,8 @@ KochaEngine::MiniMap::MiniMap(Camera* arg_camera,GameObjectManager* arg_gManager
 	mapPlayer = new Texture2D("Resources/playerUI.png", Vector2(100, 800), Vector2(50, 50), 0);
 	
 	auto wall = gManager->GetWall();
-	mapStart = wall->GetLimitLeftPos() + wall->GetPlayableSize().x / 2;
-	mapEnd = (wall->GetLimitRightPos() - 5.0f) + wall->GetPlayableSize().x / 2;
+	mapStart = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
+	mapEnd = (wall->GetLimitRightPosX() - 5.0f) + wall->GetPlayableSize().x / 2;
 	mapLength = fabs(mapStart) + fabs(mapEnd);
 	mapCorrectionValue = mapLength / 2.0f - fabs(mapStart);
 
@@ -38,8 +38,8 @@ void KochaEngine::MiniMap::Initialize()
 
 void KochaEngine::MiniMap::Update()
 {	
-	//float length = fabs(wall->GetLimitLeftPos()) + fabs(wall->GetLimitRightPos()); //600
-	//float x = camera->GetTarget().x + fabs(wall->GetLimitLeftPos()); //300
+	//float length = fabs(wall->GetLimitLeftPosX()) + fabs(wall->GetLimitRightPosX()); //600
+	//float x = camera->GetTarget().x + fabs(wall->GetLimitLeftPosX()); //300
 	//float ratio = x / length; //0.5f
 	//mapPlayerPos.x = (miniMapSize.x) * ratio -25; //140
 

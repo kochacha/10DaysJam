@@ -2,14 +2,22 @@
 #include "GameObjectManager.h"
 #include "Util.h"
 
-KochaEngine::Wall::Wall(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos,const float& limitLeftPos, const float& limitRightPos)
-{
-	this->minPos = minPos;
-	this->maxPos = maxPos;
-	this->limitLeftPos = limitLeftPos;
-	this->limitRightPos = limitRightPos;
+KochaEngine::Wall::Wall(GameObjectManager* arg_gManager, const Vector2& arg_minPos, const Vector2& arg_maxPos,const float& arg_limitLeftPosX, const float& arg_limitRightPosX)
+	:gManager(nullptr),
+	 minPos(Vector2()),
+	 maxPos(Vector2()),
+	 playableSize(Vector2()),
+	 limitLeftPosX(0.0f),
+	 limitRightPosX(0.0f),
+	 objectDrawPos(Vector2())
+{	
 	if (arg_gManager == nullptr) return;
 	gManager = arg_gManager;
+
+	this->minPos = arg_minPos;
+	this->maxPos = arg_maxPos;
+	this->limitLeftPosX = arg_limitLeftPosX;
+	this->limitRightPosX = arg_limitRightPosX;
 	
 	obj = new Object("plane");
 	Initialize();
@@ -23,8 +31,8 @@ KochaEngine::Wall::~Wall()
 void KochaEngine::Wall::Initialize()
 {
 	playableSize = maxPos - minPos;
-	currMinPos = minPos;
-	currMinPos.x -= 9.5f;
+	objectDrawPos = minPos;
+	objectDrawPos.x -= 9.5f;
 
 	obj->SetTexture("Resources/wall.png");
 	obj->SetScale(Vector3(-70, 120, 1));
@@ -34,13 +42,14 @@ void KochaEngine::Wall::Initialize()
 
 void KochaEngine::Wall::Update()
 {
-	currMinPos.x = Util::EaseIn(currMinPos.x, minPos.x - 11.0f, 0.55f);
-	obj->SetPosition(Vector3(currMinPos.x, 0, 0));
+	//カメラ移動から遅れて壁が動き出して見えるように
+	objectDrawPos.x = Util::EaseIn(objectDrawPos.x, minPos.x - 11.0f, 0.55f);
+	obj->SetPosition(Vector3(objectDrawPos.x, 0, 0));
 
-	wchar_t str[256];
+	//確認用出力
+	/*wchar_t str[256];
 	swprintf_s(str, L"minposX %f\n", minPos.x);
-	OutputDebugString(str);
-	
+	OutputDebugString(str);*/
 }
 
 void KochaEngine::Wall::Hit()
@@ -49,7 +58,7 @@ void KochaEngine::Wall::Hit()
 
 KochaEngine::GameObjectType KochaEngine::Wall::GetType()
 {
-	return WALL;
+	return GameObjectType::WALL;
 }
 
 void KochaEngine::Wall::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
@@ -59,6 +68,7 @@ void KochaEngine::Wall::ObjDraw(Camera* arg_camera, LightManager* arg_lightManag
 
 void KochaEngine::Wall::ScrollWall(float amount)
 {
+	//x座標だけ同じ分ずらす
 	minPos.x += amount;
 	maxPos.x += amount;
 }
@@ -83,12 +93,12 @@ const KochaEngine::Vector2 KochaEngine::Wall::GetPlayableSize()
 	return playableSize;
 }
 
-const float KochaEngine::Wall::GetLimitLeftPos()
+const float KochaEngine::Wall::GetLimitLeftPosX()
 {
-	return limitLeftPos;
+	return limitLeftPosX;
 }
 
-const float KochaEngine::Wall::GetLimitRightPos()
+const float KochaEngine::Wall::GetLimitRightPosX()
 {
-	return limitRightPos;
+	return limitRightPosX;
 }

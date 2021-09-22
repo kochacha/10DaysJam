@@ -72,7 +72,7 @@ void KochaEngine::GamePlay::Initialize()
 
 	//map->CreateMap(0);
 	const float STAGE_SIZE = 300.0f;
-	gManager->AddObject(new Wall(camera, gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
+	gManager->AddObject(new Wall(gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
 	gManager->AddObject(new DeadLine(camera, gManager, emitter, { STAGE_SIZE - 5.0f,0,0.1f, }));
 	MiniMap* miniMap = new MiniMap(camera, gManager, emitter);
 	gManager->AddObject(miniMap);
@@ -239,20 +239,18 @@ void KochaEngine::GamePlay::Scroll()
 	}
 	else
 	{
-		if (player->GetBackCount() > 0 && player->IsHitWall() && wall->GetMinPos().x > wall->GetLimitLeftPos() )
+		if (player->GetBackCount() > 0 && player->IsHitWall() && wall->GetMinPos().x > wall->GetLimitLeftPosX())
 		{
 			camera->MoveEye({ -10,0,0, });
 			wall->ScrollWall(-10);
 		}
 	}
-	
-	
 }
 
 void KochaEngine::GamePlay::Title()
 {
 	auto wall = gManager->GetWall();
-	if (wall->GetMinPos().x <= wall->GetLimitLeftPos())
+	if (wall->GetMinPos().x <= wall->GetLimitLeftPosX())
 	{
 		inGame = true;
 		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
