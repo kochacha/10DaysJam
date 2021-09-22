@@ -5,6 +5,14 @@
 #include "Util.h"
 
 KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove)
+	:gManager(nullptr),
+	 iManager(nullptr),
+	 pWall(nullptr),
+	 emittedPlayerPosition(Vector3()),
+	 prearrangedPosition(Vector3()),
+	 moveCount(0),
+	 isVerticalMove(false),
+	 velVertical(0.3f)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -14,8 +22,7 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	gManager = arg_gManager;	
 	iManager = arg_iManager;
 	pWall = gManager->GetWall();
-	isVerticalMove = arg_isVMove;
-	velVertical = 1.0f;
+	isVerticalMove = arg_isVMove;	
 
 	switch (arg_option)
 	{
@@ -25,6 +32,7 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	case ItemEmitOption::SMASHING_WALL:
 		emittedPlayerPosition = gManager->GetPlayer()->GetPosition();
 		position = emittedPlayerPosition;
+		//スマッシュ中生成時の目標座標
 		prearrangedPosition = arg_position;
 		moveCount = 5;
 		break;
@@ -63,8 +71,10 @@ void KochaEngine::JammingSpine::Initialize()
 
 void KochaEngine::JammingSpine::Update()
 {
+	//スマッシュ中に生成されていたら
 	if (moveCount > 0)
 	{
+		//線形補間で目標座標まで移動
 		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
 
 		moveCount--;
@@ -79,13 +89,7 @@ void KochaEngine::JammingSpine::Update()
 	{
 		Dead();
 		return;
-	}
-	//右側においていく
-	/*if (position.x >= pWall->GetMaxPos().x + pWall->GetPlayableSize().x / 2)
-	{
-		Dead();
-		return;
-	}*/
+	}	
 
 	gManager->HitObject(this, PLAYER);
 }
@@ -100,19 +104,21 @@ void KochaEngine::JammingSpine::Hit()
 	//プレイヤーがスマッシュ中なら
 	if (player->IsSmashing())
 	{
+		//プレイヤーはパワーアップし、自身は消滅
 		player->PowerUp(GetType());
-
 		Dead();		
 	}
 	//通常時なら
 	else if(!player->IsSmashing() && !player->IsStuning())
 	{
+		//プレイヤーはパワーダウン
 		player->PowerDown();
 	}
 }
 
 void KochaEngine::JammingSpine::Dead()
 {
+	//ItemManagerに登録されている自身を削除要請
 	iManager->DeleteFromVector(this, GetType());
 	isDelete = true;
 }
@@ -157,6 +163,7 @@ void KochaEngine::JammingSpine::MoveVertical()
 
 const float KochaEngine::JammingSpine::GetVerticalMoveSpeed()
 {
+	//ScrollManagerのscrollLevelをiManagerより参照
 	const unsigned int scrollLevel = iManager->GetScrollLevel() / 2 + 1;
 	float answerVal = 0.0f;
 

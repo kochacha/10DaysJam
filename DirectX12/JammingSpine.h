@@ -4,9 +4,11 @@
 namespace KochaEngine
 {
 	class GameObjectManager;
-	class ItemManager;
-	enum class ItemEmitOption;
+	class ItemManager;	
 	class Wall;
+
+	enum class ItemEmitOption;
+
 	class JammingSpine : public GameObject
 	{
 	private:
@@ -22,7 +24,9 @@ namespace KochaEngine
 		float velVertical;
 
 		void SetObjParam();
+		//ã‰ºˆÚ“®
 		void MoveVertical();
+		//ã‰ºˆÚ“®‚Ì‘¬“xŒˆ’è
 		const float GetVerticalMoveSpeed();
 
 	public:
