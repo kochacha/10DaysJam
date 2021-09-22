@@ -96,6 +96,7 @@ void KochaEngine::GamePlay::Initialize()
 
 	frameCount = 0;
 	seconds = 0;
+	resetCount = 100;
 	
 	isShowRank = false;
 	fadeFlag = true;
@@ -112,14 +113,17 @@ void KochaEngine::GamePlay::Update()
 {
 	
 	Fade();
-
-	pauseManager->Update();
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	bgm->SetVolume(bgmVolume);
 
+	auto player = gManager->GetPlayer();
+	if (!player->IsFinish())
+	{
+		pauseManager->Update();
+	}
+
 	if (pauseManager->IsPause()) return; //ƒ|[ƒY’†
 
-	auto player = gManager->GetPlayer();
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
@@ -138,13 +142,25 @@ void KochaEngine::GamePlay::Update()
 		iManager->Update();
 	}
 
-	if (player->IsFinish())
+	if (player->IsFinish() && !pauseManager->IsReset())
 	{
 		iText->Update();
 	}
 	if (iText->IsNext())
 	{
 		Initialize();
+	}
+	if (pauseManager->IsReset())
+	{
+		player->Finish();
+		if (resetCount > 0)
+		{
+			resetCount--;
+		}
+		else
+		{
+			Initialize();
+		}
 	}
 	
 	if (!inGame)
@@ -181,7 +197,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 	sManager->Draw(isShowRank);
 	pauseManager->Draw();
 
-	if (gManager->GetPlayer()->IsFinish())
+	if (gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset())
 	{
 		iText->Draw();
 	}

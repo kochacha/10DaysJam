@@ -9,6 +9,7 @@
 #include "Texture2D.h"
 #include "ItemManager.h"
 #include "ScrollManager.h"
+//#include "ScoreDBAccess.h"
 
 namespace KochaEngine
 {
@@ -51,6 +52,7 @@ namespace KochaEngine
 		int frameCount;
 		int seconds;
 		int endCount;
+		int resetCount;
 
 		const float scrollAmount = 0.25f;
 	public:
