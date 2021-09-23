@@ -35,8 +35,8 @@ void KochaEngine::ParticleEmitter::SmashStar(const Vector3& arg_position)
 	param.position = arg_position;
 
 	auto randScale = (float)Util::GetIntRand(5, 8);
-	auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
-	param.life = 40;
+	auto randY = (float)(Util::GetIntRand(0, 50) - 25) * 0.1f;
+	param.life = 50;
 	param.moveColor = Vector4(0, 0, 0, 0);
 	param.moveRotate = Vector3(0, 0, randY);
 	param.moveScale = Vector3(-randScale / (float)param.life, -randScale / (float)param.life, 0);
@@ -47,6 +47,7 @@ void KochaEngine::ParticleEmitter::SmashStar(const Vector3& arg_position)
 	param.rotate = Vector3(0, 0, 0);
 
 	pManager->AddParticle(new Particle(param));
+
 }
 
 void KochaEngine::ParticleEmitter::PowerUp(const Vector3& arg_position)
@@ -107,18 +108,22 @@ void KochaEngine::ParticleEmitter::SmashScore(const Vector3& arg_position)
 	ParticleParam param;
 	param.position = arg_position;
 
-	auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
-	param.life = 30;
-	param.moveColor = Vector4(0, 0, 0, 0);
-	param.moveRotate = Vector3(0, 0, 0);
-	param.moveScale = Vector3(0, 0, 0);
-	param.scale = Vector3(8, 8, 1);
-	param.textureName = "Resources/wallPush.png";
-	param.velocity = Vector3(0, randY, 0);
-	param.color = Vector4(1, 1, 1, 1);
-	param.rotate = Vector3(0, 0, 180);
+	for (int i = 0; i < 2; i++)
+	{
+		auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
+		param.life = 30;
+		param.moveColor = Vector4(0, 0, 0, 0);
+		param.moveRotate = Vector3(0, 0, 0);
+		param.moveScale = Vector3(0, 0, 0);
+		param.scale = Vector3(9, 6, 1);
+		param.textureName = "Resources/wallPush.png";
+		param.velocity = Vector3(0, randY, 0);
+		param.color = Vector4(1, 1, 1, 1);
+		param.rotate = Vector3(0, 0, 180);
 
-	pManager->AddParticle(new Particle(param));
+		pManager->AddParticle(new Particle(param));
+	}
+
 }
 
 void KochaEngine::ParticleEmitter::HitScore(const Vector3& arg_position, const bool arg_flag)

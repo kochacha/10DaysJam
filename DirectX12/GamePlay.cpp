@@ -79,7 +79,7 @@ void KochaEngine::GamePlay::Initialize()
 	lightManager->SetLightCamera(camera);
 
 	//map->CreateMap(0);
-	const float STAGE_SIZE = 300.0f;
+	const float STAGE_SIZE = 500.0f;
 	gManager->AddObject(new Wall(gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
 	gManager->AddObject(new DeadLine(camera, gManager, emitter, { STAGE_SIZE - 5.0f,0,0.1f, }));
 	MiniMap* miniMap = new MiniMap(camera, gManager, emitter);
@@ -144,7 +144,6 @@ void KochaEngine::GamePlay::Update()
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
-	scrollManager->Update();
 	Scroll();
 		
 	gManager->Update();
@@ -155,6 +154,7 @@ void KochaEngine::GamePlay::Update()
 	if (inGame && !player->IsFinish())
 	{
 		iManager->Update();
+		scrollManager->Update();
 	}
 
 	if (player->IsFinish() && !pauseManager->IsReset())
