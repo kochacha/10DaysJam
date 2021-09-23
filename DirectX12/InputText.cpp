@@ -40,7 +40,6 @@ void KochaEngine::InputText::Initialize()
 	se->Init();
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	cursorPos = Vector2(400, 300);
-	indexNum = 0;
 	texNum = 1;
 	count = 0;
 	isChange = false;
@@ -122,7 +121,7 @@ void KochaEngine::InputText::InputCursor()
 	else if (InputManager::DownKey())
 	{
 		se->PlayWave("Resources/Sound/select.wav", seVolume);
-		if (texNum > 61)
+		if (texNum > 60)
 		{
 			texNum -= 60;
 			cursorPos.y -= FONT_SIZE * 6.0f;
