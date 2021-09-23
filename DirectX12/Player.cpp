@@ -251,7 +251,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	{
 		if (*inGame)
 		{
-			sManager->AddScore(1000);
+			sManager->AddScore(1500);
 			if (pManager->IsDisplayScore())
 			{
 				pEmitter->HitScore(position, false);
@@ -270,7 +270,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	{
 		if (*inGame)
 		{
-			sManager->AddScore(5000);
+			sManager->AddScore(7777);
 			if (pManager->IsDisplayScore())
 			{
 				pEmitter->HitScore(position, true);
@@ -536,7 +536,7 @@ void KochaEngine::Player::Move()
 		if (*inGame)
 		{
 			//ƒXƒRƒA‰ÁŽZ
-			sManager->AddScore(addSmashScore * 30);
+			sManager->AddScore(addSmashScore * 300);
 			if (pManager->IsDisplayScore())
 			{
 				pEmitter->SmashScore(position);

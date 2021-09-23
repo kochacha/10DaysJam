@@ -47,31 +47,31 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 	switch (scrollLevel)
 	{
 	case 1:
-		scrollAmount = 0.20f;
+		scrollAmount = 0.25f;
 		break;
 	case 2:
-		scrollAmount = 0.30f;
-		break;
-	case 3:
 		scrollAmount = 0.35f;
 		break;
-	case 4:
-		scrollAmount = 0.40f;
-		break;
-	case 5:
+	case 3:
 		scrollAmount = 0.45f;
 		break;
-	case 6:
-		scrollAmount = 0.50f;
-		break;
-	case 7:
+	case 4:
 		scrollAmount = 0.55f;
 		break;
+	case 5:
+		scrollAmount = 0.65f;
+		break;
+	case 6:
+		scrollAmount = 0.75f;
+		break;
+	case 7:
+		scrollAmount = 0.80f;
+		break;
 	case 8:
-		scrollAmount = 0.60f;
+		scrollAmount = 0.85f;
 		break;
 	default:
-		scrollAmount = scrollAmount + 0.05f;
+		scrollAmount = scrollAmount + 0.025f;
 		break;
 	}
 }
