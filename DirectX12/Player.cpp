@@ -506,7 +506,7 @@ void KochaEngine::Player::Move()
 			position.x = wallPosX;
 			if (*inGame)
 			{
-				backCount = (smashPower * 5.0f) + (overDirveSmashPower * 10.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+				backCount = (smashPower * 5.0f) + (overDirveSmashPower * 15.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
 			}
 			else
 			{

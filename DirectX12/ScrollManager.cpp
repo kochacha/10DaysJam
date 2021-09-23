@@ -51,25 +51,25 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 		scrollAmount = 0.25f;
 		break;
 	case 2:
-		scrollAmount = 0.35f;
+		scrollAmount = 0.40f;
 		break;
 	case 3:
-		scrollAmount = 0.45f;
-		break;
-	case 4:
 		scrollAmount = 0.55f;
 		break;
-	case 5:
+	case 4:
 		scrollAmount = 0.65f;
 		break;
-	case 6:
+	case 5:
 		scrollAmount = 0.75f;
 		break;
+	case 6:
+		scrollAmount = 0.85f;
+		break;
 	case 7:
-		scrollAmount = 0.80f;
+		scrollAmount = 0.95f;
 		break;
 	case 8:
-		scrollAmount = 0.85f;
+		scrollAmount = 1.00f;
 		break;
 	default:
 		scrollAmount = scrollAmount + 0.025f;
