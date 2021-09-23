@@ -37,6 +37,7 @@ namespace KochaEngine
 		char strScore[8];
 
 		bool online = false;
+		bool isCompleteInitialize;
 	public:
 		ScoreDBAccess();
 		~ScoreDBAccess();

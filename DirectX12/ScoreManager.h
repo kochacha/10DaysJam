@@ -32,7 +32,6 @@ namespace KochaEngine
 		int rankScoreData[RANK_COUNT];
 
 		void SaveRankData(int arg_rank, int arg_score);
-		void LoadRankData();
 
 	public:
 		ScoreManager();
@@ -48,5 +47,7 @@ namespace KochaEngine
 		void SaveScore();
 
 		const int GetScore() { return score; }
+
+		void LoadRankData();
 	};
 }

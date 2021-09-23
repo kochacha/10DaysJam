@@ -3,6 +3,7 @@
 
 KochaEngine::ScoreDBAccess::ScoreDBAccess()
 {
+	isCompleteInitialize = false;
 }
 
 KochaEngine::ScoreDBAccess::~ScoreDBAccess()
@@ -21,7 +22,6 @@ void KochaEngine::ScoreDBAccess::Initialize()
 	}
 	else
 	{
-		online = true;
 	}
 
 	port_no = (unsigned short)atoi(portNumber);
@@ -41,6 +41,7 @@ void KochaEngine::ScoreDBAccess::Initialize()
 		if (lp_host == NULL)
 		{
 			printf("%s‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ\n", server);
+			return;
 		}
 	}
 
@@ -50,11 +51,21 @@ void KochaEngine::ScoreDBAccess::Initialize()
 	sock_add.sin_addr = *((LPIN_ADDR)*lp_host->h_addr_list);
 
 	//StartConnection();
-
+	isCompleteInitialize = true;
+	online = true;
 }
 
 void KochaEngine::ScoreDBAccess::StartConnection()
 {
+	if (!isCompleteInitialize)
+	{
+		Initialize();
+
+		if (lp_host == NULL) return;
+	}
+
+	online = false;
+
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET)
 	{

@@ -222,10 +222,15 @@ void KochaEngine::GamePlay::Update()
 			else
 			{
 				scoreDBAccessDev->Disconnect();
-			}				
+			}	
+
 			if (scoreDBAccessDev->IsOnline())
 			{
 				scoreDBAccessDev->LoadDBRanking();
+			}
+			else
+			{
+				sManager->LoadRankData();
 			}
 		}
 
