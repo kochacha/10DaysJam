@@ -102,14 +102,14 @@ void KochaEngine::JammingSpine::Hit()
 	if (moveCount > 0) return;
 
 	//プレイヤーがスマッシュ中なら
-	if (player->IsSmashing())
+	if (player->IsSmashing() || player->GetBackCount() > 0)
 	{
 		//プレイヤーはパワーアップし、自身は消滅
 		player->PowerUp(GetType());
 		Dead();		
 	}
 	//通常時なら
-	else if(!player->IsSmashing() && !player->IsStuning())
+	else if(!player->IsStuning())
 	{
 		//プレイヤーはパワーダウン
 		player->PowerDown();

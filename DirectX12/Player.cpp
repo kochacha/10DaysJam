@@ -247,6 +247,7 @@ KochaEngine::GameObjectType KochaEngine::Player::GetType()
 
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 {
+	//アイテム取得時
 	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
 	{
 		if (*inGame)
@@ -301,6 +302,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
 		pEmitter->PowerUp(position);
+		
 		overDirveSmashPower += 1;
 
 		if (overDirveSmashPower > MAX_OVERDRIVE)
@@ -531,6 +533,7 @@ void KochaEngine::Player::Move()
 		addSmashScore++;
 		backCount--;
 		pEmitter->SmashStar(position);
+		ResetPower();
 
 		//ゲーム中なら
 		if (*inGame)
