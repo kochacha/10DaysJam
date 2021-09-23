@@ -37,6 +37,7 @@ namespace KochaEngine
 		ScoreDBAccess* scoreDBAccessDev;
 
 		Audio* bgm;
+		Audio* se;
 		Texture2D* flameTexture;
 		Texture2D* controlUITexture;
 		Texture2D* rankingUITexture;
@@ -52,6 +53,7 @@ namespace KochaEngine
 		bool isSend;
 		float fadeAlpha;
 		float bgmVolume;
+		float seVolume;
 
 		int frameCount;
 		int seconds;
