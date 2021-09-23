@@ -52,13 +52,15 @@ void KochaEngine::GameObjectManager::AlphaObjDraw(Camera* arg_camera, LightManag
 	this->lightManager = arg_lightManager;
 
 	float cameraPosZ = camera->GetEye().z;
-
+	float cameraPosX = camera->GetEye().x;
+	const float CAMERA_DISTANCE_X = 100;
 	auto end = gameObjects.end();
 	for (auto it = gameObjects.begin(); it != end; ++it)
 	{
 		if (!(*it)->IsAlphaObject()) continue; //AlphaObject‚¶‚á‚È‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
 		if ((*it)->IsDead()) continue;
 		if ((*it)->GetPosition().z < cameraPosZ) continue; //AlphaObject‚ªCamera‚æ‚è‚àŒã‚ë‚É‚ ‚Á‚½‚ç•`‰æ‚µ‚È‚¢
+		if (abs((*it)->GetPosition().x - cameraPosX) > CAMERA_DISTANCE_X) continue;
 
 		(*it)->ObjDraw(this->camera, this->lightManager);
 	}
@@ -72,11 +74,14 @@ void KochaEngine::GameObjectManager::ObjDraw(Camera* arg_camera, LightManager* a
 
 	this->camera = arg_camera;
 	this->lightManager = arg_lightManager;
+	float cameraPosX = camera->GetEye().x;
+	const float CAMERA_DISTANCE_X = 100;
 	auto end = gameObjects.end();
 	for (auto it = gameObjects.begin(); it != end; ++it)
 	{
 		if ((*it)->IsAlphaObject()) continue; //AlphaObject‚Ìê‡‚Í•`‰æ‚µ‚È‚¢
 		if ((*it)->IsDead()) continue;
+		if (abs((*it)->GetPosition().x - cameraPosX) > CAMERA_DISTANCE_X) continue;
 
 		(*it)->ObjDraw(this->camera, this->lightManager);
 	}
