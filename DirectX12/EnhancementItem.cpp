@@ -110,6 +110,10 @@ void KochaEngine::EnhancementItem::Dead()
 void KochaEngine::EnhancementItem::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
 {
 	if (arg_camera == nullptr) return;
+	float cameraPosX = arg_camera->GetEye().x;
+	const float CAMERA_DISTANCE_X = 100;
+	if (abs(position.x - cameraPosX) > CAMERA_DISTANCE_X) return;
+
 	obj->Draw(arg_camera, arg_lightManager);
 }
 

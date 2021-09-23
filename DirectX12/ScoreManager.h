@@ -8,9 +8,14 @@
 
 namespace KochaEngine
 {
+	class Texture2D;
 	class ScoreManager
 	{
 	private:
+
+		Texture2D* backTex;
+		Texture2D* onlineTex;
+		Texture2D* offlineTex;
 
 		Number* scoreTex;
 		Number* rankNumTex[RANK_COUNT];
