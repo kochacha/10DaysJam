@@ -33,6 +33,7 @@
 using namespace DirectX;
 
 bool KochaEngine::Application::isExit = false;
+bool KochaEngine::Application::isChange = true;
 float KochaEngine::Application::clearColor[4] = { 1.0f,1.0f,1.0f,1.0f };
 KochaEngine::PaletteType KochaEngine::Application::paletteType = KochaEngine::GAMEBOY;
 
@@ -82,8 +83,11 @@ void KochaEngine::Application::Run()
 			texture[0]->SetColor(Vector4(1, 1, 1, logoAlpha));
 		}
 
-
-		peraEffect->SetColorPalette(paletteType);
+		if (isChange)
+		{
+			isChange = false;
+			peraEffect->SetColorPalette(paletteType);
+		}
 
 		////↑毎フレーム処理↑//
 		

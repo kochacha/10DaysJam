@@ -305,6 +305,7 @@ void KochaEngine::PauseManager::OptionTab()
 
 void KochaEngine::PauseManager::ColorTab()
 {
+	Application::isChange = true;
 	switch (nowColorPalette)
 	{
 	case KochaEngine::PauseManager::GAMEBOY:
@@ -313,6 +314,7 @@ void KochaEngine::PauseManager::ColorTab()
 		if (InputManager::UpCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE10;
+			Application::paletteType = KochaEngine::PaletteType::PALETTE10;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		else if (InputManager::DownCursorKey())
@@ -458,11 +460,12 @@ void KochaEngine::PauseManager::ColorTab()
 		else if (InputManager::DownCursorKey())
 		{ 
 			nowColorPalette = PauseManager::PALETTE10;
+			Application::paletteType = KochaEngine::PaletteType::PALETTE10;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::PALETTE10:
-		Application::paletteType = KochaEngine::PaletteType::PALETTE10;
+		Application::isChange = false;
 		cursor->SetPosition(Vector2(RIGHT_POS_X, 645));
 		if (InputManager::UpCursorKey())
 		{ 

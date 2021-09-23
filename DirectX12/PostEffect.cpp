@@ -3,6 +3,7 @@
 #include "Dx12_Pipeline.h"
 #include "Application.h"
 #include "Input.h"
+#include "Util.h"
 #include <d3dx12.h>
 
 ID3D12Device* KochaEngine::PostEffect::device{};
@@ -267,10 +268,15 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 		break;
 
 	case KochaEngine::PALETTE10:
-		color[0] = Vector4(0.20f, 0.19f, 0.19f, 1.0f);
-		color[1] = Vector4(0.20f, 0.19f, 0.19f, 1.0f);
-		color[2] = Vector4(0.89f, 0.87f, 0.87f, 1.0f);
-		color[3] = Vector4(0.89f, 0.87f, 0.87f, 1.0f);
+		float rand[12];
+		for (int i = 0; i < 12; i++)
+		{
+			rand[i] = (float)Util::GetIntRand(0, 255) / 255.0f;
+		}
+		color[0] = Vector4(rand[0], rand[1], rand[2], 1.0f);
+		color[1] = Vector4(rand[3], rand[4], rand[5], 1.0f);
+		color[2] = Vector4(rand[6], rand[7], rand[8], 1.0f);
+		color[3] = Vector4(rand[9], rand[10], rand[11], 1.0f);
 		break;
 	default:
 		break;
