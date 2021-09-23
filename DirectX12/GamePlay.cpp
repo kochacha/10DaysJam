@@ -35,6 +35,7 @@ KochaEngine::GamePlay::GamePlay()
 	scoreDBAccessDev = new ScoreDBAccess();
 
 	bgm = new Audio();
+	se = new Audio();
 	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
@@ -56,6 +57,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete sManager;
 	delete pauseManager;
 	delete bgm;
+	delete se;
 	delete flameTexture;
 	delete controlUITexture;
 	delete rankingUITexture;
@@ -113,8 +115,9 @@ void KochaEngine::GamePlay::Initialize()
 	pauseBackCount = 0;
 
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	bgm->Init();
-	
+	se->Init();
 	
 }
 
@@ -122,6 +125,7 @@ void KochaEngine::GamePlay::Update()
 {
 	Fade();
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	bgm->SetVolume(bgmVolume);
 
 	auto player = gManager->GetPlayer();
@@ -214,6 +218,7 @@ void KochaEngine::GamePlay::Update()
 		Title();
 		if (InputManager::RankingCheckKey() && !iText->IsNext())
 		{	
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 			isShowRank = !isShowRank;
 			if (isShowRank)
 			{
