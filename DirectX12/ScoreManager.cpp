@@ -1,5 +1,6 @@
 #include "ScoreManager.h"
 #include "CSVReader.h"
+#include "Texture2D.h"
 #include<fstream>
 
 KochaEngine::ScoreManager::ScoreManager()
@@ -13,6 +14,9 @@ KochaEngine::ScoreManager::ScoreManager()
 		
 	}
 	scoreTex = new Number(Vector2(950, 75), Vector2(32, 32), 8);
+	backTex = new Texture2D("Resources/rankBack.png", Vector2(150, 129), Vector2(1000, 550), 0);
+	onlineTex = new Texture2D("Resources/online.png", Vector2(190, 170), Vector2(64, 64), 0);
+	offlineTex = new Texture2D("Resources/offline.png", Vector2(190, 170), Vector2(64, 64), 0);
 	Initialize();
 }
 
@@ -25,6 +29,9 @@ KochaEngine::ScoreManager::~ScoreManager()
 		delete nameTexts[i];
 	}
 	delete scoreTex;
+	delete backTex;
+	delete onlineTex;
+	delete offlineTex;
 }
 
 void KochaEngine::ScoreManager::Initialize()
@@ -44,7 +51,9 @@ void KochaEngine::ScoreManager::Initialize()
 void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 {
 	if (arg_isShow)
-	{
+	{	
+		backTex->Draw();
+		offlineTex->Draw();
 		for (int i = 0; i < RANK_COUNT; i++)
 		{
 			rankNumTex[i]->Draw(i + 1);
@@ -57,7 +66,9 @@ void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 void KochaEngine::ScoreManager::DrawOnlineRinking(bool arg_isShow, std::vector<std::string> arg_rankNames, std::vector<int> arg_rankScores)
 {
 	if (arg_isShow)
-	{
+	{		
+		backTex->Draw();
+		onlineTex->Draw();
 		std::vector<std::string> rankNames = arg_rankNames;
 		std::vector<int> rankScores = arg_rankScores;
 
