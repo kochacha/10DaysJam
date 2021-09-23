@@ -54,10 +54,6 @@ void KochaEngine::PauseManager::Initialize()
 {
 	isPause = false;
 	isSoundMixer = false;
-	isDisplayDash = true;
-	isDisplaySmash = true;
-	isDisplayScore = true;
-	isVib = true;
 	isReset = false;
 
 	for (int i = 0; i < 3; i++)
@@ -135,10 +131,10 @@ void KochaEngine::PauseManager::Draw()
 		break;
 	case KochaEngine::PauseManager::PauseUI::SUPPORT_TAB:
 		menu[4]->Draw();
-		if (isDisplayDash) checkBox[0]->Draw();
-		if (isDisplaySmash) checkBox[1]->Draw();
-		if (isDisplayScore) checkBox[2]->Draw();
-		if (isVib) checkBox[3]->Draw();
+		if (GameSetting::isDashData) checkBox[0]->Draw();
+		if (GameSetting::isSmashData) checkBox[1]->Draw();
+		if (GameSetting::isScoreData) checkBox[2]->Draw();
+		if (GameSetting::isVibData) checkBox[3]->Draw();
 		break;
 	default:
 		break;
@@ -639,7 +635,7 @@ void KochaEngine::PauseManager::SupportTab()
 		}
 		if (InputManager::DecisionKey())
 		{
-			isDisplayDash = !isDisplayDash;
+			GameSetting::isDashData = !GameSetting::isDashData;
 			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
@@ -657,7 +653,7 @@ void KochaEngine::PauseManager::SupportTab()
 		}
 		if (InputManager::DecisionKey())
 		{
-			isDisplaySmash = !isDisplaySmash;
+			GameSetting::isSmashData = !GameSetting::isSmashData;
 			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
@@ -675,7 +671,7 @@ void KochaEngine::PauseManager::SupportTab()
 		}
 		if (InputManager::DecisionKey())
 		{
-			isDisplayScore = !isDisplayScore;
+			GameSetting::isScoreData = !GameSetting::isScoreData;
 			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
@@ -693,8 +689,8 @@ void KochaEngine::PauseManager::SupportTab()
 		}
 		if (InputManager::DecisionKey())
 		{
-			isVib = !isVib;
-			if (isVib) Input::Vibration(60000, 20);
+			GameSetting::isVibData = !GameSetting::isVibData;
+			if (GameSetting::isVibData) Input::Vibration(60000, 20);
 			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;

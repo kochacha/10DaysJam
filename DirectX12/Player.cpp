@@ -205,12 +205,12 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 	//プレイが終わっていれば、以降を表示しない
 	if (isFinish) return;
 
-	if (isWayDraw && pManager->IsDisplayDash())
+	if (isWayDraw && GameSetting::isDashData)
 	{
 		wayObj->Draw(arg_camera, arg_lightManager);
 	}
 
-	if (pManager->IsDisplaySmash())
+	if (GameSetting::isSmashData)
 	{
 		smashLine->Draw(arg_camera, arg_lightManager);
 	}	
@@ -253,7 +253,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 		if (*inGame)
 		{
 			sManager->AddScore(1500);
-			if (pManager->IsDisplayScore())
+			if (GameSetting::isScoreData)
 			{
 				pEmitter->HitScore(position, false);
 			}
@@ -281,7 +281,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 		if (*inGame)
 		{
 			sManager->AddScore(7777);
-			if (pManager->IsDisplayScore())
+			if (GameSetting::isScoreData)
 			{
 				pEmitter->HitScore(position, true);
 			}
@@ -443,13 +443,9 @@ void KochaEngine::Player::InputForMove()
 	//スマッシュボタンが押されたら
 	if (InputManager::SmashKey())
 	{
-		if (!isSmashing && backCount <= 0)
-		{
-			//実行猶予時間を加算
-			asobiCount = 7;
-		}
+		//実行猶予時間を加算
+		asobiCount = 7;
 	}
-
 	//止まっていて、スマッシュ中でないなら
 	if (speed <= 0 && (!isSmashing || backCount > 0))
 	{
@@ -538,7 +534,7 @@ void KochaEngine::Player::Move()
 		{
 			//スコア加算
 			sManager->AddScore(addSmashScore * 300);
-			if (pManager->IsDisplayScore())
+			if (GameSetting::isScoreData)
 			{
 				pEmitter->SmashScore(position);
 			}
@@ -676,7 +672,7 @@ void KochaEngine::Player::SetObjParam()
 
 void KochaEngine::Player::CommonVib(const int arg_time)
 {
-	if (!pManager->IsVib()) return;
+	if (!GameSetting::isVibData) return;
 
 	Input::Vibration(60000, arg_time);
 }

@@ -252,6 +252,10 @@ void KochaEngine::Application::LoadGameSettings()
 	GameSetting::masterVolume = gameSetData[0];
 	GameSetting::bgmVolume = gameSetData[1];
 	GameSetting::seVolume = gameSetData[2];
+	GameSetting::isDashData = gameSetData[3];
+	GameSetting::isSmashData = gameSetData[4];
+	GameSetting::isScoreData = gameSetData[5];
+	GameSetting::isVibData = gameSetData[6];
 }
 
 void KochaEngine::Application::SaveGameSettings()
@@ -259,6 +263,10 @@ void KochaEngine::Application::SaveGameSettings()
 	gameSetData[0] = GameSetting::masterVolume;
 	gameSetData[1] = GameSetting::bgmVolume;
 	gameSetData[2] = GameSetting::seVolume;
+	gameSetData[3] = GameSetting::isDashData;
+    gameSetData[4] = GameSetting::isSmashData;
+	gameSetData[5] = GameSetting::isScoreData;
+	gameSetData[6] = GameSetting::isVibData;
 
 	std::ofstream ofs("Resources/GameSetting.txt");
 	for (int i = 0; i < GameSetting::SETTING_VOL; i++)
