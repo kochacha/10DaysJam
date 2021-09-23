@@ -103,7 +103,7 @@ bool KochaEngine::InputManager::UpKey()
 bool KochaEngine::InputManager::RankingCheckKey()
 {
     bool result = 
-        Input::TriggerKey(DIK_Q) 
+        Input::TriggerKey(DIK_R) 
         || Input::TriggerPadButton(XINPUT_GAMEPAD_X);
     return result;
 }

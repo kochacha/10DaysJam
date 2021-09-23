@@ -430,7 +430,32 @@ void KochaEngine::Player::InputForMove()
 		{	
 			velocity.Zero();
 			velocity.x = Input::GetLStickDirection().x;
+			//キーを考慮
+			if (velocity.x == 0)
+			{
+				if (Input::CheckKey(DIK_LEFT) || Input::CheckKey(DIK_A))
+				{
+					velocity.x = -1;
+				}
+				else if (Input::CheckKey(DIK_RIGHT) || Input::CheckKey(DIK_D))
+				{
+					velocity.x = 1;
+				}
+			}
 			velocity.y = Input::GetLStickDirection().y;
+			//キーを考慮
+			if (velocity.y == 0)
+			{
+				if (Input::CheckKey(DIK_UP) || Input::CheckKey(DIK_W))
+				{
+					velocity.y = 1;
+				}
+				else if (Input::CheckKey(DIK_DOWN) || Input::CheckKey(DIK_S))
+				{
+					velocity.y = -1;
+				}
+			}
+
 			if (velocity.x != 0 || velocity.y != 0)
 			{
 				speed = 6.5f;
