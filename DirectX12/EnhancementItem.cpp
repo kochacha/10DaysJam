@@ -95,6 +95,8 @@ void KochaEngine::EnhancementItem::Hit()
 	//自身が移動している間
 	if (moveCount > 0) return;
 
+	if (gManager->GetPlayer()->GetBackCount() > 0) return;
+
 	//プレイヤーはパワーアップし、自身は消滅
 	gManager->GetPlayer()->PowerUp(GetType());
 	Dead();
