@@ -34,8 +34,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 isSmashing(false),
 	 backCount(0),
 	 addSmashScore(0),
-	 isStun(false),
-	 stunCount(0)
+	 isStun(false)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -129,8 +128,7 @@ void KochaEngine::Player::Initialize()
 	backCount = 0;
 	addSmashScore = 0;
 
-	isStun = false;
-	stunCount = 0;
+	isStun = false;	
 
 	velocity.Zero();
 	sphere.radius = 4.0f;
@@ -140,15 +138,10 @@ void KochaEngine::Player::Initialize()
 void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
-	//生成されてからの数フレームでInputMove()を通さない
-	if (stackCount > 0)
-	{
-		stackCount--;
-	}
 
-	//プレイ終了後、初めて通ったなら
 	if (isFinish)
 	{
+		//プレイ終了後、初めて通ったなら
 		if (!isOnce)
 		{
 			isOnce = true;
@@ -156,79 +149,19 @@ void KochaEngine::Player::Update()
 			pEmitter->DeadParticle(position);
 		}
 	}
-
-	//スマッシュ操作の猶予フレーム計上
-	if (asobiCount > 0)
+	else
 	{
-		asobiCount--;
+		//入力前処理
+		PrepareInput();
+		//入力処理
+		InputForMove();
+		//入力後処理
+		Move();
+		//座標移動処理
+		UpdatePosition();
+		//座標移動後処理
+		ProcessingAfterUpdatePosition();
 	}
-
-	//壁押し戻し距離が残っているなら
-	if (backCount > 0)
-	{
-		scale = Vector3(12, 4, 10);
-		addSmashScore++;
-		backCount--;
-		pEmitter->SmashStar(position);
-		//ゲーム中なら
-		if (*inGame)
-		{
-			//スコア加算
-			sManager->AddScore(addSmashScore * 30);
-			if (pManager->IsDisplayScore())
-			{
-				pEmitter->SmashScore(position);
-			}
-		}
-
-		//壁の実体が一番左まで来たら
-		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPosX())
-		{
-			//押し戻し距離を強制的に0にする
-			backCount = 0;			
-		}
-		//押し戻し距離が0なら
-		if (backCount == 0)
-		{
-			CommonVib(20);			
-			addSmashScore = 0;
-			camera->SetShake(1.00f);
-			se->PlayWave("Resources/Sound/hit.wav", seVolume);
-			scale = Vector3(1,20,10);
-		}
-	}
-
-	//押し戻し中でなく,Wallより左にいれば
-	if (backCount <= 0 && position.x > gManager->GetWall()->GetMinPos().x)
-	{
-		//壁に接触していない
-		isHitWall = false;
-	}
-	/*if (backCount > 0 && position.x >= gManager->GetWall()->GetMinPos().x)
-	{
-		speed = 0;
-	}*/
-
-	//スタンしているとき
-	if (isStun)
-	{   
-		//速度が0以下なら
-		if (speed <= 0)
-		{
-			//スタン状態終了
-			isStun = false;
-		}
-		/*if (stunCount >= stunTime)
-		{
-			isStun = false;
-			stunCount = 0;
-		}
-		stunCount++;*/
-	}
-	
-	InputMove();
-	MoveX();
-	MoveY();
 
 	ScaleAnimation();
 	SetObjParam();
@@ -436,10 +369,82 @@ const bool KochaEngine::Player::IsHitWall()
 	return isHitWall;
 }
 
-void KochaEngine::Player::InputMove()
-{	
-	if (isFinish || stackCount > 0) return;
+void KochaEngine::Player::PrepareInput()
+{
+}
 
+void KochaEngine::Player::InputForMove()
+{
+	//生成されてからの数フレームでInputMove()を通さない
+	if (stackCount > 0)
+	{
+		stackCount--;
+	}
+
+	//壁押し戻し距離が残っているなら
+	if (backCount > 0)
+	{
+		scale = Vector3(12, 4, 10);
+		addSmashScore++;
+		backCount--;
+		pEmitter->SmashStar(position);
+
+		//ゲーム中なら
+		if (*inGame)
+		{
+			//スコア加算
+			sManager->AddScore(addSmashScore * 30);
+			if (pManager->IsDisplayScore())
+			{
+				pEmitter->SmashScore(position);
+			}
+		}
+
+		//壁の実体が一番左まで来たら
+		if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPosX())
+		{
+			//押し戻し距離を強制的に0にする
+			backCount = 0;
+		}
+		//押し戻し距離が0なら
+		if (backCount == 0)
+		{
+			CommonVib(20);
+			addSmashScore = 0;
+			camera->SetShake(1.00f);
+			se->PlayWave("Resources/Sound/hit.wav", seVolume);
+			scale = Vector3(1, 20, 10);
+		}
+	}
+
+	//押し戻し中でなく,Wallより左にいれば
+	if (backCount <= 0 && position.x > gManager->GetWall()->GetMinPos().x)
+	{
+		//壁に接触していない
+		isHitWall = false;
+	}
+	/*if (backCount > 0 && position.x >= gManager->GetWall()->GetMinPos().x)
+	{
+		speed = 0;
+	}*/
+
+	//生成直後は操作できない
+	if (stackCount > 0) return;
+	//プレイ終了後は操作できない
+	if (isFinish) return;
+
+	//スタンしているとき
+	if (isStun)
+	{
+		//速度が0以下なら
+		if (speed <= 0)
+		{
+			//スタン状態終了
+			isStun = false;
+		}
+	}
+
+	//スマッシュして壁に当たるまでの間
 	if (isSmashing)
 	{		
 		int wallPosX = gManager->GetWall()->GetMinPos().x;
@@ -460,11 +465,11 @@ void KochaEngine::Player::InputMove()
 			
 			//仮置き
 			ResetPower();
-		
 		}
 	}
 	if (!isSmashing)
 	{
+		//通常移動中、ノックバック時にスピードを減少させる
 		if (backCount <= 0)
 		{
 			speed -= 1.0f;
@@ -474,7 +479,7 @@ void KochaEngine::Player::InputMove()
 			}
 		}
 		
-		
+		//通常移動
 		if (backCount <= 0 && !isStun && InputManager::DashKey())
 		{	
 			velocity.Zero();
@@ -489,20 +494,33 @@ void KochaEngine::Player::InputMove()
 		}
 	}	
 
+	//スマッシュ操作の猶予フレーム計上
+	if (asobiCount > 0)
+	{
+		asobiCount--;
+	}
+	//スマッシュボタンが押されたら
 	if (InputManager::SmashKey())
 	{
+		//実行猶予時間を加算
 		asobiCount = 7;
 	}
+	//止まっていて、スマッシュ中でないなら
 	if (speed <= 0 && !isSmashing)
 	{
-		if (asobiCount != 0 && smashPower > 0)
+		//実行猶予フレーム内で、スマッシュするパワーがあれば
+		if (asobiCount > 0 && smashPower > 0)
 		{
 			CommonVib(10);
 			se->PlayWave("Resources/Sound/smash.wav", seVolume);
+			//スマッシュ開始
 			isSmashing = true;
+			//左に
 			velocity.Zero();
 			velocity.x = -1;
+
 			speed = 10;
+			//猶予時間リセット
 			asobiCount = 0;
 		}
 		else if (asobiCount == 1)
@@ -510,9 +528,11 @@ void KochaEngine::Player::InputMove()
 			se->PlayWave("Resources/Sound/feild.wav", seVolume);
 		}
 	}
+
 	velocity.normalize();	
 
-	if (velocity.x != 0 || velocity.y != 0)
+	//移動中なら
+	if (speed > 0.0f)
 	{
 		pEmitter->MoveParticle(Vector3(position.x, position.y, position.z + 1.0f));
 	}
@@ -545,11 +565,23 @@ void KochaEngine::Player::InputMove()
 	}*/
 }
 
+void KochaEngine::Player::Move()
+{
+
+}
+
+void KochaEngine::Player::UpdatePosition()
+{
+	MoveX();
+	MoveY();
+}
+
 void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
+
 	int leftWall = gManager->GetWall()->GetMinPos().x;
-	int rightWall = gManager->GetWall()->GetMaxPos().x; //112
+	int rightWall = gManager->GetWall()->GetMaxPos().x;
 	
 	if (position.x <= leftWall)
 	{
@@ -557,6 +589,7 @@ void KochaEngine::Player::MoveX()
 		{
 			position.x = leftWall;
 		}
+		//壁を押してるように見せる
 		else
 		{
 			position.x = leftWall + 20;
@@ -574,8 +607,10 @@ void KochaEngine::Player::MoveX()
 void KochaEngine::Player::MoveY()
 {
 	position.y += velocity.y * speed;
+
 	int DownWall = gManager->GetWall()->GetMinPos().y;
-	int UpWall = gManager->GetWall()->GetMaxPos().y; //112
+	int UpWall = gManager->GetWall()->GetMaxPos().y;
+
 	if (position.y <= DownWall)
 	{
 		position.y = DownWall;
@@ -584,6 +619,10 @@ void KochaEngine::Player::MoveY()
 	{
 		position.y = UpWall;
 	}
+}
+
+void KochaEngine::Player::ProcessingAfterUpdatePosition()
+{
 }
 
 void KochaEngine::Player::ScaleAnimation()

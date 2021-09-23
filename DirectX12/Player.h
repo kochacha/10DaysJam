@@ -72,15 +72,15 @@ namespace KochaEngine
 
 		//スタン関連
 		//スタンしているかどうか
-		bool isStun;
-		//スタン時間計上用
-		int stunCount;
-		//スタン最大時間
-		const int stunTime = 30;		
+		bool isStun;				
 
-		void InputMove();
+		void PrepareInput();
+		void InputForMove();
+		void Move();
+		void UpdatePosition();
 		void MoveX();
 		void MoveY();
+		void ProcessingAfterUpdatePosition();
 		void ScaleAnimation();
 		void SetObjParam();
 		//コントローラ振動
