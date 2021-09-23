@@ -367,6 +367,9 @@
     <Filter Include="Header\Object\GameObject">
       <UniqueIdentifier>{d0c31d25-7612-4543-90df-05517a2c7e21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{9b87c17b-7260-4fd0-9cf1-0a825122c528}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -606,5 +609,18 @@
     <ClInclude Include="InputText.h">
       <Filter>Header\UI</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX12.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Icon.ico">
+      <Filter>Resource</Filter>
+    </Image>
   </ItemGroup>
 </Project>

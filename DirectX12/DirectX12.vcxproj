@@ -523,6 +523,7 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScoreDBAccess.h" />
@@ -541,6 +542,12 @@
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="XMFLOATHelper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX12.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
