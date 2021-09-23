@@ -29,6 +29,7 @@ KochaEngine::GamePlay::GamePlay()
 	lightManager = LightManager::Create();
 	iManager = new ItemManager(camera, gManager);
 	sManager = new ScoreManager();
+	sManager->Initialize();
 	pauseManager = new PauseManager();
 	scrollManager = new ScrollManager();
 	scoreDBAccessDev = new ScoreDBAccess();
@@ -92,7 +93,6 @@ void KochaEngine::GamePlay::Initialize()
 	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
 	scrollManager->Initialize();
 	iText->Initialize();
-	sManager->Initialize();
 
 	scoreDBAccessDev->Initialize();
 	isSend = false;

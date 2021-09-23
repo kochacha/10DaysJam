@@ -443,9 +443,13 @@ void KochaEngine::Player::InputForMove()
 	//スマッシュボタンが押されたら
 	if (InputManager::SmashKey())
 	{
-		//実行猶予時間を加算
-		asobiCount = 7;
+		if (!isSmashing && backCount <= 0)
+		{
+			//実行猶予時間を加算
+			asobiCount = 7;
+		}
 	}
+
 	//止まっていて、スマッシュ中でないなら
 	if (speed <= 0 && (!isSmashing || backCount > 0))
 	{
