@@ -228,6 +228,12 @@ void KochaEngine::GamePlay::Update()
 				scoreDBAccessDev->LoadDBRanking();
 			}
 		}
+
+		auto pPlayer = gManager->GetPlayer();
+		if (pPlayer->IsSmashing() || pPlayer->GetBackCount() > 0)
+		{
+			isShowRank = false;
+		}
 	}
 
 	//ƒQ[ƒ€I—¹
