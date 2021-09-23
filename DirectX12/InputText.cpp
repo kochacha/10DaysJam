@@ -2,6 +2,8 @@
 #include "InputManager.h"
 #include "Text.h"
 #include "Texture2D.h"
+#include "Audio.h"
+#include "GameSetting.h"
 
 char KochaEngine::InputText::name[10] = {};
 
@@ -17,6 +19,7 @@ KochaEngine::InputText::InputText()
 	cursorPos = Vector2(400, 300);
 	allTextTexture = new Texture2D("Resources/font.png", Vector2(400, 300), Vector2(FONT_SIZE * 10, 336), 0);
 	cursorTexture = new Texture2D("Resources/textCursor.png", cursorPos, Vector2(FONT_SIZE, FONT_SIZE), 0);
+	se = new Audio();
 
 	Initialize();
 }
@@ -29,10 +32,13 @@ KochaEngine::InputText::~InputText()
 	}
 	delete allTextTexture;
 	delete cursorTexture;
+	delete se;
 }
 
 void KochaEngine::InputText::Initialize()
 {
+	se->Init();
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	cursorPos = Vector2(400, 300);
 	texNum = 1;
 	count = 0;
@@ -42,6 +48,7 @@ void KochaEngine::InputText::Initialize()
 
 void KochaEngine::InputText::Update()
 {
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	if (isNext) return;
 	InputCursor();
 	FixNumbers();
@@ -99,6 +106,7 @@ void KochaEngine::InputText::InputCursor()
 {
 	if (InputManager::UpKey())
 	{
+		se->PlayWave("Resources/Sound/select.wav", seVolume);
 		if (texNum < 11)
 		{
 			texNum += 60;
@@ -112,6 +120,7 @@ void KochaEngine::InputText::InputCursor()
 	}
 	else if (InputManager::DownKey())
 	{
+		se->PlayWave("Resources/Sound/select.wav", seVolume);
 		if (texNum > 61)
 		{
 			texNum -= 60;
@@ -125,6 +134,7 @@ void KochaEngine::InputText::InputCursor()
 	}
 	else if (InputManager::RightKey())
 	{
+		se->PlayWave("Resources/Sound/select.wav", seVolume);
 		if (texNum % 10 == 0)
 		{
 			texNum -= 9;
@@ -138,6 +148,7 @@ void KochaEngine::InputText::InputCursor()
 	}
 	else if (InputManager::LeftKey())
 	{
+		se->PlayWave("Resources/Sound/select.wav", seVolume);
 		if (texNum % 10 == 1)
 		{
 			texNum += 9;
@@ -154,6 +165,16 @@ void KochaEngine::InputText::InputCursor()
 
 void KochaEngine::InputText::InputDecision()
 {
+	if (InputManager::CancelKey())
+	{
+		se->PlayWave("Resources/Sound/cancel.wav", seVolume);
+		if (indexNum > 0) //BackSpace
+		{
+			indexNum--;
+			name[indexNum] = '\0';
+			text[indexNum]->SetLeadText(67);
+		}
+	}
 	bool isCenterSpace = (texNum > 36 && texNum < 41);
 	bool isDownSpace = (texNum == 68);
 	if (isCenterSpace || isDownSpace) return;
@@ -162,12 +183,14 @@ void KochaEngine::InputText::InputDecision()
 	{
 		if (texNum == 69 && indexNum > 0) //BackSpace
 		{
+			se->PlayWave("Resources/Sound/cancel.wav", seVolume);
 			indexNum--;
 			name[indexNum] = '\0';
 			text[indexNum]->SetLeadText(67);
 		}
 		else if(texNum == MAX_TEX_NUM) //OK‚Ì‚Íname‚ÖŠi”[‚µ‚È‚¢
 		{
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 			//“ü—Íó•tI—¹ˆ—
 			if (indexNum == 0)
 			{
@@ -182,18 +205,10 @@ void KochaEngine::InputText::InputDecision()
 		}
 		else if(indexNum < MAX_INDEX_NUM && texNum != 69)
 		{
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 			name[indexNum] = ConvertInt(texNum);
 			text[indexNum]->SetLeadText(texNum);
 			indexNum++;
-		}
-	}
-	else if(InputManager::CancelKey())
-	{
-		if (indexNum > 0) //BackSpace
-		{
-			indexNum--;
-			name[indexNum] = '\0';
-			text[indexNum]->SetLeadText(67);
 		}
 	}
 }

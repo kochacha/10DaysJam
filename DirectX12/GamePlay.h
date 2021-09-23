@@ -59,6 +59,7 @@ namespace KochaEngine
 		int resetCount;
 		int displayRankingCount;
 		int dethWaitCount;
+		int pauseBackCount;
 
 		const float scrollAmount = 0.25f;
 	public:

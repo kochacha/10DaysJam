@@ -46,6 +46,8 @@ namespace KochaEngine
 		int hitStopCount;
 		//ゲームオーバーしたときに一度だけ処理を行う用
 		bool isOnce;
+		//スポーンしたときに一度だけ処理を行う用
+		bool isStartOnce;
 		//ゲーム中かどうか
 		bool* inGame;
 		//生成されてからの時間　InputMove()を通さないために使う

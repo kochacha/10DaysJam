@@ -82,7 +82,7 @@ void KochaEngine::PauseManager::Update()
 
 	if (InputManager::PauseKey())
 	{
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		PauseChange();
 	}
 
@@ -166,7 +166,7 @@ void KochaEngine::PauseManager::MenuTab()
 		if (InputManager::DecisionKey())
 		{ 
 			PauseChange(); 
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::RESET:
@@ -183,7 +183,7 @@ void KochaEngine::PauseManager::MenuTab()
 		}
 		if (InputManager::DecisionKey())
 		{ 
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 			PauseChange();
 			isReset = true;
 		}
@@ -203,7 +203,7 @@ void KochaEngine::PauseManager::MenuTab()
 		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::OPTION_TAB;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::EXIT:
@@ -221,7 +221,7 @@ void KochaEngine::PauseManager::MenuTab()
 		if (InputManager::DecisionKey())
 		{ 
 			Application::isExit = true;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	default:
@@ -231,7 +231,7 @@ void KochaEngine::PauseManager::MenuTab()
 	if (InputManager::CancelKey())
 	{
 		PauseChange();
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/cancel.wav", seVolume);
 	}
 }
 
@@ -254,7 +254,7 @@ void KochaEngine::PauseManager::OptionTab()
 		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::COLOR_TAB;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::SOUND_MIXER:
@@ -272,7 +272,7 @@ void KochaEngine::PauseManager::OptionTab()
 		if (InputManager::DecisionKey())
 		{ 
 			menuType = PauseManager::PauseUI::SOUND_TAB;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::SUPPORT:
@@ -290,7 +290,7 @@ void KochaEngine::PauseManager::OptionTab()
 		if (InputManager::DecisionKey())
 		{
 			menuType = PauseManager::PauseUI::SUPPORT_TAB;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	default:
@@ -299,7 +299,7 @@ void KochaEngine::PauseManager::OptionTab()
 	if (InputManager::CancelKey())
 	{
 		PauseChange();
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/cancel.wav", seVolume);
 	}
 }
 
@@ -479,10 +479,15 @@ void KochaEngine::PauseManager::ColorTab()
 		break;
 	}
 
-	if (InputManager::DecisionKey() || InputManager::CancelKey())
+	if (InputManager::DecisionKey())
 	{ 
 		PauseChange();
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/decision.wav", seVolume);
+	}
+	else if (InputManager::CancelKey())
+	{
+		PauseChange();
+		se->PlayWave("Resources/Sound/cancel.wav", seVolume);
 	}
 }
 
@@ -491,12 +496,12 @@ void KochaEngine::PauseManager::SoundTab()
 	if (InputManager::DecisionKey())
 	{
 		isSoundMixer = !isSoundMixer;
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/decision.wav", seVolume);
 	}
 	if (InputManager::CancelKey())
 	{
 		PauseChange();
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/cancel.wav", seVolume);
 	}
 
 	switch (nowSoundMixer)
@@ -612,7 +617,7 @@ void KochaEngine::PauseManager::SupportTab()
 	if (InputManager::CancelKey())
 	{
 		PauseChange();
-		se->PlayWave("Resources/Sound/select.wav", seVolume);
+		se->PlayWave("Resources/Sound/cancel.wav", seVolume);
 	}
 
 	switch (nowSupport)
@@ -621,7 +626,7 @@ void KochaEngine::PauseManager::SupportTab()
 		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
 		if (InputManager::UpCursorKey())
 		{
-			nowSupport = PauseManager::SCORE_SUPPORT;
+			nowSupport = PauseManager::VIVE_SUPPORT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		else if (InputManager::DownCursorKey())
@@ -632,7 +637,7 @@ void KochaEngine::PauseManager::SupportTab()
 		if (InputManager::DecisionKey())
 		{
 			isDisplayDash = !isDisplayDash;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::SMASH_SUPPORT:
@@ -650,7 +655,7 @@ void KochaEngine::PauseManager::SupportTab()
 		if (InputManager::DecisionKey())
 		{
 			isDisplaySmash = !isDisplaySmash;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::SCORE_SUPPORT:
@@ -668,7 +673,7 @@ void KochaEngine::PauseManager::SupportTab()
 		if (InputManager::DecisionKey())
 		{
 			isDisplayScore = !isDisplayScore;
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	case KochaEngine::PauseManager::VIVE_SUPPORT:
@@ -687,7 +692,7 @@ void KochaEngine::PauseManager::SupportTab()
 		{
 			isVib = !isVib;
 			if (isVib) Input::Vibration(60000, 20);
-			se->PlayWave("Resources/Sound/select.wav", seVolume);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;
 	default:
