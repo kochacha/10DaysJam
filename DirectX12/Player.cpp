@@ -252,12 +252,15 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	{
 		if (*inGame)
 		{
+			//スコア加算
 			sManager->AddScore(1000);
 			if (pManager->IsDisplayScore())
 			{
 				pEmitter->HitScore(position, false);
 			}
 		}
+
+		//SE再生
 		if (smashPower >= MAX_SMASHPOWER)
 		{
 			se->PlayWave("Resources/Sound/powerMax.wav", seVolume);
@@ -266,49 +269,39 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 		{
 			se->PlayWave("Resources/Sound/item.wav", seVolume);
 		}
+
+		//スマッシュパワー加算
+		if (smashPower < MAX_SMASHPOWER)
+		{
+			pEmitter->PowerUp(position);
+			smashPower++;
+		}
 	}
 	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
 	{
 		if (*inGame)
 		{
+			//スコア加算
 			sManager->AddScore(5000);
 			if (pManager->IsDisplayScore())
 			{
 				pEmitter->HitScore(position, true);
 			}
 		}
-		if (smashPower >= MAX_SMASHPOWER)
-		{
-			se->PlayWave("Resources/Sound/powerMax.wav", seVolume);
-		}
-		else
-		{
-			se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
-		}
-		isHitStop = true;
-		hitStopCount = 20;
-	}
 
-	//上限値ならreturn
-	if (smashPower >= MAX_SMASHPOWER) return;
+		//サウンド再生
+		se->PlayWave("Resources/Sound/overDrive.wav", seVolume);
 
-	//強化アイテム取得時
-	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
-	{
-		pEmitter->PowerUp(position);
-		smashPower++;
-	}
-	//スマッシュでおじゃまトゲを巻き込んだ時
-	else if (arg_objectType == KochaEngine::GameObjectType::JAMMING_SPINE)
-	{
-		pEmitter->PowerUp(position);
-		
-		overDirveSmashPower += 1;
-
-		if (overDirveSmashPower > MAX_OVERDRIVE)
+		//オーバードライヴスマッシュパワー加算
+		if (overDirveSmashPower < MAX_OVERDRIVE)
 		{
-			overDirveSmashPower = MAX_OVERDRIVE;
-		}
+			//ヒットストップ
+			isHitStop = true;
+			hitStopCount = 20;
+
+			pEmitter->PowerUp(position);
+			overDirveSmashPower += 1;
+		}		
 	}
 }
 
@@ -316,12 +309,15 @@ void KochaEngine::Player::PowerDown()
 {
 	CommonVib(10);
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
+
+	//スマッシュパワー減算
 	pEmitter->PowerDown(position);
 	smashPower--;
 	if (smashPower < 0)
 	{
 		smashPower = 0;
 	}
+
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
 	speed = 6.0f;
