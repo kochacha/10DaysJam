@@ -6,26 +6,19 @@ KochaEngine::Text::Text(const char* arg_text, const Vector2& arg_position, const
     fontSize = arg_fontSize;
 
     const char* text = arg_text;
-    incrementSize = 10;//GetStrLength(text);
-    for (int i = 0; i < incrementSize; i++)
+    //incrementSize = 10;//GetStrLength(text);
+    //' 'としてすべて生成
+    for (int i = 0; i < INCREMENT_SIZE; i++)
     {
-        //ここでコンバート
-        int texNum = ConvertAscii(*(text + i));
-        if (*(text + i) == '\0' || texNum < 1 || texNum > 70)
-        {
-            textures[i] = new Texture2D("Resources/font.png", 10, 7, 68, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
-        }
-        else
-        {
-            textures[i] = new Texture2D("Resources/font.png", 10, 7, texNum, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
-        }
-
+        textures[i] = new Texture2D("Resources/font.png", 10, 7, 68, Vector2(position.x + (fontSize.x + 2.0f) * i, position.y), fontSize, 0);
     }
+    
+    SetText(text);
 }
 
 KochaEngine::Text::~Text()
 {
-    for (int i = 0; i < incrementSize; i++)
+    for (int i = 0; i < INCREMENT_SIZE; i++)
     {
         delete textures[i];
     }
@@ -33,7 +26,7 @@ KochaEngine::Text::~Text()
 
 void KochaEngine::Text::Draw()
 {
-    for (int i = 0; i < incrementSize; i++)
+    for (int i = 0; i < INCREMENT_SIZE; i++)
     {
         textures[i]->Draw();
     }
@@ -47,7 +40,7 @@ void KochaEngine::Text::SetLeadText(const int arg_texNum)
 void KochaEngine::Text::SetText(const char* arg_text)
 {
     bool isSpace = false;
-    for (int i = 0; i < incrementSize; i++)
+    for (int i = 0; i < INCREMENT_SIZE; i++)
     {
         if (isSpace)
         {

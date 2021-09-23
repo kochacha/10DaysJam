@@ -74,6 +74,7 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 		scrollAmount = scrollAmount + 0.05f;
 		break;
 	}
+	scrollAmount = 1.0f;
 }
 
 const float KochaEngine::ScrollManager::GetScrollAmount()

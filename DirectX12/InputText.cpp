@@ -40,6 +40,7 @@ void KochaEngine::InputText::Initialize()
 	se->Init();
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	cursorPos = Vector2(400, 300);
+	indexNum = 0;
 	texNum = 1;
 	count = 0;
 	isChange = false;

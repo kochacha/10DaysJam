@@ -11,7 +11,8 @@ namespace KochaEngine
 		Texture2D* textures[11];
 		Vector2 position;
 		Vector2 fontSize;
-		int incrementSize;
+		//int incrementSize;
+		const int INCREMENT_SIZE = 10;
 
 		const int ConvertAscii(const char arg_charcter);
 		const unsigned int GetStrLength(const char* arg_strBegin);
