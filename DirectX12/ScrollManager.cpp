@@ -16,6 +16,7 @@ KochaEngine::ScrollManager::~ScrollManager()
 void KochaEngine::ScrollManager::Initialize()
 {
 	scrollLevel = 1;
+	scrollAmount = 0.25f;
 	frameCount = 0;
 	time = 0;
 	ScrollSpeedUp();

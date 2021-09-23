@@ -81,7 +81,7 @@ void KochaEngine::EnhancementItem::Update()
 	SetObjParam();
 
 	//ç∂ï«Ç…Ç†ÇΩÇÈ
-	if (position.x <= pWall->GetMinPos().x - 10.0f)
+	if (position.x <= pWall->GetMinPos().x - 20.0f)
 	{
 		Dead();
 		return;
