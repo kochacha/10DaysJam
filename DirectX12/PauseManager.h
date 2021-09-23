@@ -111,10 +111,10 @@ namespace KochaEngine
 		void Draw();
 
 		bool IsPause() { return isPause; }
-		bool IsDisplayDash() { return isDisplayDash; }
-		bool IsDisplaySmash() { return isDisplaySmash; }
-		bool IsDisplayScore() { return isDisplayScore; }
-		bool IsVib() { return isVib; }
+		//bool IsDisplayDash() { return isDisplayDash; }
+		//bool IsDisplaySmash() { return isDisplaySmash; }
+		//bool IsDisplayScore() { return isDisplayScore; }
+		//bool IsVib() { return isVib; }
 		bool IsReset() { return isReset; }
 	};
 }
