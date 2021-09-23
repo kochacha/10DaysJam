@@ -99,5 +99,6 @@ namespace KochaEngine
 		static bool isExit;
 		static float clearColor[4];
 		static PaletteType paletteType;
+		static bool isChange;
 	};
 }

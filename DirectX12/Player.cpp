@@ -24,6 +24,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 isHitStop(false),
 	 hitStopCount(0),
 	 isOnce(false),
+	 isStartOnce(false),
 	 inGame(nullptr),
 	 stackCount(0),
 	 speed(0.0f),
@@ -121,6 +122,7 @@ void KochaEngine::Player::Initialize()
 	stackCount = 30;
 	speed = 0.5f;
 	isHitWall = false;
+	isStartOnce = false;
 
 	ResetPower();
 	asobiCount = 0;
@@ -138,6 +140,19 @@ void KochaEngine::Player::Initialize()
 void KochaEngine::Player::Update()
 {
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
+	
+	//プレイヤー出現音
+	if (!isStartOnce)
+	{
+		isStartOnce = true;
+		se->PlayWave("Resources/Sound/spawn.wav", seVolume / 2.0f);
+	}
+
+	//生成されてからの数フレームでInputMove()を通さない
+	if (stackCount > 0)
+	{
+		stackCount--;
+	}
 
 	if (isFinish)
 	{

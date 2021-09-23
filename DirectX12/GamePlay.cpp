@@ -109,7 +109,8 @@ void KochaEngine::GamePlay::Initialize()
 	fadeFlag = true;
 	fadeAlpha = 1;
 	endCount = 180;
-	dethWaitCount = 120;
+	dethWaitCount = 110;
+	pauseBackCount = 0;
 
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	bgm->Init();
@@ -119,7 +120,6 @@ void KochaEngine::GamePlay::Initialize()
 
 void KochaEngine::GamePlay::Update()
 {
-	
 	Fade();
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	bgm->SetVolume(bgmVolume);
@@ -130,7 +130,16 @@ void KochaEngine::GamePlay::Update()
 		pauseManager->Update();
 	}
 
-	if (pauseManager->IsPause()) return; //ポーズ中
+	if (pauseManager->IsPause())
+	{
+		pauseBackCount = 3;
+		return; //ポーズ中
+	}
+	else if (pauseBackCount > 0)
+	{
+		pauseBackCount--;
+		return;
+	}
 
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
@@ -253,11 +262,6 @@ void KochaEngine::GamePlay::SpriteDraw()
 	}
 	
 	pauseManager->Draw();
-
-
-
-
-
 
 	bool isFinishFrame = gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset();
 	if (isFinishFrame)

@@ -6,12 +6,14 @@ namespace KochaEngine
 {
 	class Texture2D;
 	class Text;
+	class Audio;
 	class InputText
 	{
 	private:
 		Texture2D* allTextTexture;
 		Texture2D* cursorTexture;
 		Text* text[10];
+		Audio* se;
 
 		Vector2 cursorPos;
 
@@ -24,6 +26,7 @@ namespace KochaEngine
 		bool isNext;
 		bool isChange;
 		int count;
+		float seVolume;
 
 		void FixNumbers();
 		void InputCursor();
