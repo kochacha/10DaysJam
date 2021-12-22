@@ -310,11 +310,11 @@ void KochaEngine::Player::PowerDown()
 
 	//スマッシュパワー減算
 	pEmitter->PowerDown(position);
-	smashPower--;
+	/*smashPower--;
 	if (smashPower < 0)
 	{
 		smashPower = 0;
-	}
+	}*/
 
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
