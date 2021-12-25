@@ -20,6 +20,7 @@ namespace KochaEngine
 	class Text;
 	class InputText;
 	class ScoreDBAccess;
+	
 
 	class GamePlay : public Scene
 	{
@@ -51,6 +52,7 @@ namespace KochaEngine
 		bool isOnce;
 		bool isDisplayRanking;
 		bool isSend;
+		bool scoreDrawFlag;
 		float fadeAlpha;
 		float bgmVolume;
 		float seVolume;
@@ -60,7 +62,7 @@ namespace KochaEngine
 		int endCount;
 		int resetCount;
 		int displayRankingCount;
-		int dethWaitCount;
+		int deathWaitCount;
 		int pauseBackCount;
 
 		const float scrollAmount = 0.25f;

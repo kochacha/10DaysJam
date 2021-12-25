@@ -22,6 +22,7 @@ namespace KochaEngine
 		~Text();
 
 		void Draw();
+		void Draw(const Vector2& arg_position);
 		void SetLeadText(const int arg_texNum);
 
 		void SetText(const char* arg_text);

@@ -32,6 +32,15 @@ void KochaEngine::Text::Draw()
     }
 }
 
+void KochaEngine::Text::Draw(const Vector2& arg_position)
+{
+    position = arg_position;
+    for (int i = 0; i < INCREMENT_SIZE; i++)
+    {
+        textures[i]->Draw(Vector2(position.x + (fontSize.x + 2.0f) * i, position.y));
+    }
+}
+
 void KochaEngine::Text::SetLeadText(const int arg_texNum)
 {
     textures[0]->SetTexNum(arg_texNum);

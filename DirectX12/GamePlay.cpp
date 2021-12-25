@@ -104,14 +104,14 @@ void KochaEngine::GamePlay::Initialize()
 	frameCount = 0;
 	seconds = 0;
 	resetCount = 100;
-	displayRankingCount = 180;
+	displayRankingCount = 300;
 	
 	isDisplayRanking = false;
 	isShowRank = false;
 	fadeFlag = true;
 	fadeAlpha = 1;
 	endCount = 180;
-	dethWaitCount = 110;
+	deathWaitCount = 110;
 	pauseBackCount = 0;
 
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
@@ -163,9 +163,10 @@ void KochaEngine::GamePlay::Update()
 
 	if (player->IsFinish() && !pauseManager->IsReset())
 	{
-		if (dethWaitCount > 0)
+		
+		if (deathWaitCount > 0)
 		{
-			dethWaitCount--;
+			deathWaitCount--;
 		}
 		else
 		{
@@ -270,7 +271,14 @@ void KochaEngine::GamePlay::SpriteDraw()
 	gManager->SpriteDraw();
 	if (scoreDBAccessDev->IsOnline())
 	{
-		sManager->DrawOnlineRinking(isShowRank, scoreDBAccessDev->GetRankingName(), scoreDBAccessDev->GetRankingScore());
+		if (deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面
+		{
+			sManager->DrawResultRanking(isShowRank, scoreDBAccessDev->GetRankingName(), scoreDBAccessDev->GetRankingScore(),iText->GetName());
+		}
+		else
+		{
+			sManager->DrawOnlineRinking(isShowRank, scoreDBAccessDev->GetRankingName(), scoreDBAccessDev->GetRankingScore());
+		}
 	}
 	else
 	{
@@ -282,7 +290,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 	bool isFinishFrame = gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset();
 	if (isFinishFrame)
 	{
-		if (dethWaitCount <= 0)
+		if (deathWaitCount <= 0)
 		{
 			iText->Draw();
 		}

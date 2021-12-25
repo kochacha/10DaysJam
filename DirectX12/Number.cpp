@@ -4,6 +4,7 @@
 KochaEngine::Number::Number(Vector2 position, Vector2 size, int maxDigit)
 {
 	this->maxDigit = maxDigit;
+	this->size = size;
 	for (int i = 0; i < maxDigit; i++)
 	{
 		numbers[i] = new Texture2D("Resources/number.png", 10, 1, 1, Vector2(position.x + (size.x + 2.0f) * i,position.y), size, 0);
@@ -71,6 +72,6 @@ void KochaEngine::Number::Draw(Vector2 position, int num)
 
 	for (int i = 0; i < maxDigit; i++)
 	{
-		numbers[i]->Draw({ position.x + (size.x + 5.0f) * i,position.y });
+		numbers[i]->Draw(Vector2(position.x + (size.x + 2.0f) * i, position.y));
 	}
 }
