@@ -1,4 +1,5 @@
 #include "ScrollManager.h"
+#include "Input.h"
 
 KochaEngine::ScrollManager::ScrollManager()
 	:scrollAmount(0.0f),
@@ -79,6 +80,23 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 
 const float KochaEngine::ScrollManager::GetScrollAmount()
 {
+#ifdef _DEBUG
+	static bool isScroll = true;
+	if (Input::TriggerKey(DIK_LCONTROL))
+	{
+		isScroll = !isScroll;
+	}
+
+	if (isScroll)
+	{
+		return scrollAmount;
+	}
+	else
+	{
+		return 0;
+	}
+#endif // _DEBUG
+
 	return scrollAmount;
 }
 
