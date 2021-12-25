@@ -221,7 +221,10 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rankBack.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/offline.png");
 	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/online.png");
-
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/next_ranking.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/next_title.png");
+	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/next_waku.png");
+	
 	//.objのロード
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
 	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "plane");

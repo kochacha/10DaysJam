@@ -134,7 +134,7 @@ void KochaEngine::Player::Initialize()
 	isStun = false;	
 
 	velocity.Zero();
-	sphere.radius = 4.0f;
+	sphere.radius = 5.0f;
 	sphere.position = this->position;
 }
 
@@ -545,7 +545,7 @@ void KochaEngine::Player::Move()
 			position.x = wallPosX;
 			if (*inGame)
 			{
-				backCount = (smashPower * 5.0f) + (overDirveSmashPower * 15.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 15.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
 			}
 			else
 			{
