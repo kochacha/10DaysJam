@@ -35,6 +35,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 isSmashing(false),
 	 backCount(0),
 	 addSmashScore(0),
+	 ableHitAfterTouchWallCount(0),
 	 isStun(false)
 {
 	if (arg_camera == nullptr) return;
@@ -298,7 +299,15 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			hitStopCount = 20;
 
 			pEmitter->PowerUp(position);
-			overDirveSmashPower += 1;
+
+			if (IsAbleHitSpine())
+			{
+				backCount += 15.0f;
+			}
+			else
+			{
+				overDirveSmashPower += 1;
+			}
 		}		
 	}
 }
@@ -378,6 +387,11 @@ const int KochaEngine::Player::GetBackCount()
 const bool KochaEngine::Player::IsHitWall()
 {
 	return isHitWall;
+}
+
+const bool KochaEngine::Player::IsAbleHitSpine()
+{
+	return ableHitAfterTouchWallCount > 0;
 }
 
 void KochaEngine::Player::PrepareInput()
@@ -539,6 +553,7 @@ void KochaEngine::Player::Move()
 			}
 
 			isHitWall = true;
+			ableHitAfterTouchWallCount = 10;
 
 			//âºíuÇ´
 			ResetPower();
@@ -553,6 +568,11 @@ void KochaEngine::Player::Move()
 		backCount--;
 		pEmitter->SmashStar(position);
 		ResetPower();
+
+		if (IsAbleHitSpine())
+		{
+			ableHitAfterTouchWallCount--;
+		}
 
 		//ÉQÅ[ÉÄíÜÇ»ÇÁ
 		if (*inGame)

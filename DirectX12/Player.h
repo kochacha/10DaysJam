@@ -71,6 +71,8 @@ namespace KochaEngine
 		int backCount;
 		//押し戻し中の追加スコア保存用
 		int addSmashScore;
+		//壁を押し戻し始めた直後にトゲとの判定をいれるかの猶予フレーム
+		int ableHitAfterTouchWallCount;
 
 		//スタン関連
 		//スタンしているかどうか
@@ -121,5 +123,6 @@ namespace KochaEngine
 		const bool IsStuning();
 		const int GetBackCount();
 		const bool IsHitWall();
+		const bool IsAbleHitSpine();
 	};
 }
