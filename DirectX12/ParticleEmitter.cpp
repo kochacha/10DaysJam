@@ -77,25 +77,26 @@ void KochaEngine::ParticleEmitter::PowerUp(const Vector3& arg_position)
 
 }
 
-void KochaEngine::ParticleEmitter::PowerDown(const Vector3& arg_position)
+void KochaEngine::ParticleEmitter::Clash(const Vector3& arg_position)
 {
 	ParticleParam param;
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) * 0.2f;
-		auto randPosY = (float)(Util::GetIntRand(0, 30) - 15) * 0.07f;
-		param.position = Vector3(arg_position.x + randPosX, arg_position.y + randPosY, arg_position.z + 0.1f);
-		auto randLife = Util::GetIntRand(15, 30);
+		//auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) * 0.2f;
+		//auto randPosY = (float)(Util::GetIntRand(0, 30) - 15) * 0.07f;
+		param.position = Vector3(arg_position.x, arg_position.y, arg_position.z + 0.1f);
+		auto randLife = Util::GetIntRand(10, 20);
 		param.life = randLife;
 		param.moveColor = Vector4(0, 0, 0, 0);
 		param.moveRotate = Vector3(0, 0, 0);
-		param.moveScale = Vector3(0, 0, 0);
-		auto randScale = (float)Util::GetIntRand(3, 5);
+		param.moveScale = Vector3(-0.1f, -0.1f, 0);
+		auto randScale = (float)Util::GetIntRand(4, 6);
 		param.scale = Vector3(randScale, randScale, 1);
-		param.textureName = "Resources/arrow.png";
-		auto randVelY = (float)(Util::GetIntRand(0,10) - 20) * 0.03f;
-		param.velocity = Vector3(0, randVelY, 0);
+		param.textureName = "Resources/star.png";
+		auto randVelX = (float)(Util::GetIntRand(0,10) - 5) * 0.2f;
+		auto randVelY = (float)(Util::GetIntRand(0,10) - 5) * 0.2f;
+		param.velocity = Vector3(randVelX, randVelY, 0);
 		param.color = Vector4(1, 1, 1, 1);
 		param.rotate = Vector3(0, 0, 180);
 
