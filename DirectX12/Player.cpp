@@ -309,7 +309,7 @@ void KochaEngine::Player::PowerDown()
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
 
 	//スマッシュパワー減算
-	pEmitter->PowerDown(position);
+	pEmitter->Clash(position);
 	/*smashPower--;
 	if (smashPower < 0)
 	{
