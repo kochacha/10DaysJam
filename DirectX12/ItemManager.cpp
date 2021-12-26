@@ -12,7 +12,8 @@ KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg
 	 pWall(nullptr),
 	 scrollManager(nullptr),
 	 emitInterval(0),
-	 MARGIN_FRAME(12.0f)
+	 MARGIN_FRAME(12.0f),
+	 hitCheckCount(0)
 {
 	if (!arg_camera) return;
 	if (!arg_gManager) return;
@@ -197,6 +198,7 @@ void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emi
 	const unsigned int rndMax = 20;
 	const unsigned int rndCoefficient = GetEmitTypeCoefficient();
 	int rnd = Util::GetRandInt(rndMax);
+	hitCheckCount = 0;
 
 	//ã≠âªÉAÉCÉeÉÄê∂ê¨
 	if (rnd < rndCoefficient)
@@ -294,6 +296,12 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 
 const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position)
 {
+	static const int MAX_HITCHECK = 10;
+	if (hitCheckCount >= MAX_HITCHECK)
+	{
+		return false;
+	}
+
 	//Ç±ÇÍÇ©ÇÁê∂ê¨ó\íËÇÃè’ìÀîªíËÇçƒåª
 	_Sphere sphere;
 	sphere.position = arg_position;
@@ -317,6 +325,7 @@ const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg
 	{
 		if (Collision::HitSphereToSphere(sphere, item->GetSphere()))
 		{
+			hitCheckCount++;
 			return true;
 		}
 	}
@@ -326,6 +335,7 @@ const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg
 	{
 		if (Collision::HitSphereToSphere(sphere, spine->GetSphere()))
 		{
+			hitCheckCount++;
 			return true;
 		}
 	}

@@ -41,6 +41,8 @@ namespace KochaEngine
 		const float MARGIN_FRAME;
 		//アイテムを生成する仮想レーン
 		float arrayEmitHight[11];
+		//生成時の座標チェックカウント
+		int hitCheckCount;
 
 		//配列から削除
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
