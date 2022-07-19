@@ -91,9 +91,35 @@ void KochaEngine::Application::Run()
 
 		////↑毎フレーム処理↑//
 		
-		//１パス
+		////１パス
+		//{
+		//	peraDof->PreDrawScene(dx12->GetCmdList().Get());
+
+		//	
+		//	peraDof->PostDrawScene(dx12->GetCmdList().Get());
+		//}
+
+		////２パス
+		//{
+		//	peraBloom->PreDrawScene(dx12->GetCmdList().Get());
+
+		//	if (isDof)
+		//	{
+		//		peraDof->Draw(ShaderType::DEPTH_OF_FIELD_SHADER); //被写界深度
+		//	}
+		//	else
+		//	{
+		//		peraDof->Draw();
+		//	}
+
+		//	peraBloom->PostDrawScene(dx12->GetCmdList().Get());
+		//}
+
+		//1パス
 		{
-			peraDof->PreDrawScene(dx12->GetCmdList().Get());
+			peraEffect->PreDrawScene(dx12->GetCmdList().Get());
+
+			//peraBloom->Draw();
 
 			if (isLogoFlag)
 			{
@@ -121,35 +147,11 @@ void KochaEngine::Application::Run()
 				//↑SpriteDraw↑//
 				Texture2D::EndDraw();
 			}
-			peraDof->PostDrawScene(dx12->GetCmdList().Get());
-		}
-
-		//２パス
-		{
-			peraBloom->PreDrawScene(dx12->GetCmdList().Get());
-
-			if (isDof)
-			{
-				peraDof->Draw(ShaderType::DEPTH_OF_FIELD_SHADER); //被写界深度
-			}
-			else
-			{
-				peraDof->Draw();
-			}
-
-			peraBloom->PostDrawScene(dx12->GetCmdList().Get());
-		}
-
-		//３パス
-		{
-			peraEffect->PreDrawScene(dx12->GetCmdList().Get());
-
-			peraBloom->Draw();
 
 			peraEffect->PostDrawScene(dx12->GetCmdList().Get());
 		}
 
-		//４パス
+		//2パス
 		{
 			dx12->BeginDraw(clearColor[0], clearColor[1], clearColor[2]);
 

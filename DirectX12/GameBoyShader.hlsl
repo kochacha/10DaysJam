@@ -27,5 +27,7 @@ float4 main(Output input) : SV_TARGET
     {
         col = color4;
     }
+
+
     return col;
 }
