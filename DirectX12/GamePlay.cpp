@@ -155,12 +155,14 @@ void KochaEngine::GamePlay::Update()
 	camera->Update();	
 	lightManager->Update();
 
+	
 	if (inGame && !player->IsFinish())
 	{
 		iManager->Update();
 		scrollManager->Update();
 	}
 
+	//ゲーム終了時に名前入力画面を表示
 	if (player->IsFinish() && !pauseManager->IsReset())
 	{
 		
@@ -175,32 +177,11 @@ void KochaEngine::GamePlay::Update()
 	}
 	if (iText->IsNext())
 	{
-		if (!isSend)
-		{
-			scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
-
-			if (scoreDBAccessDev->IsOnline())
-			{
-				scoreDBAccessDev->GetRankingByAddScoreDB(iText->GetName(), sManager->GetScore()); //サーバーにデータを送る
-				isSend = true;
-			}
-
-		}
-		
-	
-
-		isShowRank = true;
-		isDisplayRanking = true;
-
-		if (displayRankingCount > 0)
-		{
-			displayRankingCount--;
-		}
-		else
-		{
-			Initialize();
-		}
+		//ゲーム終了後ランキング追加処理
+		Ranking();
 	}
+
+	//ポーズメニュ―からリセット
 	if (pauseManager->IsReset())
 	{
 		player->Finish();
@@ -214,37 +195,11 @@ void KochaEngine::GamePlay::Update()
 		}
 	}
 	
+	//タイトル画面
 	if (!inGame)
 	{
 		Title();
-		if (InputManager::RankingCheckKey() && !iText->IsNext())
-		{	
-			se->PlayWave("Resources/Sound/decision.wav", seVolume);
-			isShowRank = !isShowRank;
-			if (isShowRank)
-			{
-				scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
-			}
-			else
-			{
-				scoreDBAccessDev->Disconnect();
-			}	
-
-			if (scoreDBAccessDev->IsOnline())
-			{
-				scoreDBAccessDev->LoadDBRanking();
-			}
-			else
-			{
-				sManager->LoadRankData();
-			}
-		}
-
-		auto pPlayer = gManager->GetPlayer();
-		if (pPlayer->IsSmashing() || pPlayer->GetBackCount() > 0)
-		{
-			isShowRank = false;
-		}
+		ShowRanking();
 	}
 
 	//ゲーム終了
@@ -259,7 +214,6 @@ void KochaEngine::GamePlay::Update()
 			player->Finish();
 			scoreDBAccessDev->Disconnect();
 		}
-
 	}
 }
 
@@ -282,7 +236,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 	}
 	else
 	{
-		sManager->Draw(isShowRank);
+		sManager->Draw(isShowRank); //オフラインランキングを表示
 	}
 	
 	pauseManager->Draw();
@@ -362,6 +316,7 @@ void KochaEngine::GamePlay::Scroll()
 	auto player = gManager->GetPlayer();
 
 	if (player->IsFinish()) return;
+
 	if (inGame)
 	{
 		if (player->GetBackCount() > 0 && player->IsHitWall())
@@ -374,6 +329,7 @@ void KochaEngine::GamePlay::Scroll()
 	}
 	else
 	{
+		//スタート時1番左にいくまでスクロールする
 		if (player->GetBackCount() > 0 && player->IsHitWall() && wall->GetMinPos().x > wall->GetLimitLeftPosX())
 		{
 			camera->MoveEye({ -10,0,0, });
@@ -391,5 +347,62 @@ void KochaEngine::GamePlay::Title()
 		inGame = true;
 		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
 		sManager->Initialize();
+	}
+}
+
+void KochaEngine::GamePlay::Ranking()
+{
+	if (!isSend)
+	{
+		scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+
+		if (scoreDBAccessDev->IsOnline())
+		{
+			scoreDBAccessDev->GetRankingByAddScoreDB(iText->GetName(), sManager->GetScore()); //サーバーにデータを送る
+			isSend = true;
+		}
+	}
+	isShowRank = true;
+	isDisplayRanking = true;
+
+	if (displayRankingCount > 0)
+	{
+		displayRankingCount--;
+	}
+	else
+	{
+		Initialize();
+	}
+}
+
+void KochaEngine::GamePlay::ShowRanking()
+{
+	if (InputManager::RankingCheckKey() && !iText->IsNext())
+	{
+		se->PlayWave("Resources/Sound/decision.wav", seVolume);
+		isShowRank = !isShowRank;
+		if (isShowRank)
+		{
+			scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+		}
+		else
+		{
+			scoreDBAccessDev->Disconnect(); //切断処理
+		}
+
+		if (scoreDBAccessDev->IsOnline())
+		{
+			scoreDBAccessDev->LoadDBRanking(); //オンラインランキングをロード
+		}
+		else
+		{
+			sManager->LoadRankData(); //オフラインランキングをロード
+		}
+	}
+
+	auto pPlayer = gManager->GetPlayer();
+	if (pPlayer->IsSmashing() || pPlayer->GetBackCount() > 0)
+	{
+		isShowRank = false;
 	}
 }
