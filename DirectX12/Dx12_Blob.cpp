@@ -14,16 +14,41 @@ KochaEngine::Dx12_Blob::~Dx12_Blob()
 {
 }
 
-HRESULT KochaEngine::Dx12_Blob::CompileShader(const std::string& arg_ShaderName, const std::string& arg_EntryPoint, const std::string& arg_ShaderModel, Blob& arg_Blob)
+HRESULT KochaEngine::Dx12_Blob::CompileShader(const CompileShaderType& arg_shaderType, const wchar_t* arg_ShaderName, const std::string& arg_EntryPoint, const std::string& arg_ShaderModel, Blob& arg_Blob)
 {
-	auto shaderName = Util::StringToWchar_t(arg_ShaderName);
-	auto result = D3DCompileFromFile(
-		shaderName, //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		arg_EntryPoint.c_str(), arg_ShaderModel.c_str(), //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &arg_Blob.vsBlob, &arg_Blob.errorBlob);
+	HRESULT result;
+	switch (arg_shaderType)
+	{
+	case CompileShaderType::PS:
+		result = D3DCompileFromFile(
+			arg_ShaderName, //シェーダーファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
+			arg_EntryPoint.c_str(), arg_ShaderModel.c_str(), //エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
+			0, &arg_Blob.psBlob, &arg_Blob.errorBlob);
+		break;
+	case CompileShaderType::VS:
+		result = D3DCompileFromFile(
+			arg_ShaderName, //シェーダーファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
+			arg_EntryPoint.c_str(), arg_ShaderModel.c_str(), //エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
+			0, &arg_Blob.vsBlob, &arg_Blob.errorBlob);
+		break;
+	case CompileShaderType::GS:
+		result = D3DCompileFromFile(
+			arg_ShaderName, //シェーダーファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
+			arg_EntryPoint.c_str(), arg_ShaderModel.c_str(), //エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
+			0, &arg_Blob.gsBlob, &arg_Blob.errorBlob);
+		break;
+	default:
+		break;
+	}
 	return result;
 }
 
@@ -46,206 +71,77 @@ void KochaEngine::Dx12_Blob::ErrorBlob(const HRESULT& result, const Blob& blob)
 
 void KochaEngine::Dx12_Blob::Init()
 {
+	HRESULT result;
+
 	//頂点シェーダーの読み込みとコンパイル
-	auto result = D3DCompileFromFile(
-		L"BasicVertexShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"VSmain", "vs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &basicBlob.vsBlob, &basicBlob.errorBlob);
+	result = CompileShader(CompileShaderType::VS, L"Shader/BasicVertexShader.hlsl", "VSmain", "vs_5_0", basicBlob);
 	ErrorBlob(result, basicBlob);
 
-	result = D3DCompileFromFile(
-		L"TextureVertexShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"VSmain", "vs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &texBlob.vsBlob, &texBlob.errorBlob);
+	result = CompileShader(CompileShaderType::VS, L"Shader/TextureVertexShader.hlsl", "VSmain", "vs_5_0", texBlob);
 	ErrorBlob(result, texBlob);
 
-	result = D3DCompileFromFile(
-		L"PMDVertexShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"VSmain", "vs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &pmdBlob.vsBlob, &pmdBlob.errorBlob);
+	result = CompileShader(CompileShaderType::VS, L"Shader/PMDVertexShader.hlsl", "VSmain", "vs_5_0", pmdBlob);
 	ErrorBlob(result, pmdBlob);
 
-	result = D3DCompileFromFile(
-		L"FBXVertexShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"VSmain", "vs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &fbxBlob.vsBlob, &fbxBlob.errorBlob);
+	result = CompileShader(CompileShaderType::VS, L"Shader/FBXVertexShader.hlsl", "VSmain", "vs_5_0", fbxBlob);
 	ErrorBlob(result, fbxBlob);
 
-	result = D3DCompileFromFile(
-		L"PeraVertexShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "vs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &peraBlob.vsBlob, &peraBlob.errorBlob);
+	result = CompileShader(CompileShaderType::VS, L"Shader/PeraVertexShader.hlsl", "main", "vs_5_0", peraBlob);
 	ErrorBlob(result, peraBlob);
 
-	result = D3DCompileFromFile(
-		L"BasicVertexShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		"ShadowVS", "vs_5_0", //エントリーポイント名、シェーダーモデル指定
-		0,0, &shadowBlob.vsBlob, &shadowBlob.errorBlob);
+	result = CompileShader(CompileShaderType::VS, L"Shader/BasicVertexShader.hlsl", "ShadowVS", "vs_5_0", shadowBlob);
 	ErrorBlob(result, shadowBlob);
 
 
 	//ピクセルシェーダーの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"BasicPixelShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"PSmain", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &basicBlob.psBlob, &basicBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/BasicPixelShader.hlsl", "PSmain", "ps_5_0", basicBlob);
 	ErrorBlob(result, basicBlob);
 
-	result = D3DCompileFromFile(
-		L"TexturePixelShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"PSmain", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &texBlob.psBlob, &texBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/TexturePixelShader.hlsl", "PSmain", "ps_5_0", texBlob);
 	ErrorBlob(result, texBlob);
 
-	result = D3DCompileFromFile(
-		L"PMDPixelShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"PSmain", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &pmdBlob.psBlob, &pmdBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/PMDPixelShader.hlsl", "PSmain", "ps_5_0", pmdBlob);
 	ErrorBlob(result, pmdBlob);
 
-	result = D3DCompileFromFile(
-		L"FBXPixelShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"PSmain", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &fbxBlob.psBlob, &fbxBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/FBXPixelShader.hlsl", "PSmain", "ps_5_0", fbxBlob);
 	ErrorBlob(result, fbxBlob);
 
-	result = D3DCompileFromFile(
-		L"PeraPixelShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &peraBlob.psBlob, &peraBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/PeraPixelShader.hlsl", "main", "ps_5_0", peraBlob);
 	ErrorBlob(result, peraBlob);
 
-	result = D3DCompileFromFile(
-		L"VignetteShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &vignetteBlob.psBlob, &vignetteBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/VignetteShader.hlsl", "main", "ps_5_0", vignetteBlob);
 	ErrorBlob(result, vignetteBlob);
 
-	result = D3DCompileFromFile(
-		L"BloomShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &bloomBlob.psBlob, &bloomBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/BloomShader.hlsl", "main", "ps_5_0", bloomBlob);
 	ErrorBlob(result, bloomBlob);
 
-	result = D3DCompileFromFile(
-		L"GameBoyShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &gameBoyBlob.psBlob, &gameBoyBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/GameBoyShader.hlsl", "main", "ps_5_0", gameBoyBlob);
 	ErrorBlob(result, gameBoyBlob);
 
-	result = D3DCompileFromFile(
-		L"ChromaticAberrationShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &cAberrationBlob.psBlob, &cAberrationBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/ChromaticAberrationShader.hlsl", "main", "ps_5_0", cAberrationBlob);
 	ErrorBlob(result, cAberrationBlob);
 
-	result = D3DCompileFromFile(
-		L"ToonShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &toonBlob.psBlob, &toonBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/ToonShader.hlsl", "main", "ps_5_0", toonBlob);
 	ErrorBlob(result, toonBlob);
 
-	result = D3DCompileFromFile(
-		L"GrayScaleShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &grayScaleBlob.psBlob, &grayScaleBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/GrayScaleShader.hlsl", "main", "ps_5_0", grayScaleBlob);
 	ErrorBlob(result, grayScaleBlob);
 
-	result = D3DCompileFromFile(
-		L"MosaicShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &mosaicBlob.psBlob, &mosaicBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/MosaicShader.hlsl", "main", "ps_5_0", mosaicBlob);
 	ErrorBlob(result, mosaicBlob);
 
-	result = D3DCompileFromFile(
-		L"GaussianBlurShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &blurBlob.psBlob, &blurBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/GaussianBlurShader.hlsl", "main", "ps_5_0", blurBlob);
 	ErrorBlob(result, blurBlob);
 
-	result = D3DCompileFromFile(
-		L"DepthOfFieldShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"main", "ps_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &dofBlob.psBlob, &dofBlob.errorBlob);
+	result = CompileShader(CompileShaderType::PS, L"Shader/DepthOfFieldShader.hlsl", "main", "ps_5_0", dofBlob);
 	ErrorBlob(result, dofBlob);
 
 
 	//ジオメトリシェーダーの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"BasicGeometryShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"GSmain", "gs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &basicBlob.gsBlob, &basicBlob.errorBlob);
+	result = CompileShader(CompileShaderType::GS, L"Shader/BasicGeometryShader.hlsl", "GSmain", "gs_5_0", basicBlob);
 	ErrorBlob(result, basicBlob);
 
-	result = D3DCompileFromFile(
-		L"BasicGeometryShader.hlsl", //シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, //インクルード可能にする
-		"GSmain", "gs_5_0", //エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, //デバッグ用設定
-		0, &shadowBlob.gsBlob, &shadowBlob.errorBlob);
+	result = CompileShader(CompileShaderType::GS, L"Shader/BasicGeometryShader.hlsl", "GSmain", "gs_5_0", shadowBlob);
 	ErrorBlob(result, shadowBlob);
 
 }

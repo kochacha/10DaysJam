@@ -14,6 +14,13 @@ namespace KochaEngine
 		ComPtr<ID3DBlob> errorBlob;
 	};
 
+	enum CompileShaderType
+	{
+		PS,
+		VS,
+		GS,
+	};
+
 	class Dx12_Blob
 	{
 	private:
@@ -34,7 +41,7 @@ namespace KochaEngine
 		Blob blurBlob;
 		Blob dofBlob;
 
-		HRESULT CompileShader(const std::string& arg_ShaderName, const std::string& arg_EntryPoint, const std::string& arg_ShaderModel, Blob& arg_Blob);
+		HRESULT CompileShader(const CompileShaderType& arg_shaderType, const wchar_t* arg_ShaderName, const std::string& arg_EntryPoint, const std::string& arg_ShaderModel, Blob& arg_Blob);
 		void ErrorBlob(const HRESULT& result, const Blob& blob);
 
 	public:
