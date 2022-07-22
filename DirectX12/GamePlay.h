@@ -25,6 +25,12 @@ namespace KochaEngine
 	class GamePlay : public Scene
 	{
 	private:
+		enum GameMode
+		{
+			NORMALMODE,
+			SCOREATTAKMODE,
+		};
+		GameMode currentGameMode;
 		Map* map;
 		Camera* camera;
 		GameObjectManager* gManager;
@@ -81,5 +87,9 @@ namespace KochaEngine
 		void Fade();
 		void Scroll();
 		void Title();
+		//ランキング登録処理
+		void Ranking();
+		//タイトル画面でのランキング表示処理
+		void ShowRanking();
 	};
 }
