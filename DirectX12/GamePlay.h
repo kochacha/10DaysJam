@@ -27,6 +27,7 @@ namespace KochaEngine
 	private:
 		enum GameMode
 		{
+			TITLEMODE,
 			NORMALMODE,
 			SCOREATTAKMODE,
 		};
@@ -87,6 +88,8 @@ namespace KochaEngine
 		void Fade();
 		void Scroll();
 		void Title();
+		void ScoreAttackMode();
+		void NormalMode();
 		//ランキング登録処理
 		void Ranking();
 		//タイトル画面でのランキング表示処理

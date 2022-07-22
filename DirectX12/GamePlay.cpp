@@ -113,6 +113,7 @@ void KochaEngine::GamePlay::Initialize()
 	endCount = 180;
 	deathWaitCount = 110;
 	pauseBackCount = 0;
+	currentGameMode = GameMode::TITLEMODE;
 
 	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
@@ -145,6 +146,7 @@ void KochaEngine::GamePlay::Update()
 		return;
 	}
 
+	//ヒットストップ処理
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
@@ -162,24 +164,22 @@ void KochaEngine::GamePlay::Update()
 		scrollManager->Update();
 	}
 
-	//ゲーム終了時に名前入力画面を表示
-	if (player->IsFinish() && !pauseManager->IsReset())
+	//ゲーム終了時処理の分岐
+	switch (currentGameMode)
 	{
-		
-		if (deathWaitCount > 0)
-		{
-			deathWaitCount--;
-		}
-		else
-		{
-			iText->Update();
-		}
+	case KochaEngine::GamePlay::TITLEMODE:
+		break;
+	case KochaEngine::GamePlay::NORMALMODE:
+		NormalMode();
+		break;
+	case KochaEngine::GamePlay::SCOREATTAKMODE:
+		ScoreAttackMode();
+		break;
+	default:
+		break;
 	}
-	if (iText->IsNext())
-	{
-		//ゲーム終了後ランキング追加処理
-		Ranking();
-	}
+
+	
 
 	//ポーズメニュ―からリセット
 	if (pauseManager->IsReset())
@@ -202,7 +202,7 @@ void KochaEngine::GamePlay::Update()
 		ShowRanking();
 	}
 
-	//ゲーム終了
+	//ゲーム終了　スコアアタックモード用
 	if (gManager->GetWall()->GetMinPos().x >= gManager->GetDeadLine()->GetPosition().x + 5)
 	{
 		//float x = gManager->GetWall()->GetMaxPos().x;
@@ -340,6 +340,19 @@ void KochaEngine::GamePlay::Scroll()
 
 void KochaEngine::GamePlay::Title()
 {
+	auto player = gManager->GetPlayer();
+	Vector3 pos = player->GetPosition();
+	if (player->IsSmashing())
+	{
+		if (player->GetPosition().y < 10)
+		{
+			currentGameMode = GameMode::SCOREATTAKMODE;
+		}
+		else
+		{
+			currentGameMode = GameMode::NORMALMODE;
+		}
+	}
 	auto wall = gManager->GetWall();
 	if (wall->GetMinPos().x <= wall->GetLimitLeftPosX())
 	{
@@ -347,6 +360,45 @@ void KochaEngine::GamePlay::Title()
 		inGame = true;
 		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
 		sManager->Initialize();
+	}
+}
+
+void KochaEngine::GamePlay::ScoreAttackMode()
+{
+	auto player = gManager->GetPlayer();
+	//ゲーム終了時に名前入力画面を表示
+	if (player->IsFinish() && !pauseManager->IsReset())
+	{
+		if (deathWaitCount > 0)
+		{
+			deathWaitCount--;
+		}
+		else
+		{
+			iText->Update();
+		}
+	}
+	if (iText->IsNext())
+	{
+		//ゲーム終了後ランキング追加処理
+		Ranking();
+	}
+}
+
+void KochaEngine::GamePlay::NormalMode()
+{
+	auto player = gManager->GetPlayer();
+	//ゲーム終了時に名前入力画面を表示
+	if (player->IsFinish() && !pauseManager->IsReset())
+	{
+		if (deathWaitCount > 0)
+		{
+			deathWaitCount--;
+		}
+		else
+		{
+			Initialize();
+		}
 	}
 }
 
