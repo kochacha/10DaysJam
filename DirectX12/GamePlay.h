@@ -73,7 +73,7 @@ namespace KochaEngine
 		int32_t m_deathWaitCount;
 		int32_t m_pauseBackCount;
 
-		const int m_normalModeEndScore = 100000;
+		const int m_quotaScore = 100000;
 		const float m_scrollAmount = 0.25f;
 	public:
 		GamePlay();

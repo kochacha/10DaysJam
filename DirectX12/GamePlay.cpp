@@ -237,6 +237,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 	case KochaEngine::GamePlay::NORMALMODE:
 
 		m_scoreManager->Draw(m_isShowRank);
+		m_scoreManager->DrawQuotaScore(m_quotaScore);
 
 		if (isFinishFrame)
 		{
@@ -256,6 +257,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 			else
 			{
 				m_scoreManager->DrawOnlineRinking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore());
+				m_scoreManager->DrawQuotaScore(0);
 			}
 		}
 		else
@@ -276,6 +278,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 		break;
 	default:
 		m_scoreManager->Draw(m_isShowRank);
+		m_scoreManager->DrawQuotaScore(m_quotaScore);
 		break;
 	}
 	
@@ -507,7 +510,7 @@ void KochaEngine::GamePlay::ScoreAttackEnd()
 void KochaEngine::GamePlay::NormalModeEnd()
 {
 	auto player = m_gManager->GetPlayer();
-	if (m_scoreManager->GetScore() > m_normalModeEndScore)
+	if (m_scoreManager->GetScore() > m_quotaScore)
 	{
 		if (!m_isOnce)
 		{
