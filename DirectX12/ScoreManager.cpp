@@ -13,6 +13,7 @@ KochaEngine::ScoreManager::ScoreManager()
 		nameTexts[i] = new Text(displayChar, Vector2(750, 180 + 48 * i), Vector2(32, 32));
 	}
 	scoreTex = new Number(Vector2(950, 75), Vector2(32, 32), 8);
+	quotaScoreTex = new Number(Vector2(950, 34), Vector2(32, 32), 8);
 	resultScoreTex = new Number(Vector2(450, 180 + 48 * 8), Vector2(32, 32), 8);
 	backTex = new Texture2D("Resources/rankBack.png", Vector2(150, 129), Vector2(1000, 550), 0);
 	onlineTex = new Texture2D("Resources/online.png", Vector2(190, 170), Vector2(64, 64), 0);
@@ -32,6 +33,7 @@ KochaEngine::ScoreManager::~ScoreManager()
 		delete nameTexts[i];
 	}
 	delete scoreTex;
+	delete quotaScoreTex;
 	delete backTex;
 	delete onlineTex;
 	delete offlineTex;
@@ -114,6 +116,11 @@ void KochaEngine::ScoreManager::DrawResultRanking(bool arg_isShow, std::vector<s
 		yourScoreText->Draw();
 	}
 	scoreTex->Draw(score);
+}
+
+void KochaEngine::ScoreManager::DrawQuotaScore(const int arg_quotaScore)
+{
+	quotaScoreTex->Draw(arg_quotaScore);
 }
 
 void KochaEngine::ScoreManager::UpdateRanking(const int arg_score)

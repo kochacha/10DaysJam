@@ -18,6 +18,7 @@ namespace KochaEngine
 		Texture2D* offlineTex;
 
 		Number* scoreTex;
+		Number* quotaScoreTex;
 		Number* resultScoreTex;
 		Number* rankNumTex[RANK_COUNT];
 		Number* rankScoreTex[RANK_COUNT];
@@ -28,8 +29,6 @@ namespace KochaEngine
 
 		/*std::vector<std::string> rankNames;
 		std::vector<int> rankScores;*/
-
-		
 
 		int score;
 		std::vector<int> rankScore;
@@ -45,6 +44,7 @@ namespace KochaEngine
 		void Draw(bool arg_isShow);
 		void DrawOnlineRinking(bool arg_isShow, std::vector<std::string> arg_rankNames, std::vector<int> arg_rankScores);
 		void DrawResultRanking(bool arg_isShow, std::vector<std::string> arg_rankNames, std::vector<int> arg_rankScores, const std::string arg_resultMyName);
+		void DrawQuotaScore(const int arg_quotaScore);
 
 		void UpdateRanking(const int arg_score);
 		void SetScore(const int arg_score) { score = arg_score; }
