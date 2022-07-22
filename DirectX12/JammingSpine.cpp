@@ -27,7 +27,9 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 	switch (arg_option)
 	{
 	case ItemEmitOption::NORMAL:
+		emittedPlayerPosition = arg_position;
 		position = arg_position;
+		prearrangedPosition = arg_position;
 		break;
 	case ItemEmitOption::SMASHING_WALL:
 		emittedPlayerPosition = gManager->GetPlayer()->GetPosition();
@@ -72,9 +74,10 @@ void KochaEngine::JammingSpine::Initialize()
 void KochaEngine::JammingSpine::Update()
 {
 	//スマッシュ中に生成されていたら
-	if (moveCount > 0)
+	if (moveCount >= 0)
 	{
 		//線形補間で目標座標まで移動
+		position.x = Util::Lerp(emittedPlayerPosition.x, prearrangedPosition.x, (5 - moveCount) / 5.0f);
 		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
 
 		moveCount--;
@@ -147,6 +150,11 @@ void KochaEngine::JammingSpine::ObjDraw(Camera* arg_camera, LightManager* arg_li
 KochaEngine::GameObjectType KochaEngine::JammingSpine::GetType()
 {
 	return JAMMING_SPINE;
+}
+
+KochaEngine::Vector3 KochaEngine::JammingSpine::GetPrearrangedPosition() const
+{
+	return prearrangedPosition;
 }
 
 void KochaEngine::JammingSpine::SetObjParam()

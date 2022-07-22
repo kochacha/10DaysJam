@@ -25,7 +25,9 @@ KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectMana
 	switch (arg_option)
 	{
 	case ItemEmitOption::NORMAL:
+		emittedPlayerPosition = arg_position;
 		position = arg_position;
+		prearrangedPosition = arg_position;
 		break;
 	case ItemEmitOption::SMASHING_WALL:
 		emittedPlayerPosition = gManager->GetPlayer()->GetPosition();
@@ -70,9 +72,10 @@ void KochaEngine::EnhancementItem::Initialize()
 void KochaEngine::EnhancementItem::Update()
 {
 	//スマッシュ中に生成されていたら
-	if (moveCount > 0)
+	if (moveCount >= 0)
 	{
 		//線形補間で目標座標まで移動
+		position.x = Util::Lerp(emittedPlayerPosition.x, prearrangedPosition.x, (5 - moveCount) / 5.0f);
 		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
 
 		moveCount--;
@@ -122,6 +125,11 @@ void KochaEngine::EnhancementItem::ObjDraw(Camera* arg_camera, LightManager* arg
 KochaEngine::GameObjectType KochaEngine::EnhancementItem::GetType()
 {
 	return ENHANCEMENT_ITEM;
+}
+
+KochaEngine::Vector3 KochaEngine::EnhancementItem::GetPrearrangedPosition() const
+{
+	return prearrangedPosition;
 }
 
 void KochaEngine::EnhancementItem::SetObjParam()

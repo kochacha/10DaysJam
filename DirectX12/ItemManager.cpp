@@ -245,7 +245,7 @@ void KochaEngine::ItemManager::FixEmitPositionByCondition(Vector3& arg_position,
 		break;
 	case ItemEmitPosition::MORE_THAN_RIGHTSIDE:
 		//y座標はそのままで右端から出てくるように変換
-		arg_position.x = MARGIN_FRAME;
+		arg_position.x += MARGIN_FRAME;
 		arg_position += Vector3(pWall->GetCenterPos().x + pWall->GetPlayableSize().x / 2, pWall->GetCenterPos().y, 0);
 		break;
 	default:
@@ -294,24 +294,26 @@ KochaEngine::Vector3 KochaEngine::ItemManager::DetermineEmitPos(const GameObject
 	return emitPos;
 }
 
-const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position)
+const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg_objType, Vector3& arg_position)
 {
 	static const int MAX_HITCHECK = 10;
 	if (hitCheckCount >= MAX_HITCHECK)
 	{
-		return false;
+		//return false;
+		arg_position.x += 5.0f * (hitCheckCount / MAX_HITCHECK);
 	}
 
 	//これから生成予定の衝突判定を再現
+	//radiusは大きめにしとく
 	_Sphere sphere;
 	sphere.position = arg_position;
 	if (arg_objType == GameObjectType::ENHANCEMENT_ITEM)
 	{
-		sphere.radius = 5.0f;
+		sphere.radius = 6.0f;
 	}
 	else if (arg_objType == GameObjectType::JAMMING_SPINE)
 	{
-		sphere.radius = 4.0f;
+		sphere.radius = 5.0f;
 	}
 	//アイテムかトゲ以外を生成させようとしていたら
 	else
@@ -323,7 +325,10 @@ const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg
 	//強化アイテムとの判定
 	for (auto item : enhancementItems)
 	{
-		if (Collision::HitSphereToSphere(sphere, item->GetSphere()))
+		_Sphere itemSphere = _Sphere();
+		itemSphere.radius = 6.0f;
+		itemSphere.position = item->GetPrearrangedPosition();
+		if (Collision::HitSphereToSphere(sphere, itemSphere))
 		{
 			hitCheckCount++;
 			return true;
@@ -333,7 +338,10 @@ const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg
 	//おじゃまトゲとの判定
 	for (auto spine : jammingSpines)
 	{
-		if (Collision::HitSphereToSphere(sphere, spine->GetSphere()))
+		_Sphere spineSphere = _Sphere();
+		spineSphere.radius = 5.0f;
+		spineSphere.position = spine->GetPrearrangedPosition();
+		if (Collision::HitSphereToSphere(sphere, spineSphere))
 		{
 			hitCheckCount++;
 			return true;

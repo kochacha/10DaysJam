@@ -59,7 +59,7 @@ namespace KochaEngine
 		Vector3 DetermineEmitPos(const GameObjectType arg_objType);
 		//既存のアイテムと当たっていないか検証
 		//※使いすぎ注意
-		const bool IsHitExistingItems(const GameObjectType arg_objType, const Vector3& arg_position);
+		const bool IsHitExistingItems(const GameObjectType arg_objType, Vector3& arg_position);
 		//レベルデザイン用
 		//生成インターバル
 		const unsigned int GetMaxEmitInterval();

@@ -39,5 +39,6 @@ namespace KochaEngine
 		void Dead()override;
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
 		GameObjectType GetType();
+		Vector3 GetPrearrangedPosition()const;
 	};
 }
