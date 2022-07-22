@@ -173,8 +173,6 @@ void KochaEngine::GamePlay::Update()
 		break;
 	}
 
-	
-
 	//ポーズメニュ―からリセット
 	if (m_pauseManager->IsReset())
 	{
@@ -196,19 +194,20 @@ void KochaEngine::GamePlay::Update()
 		ShowRanking();
 	}
 
-	//ゲーム終了
-	if (m_gManager->GetWall()->GetMinPos().x >= m_gManager->GetDeadLine()->GetPosition().x + 5)
+	switch (m_currentGameMode)
 	{
-		//float x = gManager->GetWall()->GetMaxPos().x;
-		if (!m_isOnce)
-		{
-			m_isOnce = true;
-			m_scoreManager->SaveScore();
-			m_gManager->RemoveItem();
-			player->Finish();
-			m_scoreDBAccessDev->Disconnect();
-		}
+	case KochaEngine::GamePlay::TITLEMODE:
+		break;
+	case KochaEngine::GamePlay::NORMALMODE:
+		NormalModeEnd();
+		break;
+	case KochaEngine::GamePlay::SCOREATTAKMODE:
+		ScoreAttackEnd();
+		break;
+	default:
+		break;
 	}
+
 }
 
 void KochaEngine::GamePlay::SpriteDraw()
@@ -229,36 +228,57 @@ void KochaEngine::GamePlay::SpriteDraw()
 		m_uqp_smashUITexture->Draw();
 	}
 
-	if (m_scoreDBAccessDev->IsOnline())
-	{
-		if (m_deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面
-		{
-			m_scoreManager->DrawResultRanking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore(),m_uqp_iText->GetName());
-		}
-		else
-		{
-			m_scoreManager->DrawOnlineRinking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore());
-		}
-	}
-	else
-	{
-		m_scoreManager->Draw(m_isShowRank); //オフラインランキングを表示
-	}
-	
 	m_pauseManager->Draw();
 
 	bool isFinishFrame = m_gManager->GetPlayer()->IsFinish() && !m_pauseManager->IsReset();
-	if (isFinishFrame)
+
+	switch (m_currentGameMode)
 	{
-		if (m_deathWaitCount <= 0)
+	case KochaEngine::GamePlay::NORMALMODE:
+
+		m_scoreManager->Draw(m_isShowRank);
+
+		if (isFinishFrame)
 		{
-			m_uqp_iText->Draw();
+			if (m_deathWaitCount >= 0)
+			{
+				m_uqp_finishTexture->Draw();
+			}
+		}
+		break;
+	case KochaEngine::GamePlay::SCOREATTAKMODE:
+		if (m_scoreDBAccessDev->IsOnline())
+		{
+			if (m_deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面
+			{
+				m_scoreManager->DrawResultRanking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore(), m_uqp_iText->GetName());
+			}
+			else
+			{
+				m_scoreManager->DrawOnlineRinking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore());
+			}
 		}
 		else
 		{
-			m_uqp_finishTexture->Draw();
+			m_scoreManager->Draw(m_isShowRank); //オフラインランキングを表示
 		}
+		if (isFinishFrame)
+		{
+			if (m_deathWaitCount <= 0)
+			{
+				m_uqp_iText->Draw();	
+			}
+			else
+			{
+				m_uqp_finishTexture->Draw();
+			}
+		}
+		break;
+	default:
+		m_scoreManager->Draw(m_isShowRank);
+		break;
 	}
+	
 }
 
 void KochaEngine::GamePlay::ObjDraw()
@@ -350,6 +370,7 @@ void KochaEngine::GamePlay::Title()
 	Vector3 pos = player->GetPosition();
 	if (player->IsSmashing())
 	{
+		m_scoreManager->Initialize();
 		if (player->GetPosition().y < 10)
 		{
 			m_currentGameMode = GameMode::SCOREATTAKMODE;
@@ -365,7 +386,7 @@ void KochaEngine::GamePlay::Title()
 		m_isShowRank = false;
 		m_isInGame = true;
 		m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM.wav", m_bgmVolume);
-		m_scoreManager->Initialize();
+		
 	}
 }
 
@@ -458,9 +479,42 @@ void KochaEngine::GamePlay::ShowRanking()
 		}
 	}
 
-	auto pPlayer = m_gManager->GetPlayer();
-	if (pPlayer->IsSmashing() || pPlayer->GetBackCount() > 0)
+	auto player = m_gManager->GetPlayer();
+	if (player->IsSmashing() || player->GetBackCount() > 0)
 	{
 		m_isShowRank = false;
+	}
+}
+
+void KochaEngine::GamePlay::ScoreAttackEnd()
+{
+	auto player = m_gManager->GetPlayer();
+	//ゲーム終了
+	if (m_gManager->GetWall()->GetMinPos().x >= m_gManager->GetDeadLine()->GetPosition().x + 5)
+	{
+		//float x = gManager->GetWall()->GetMaxPos().x;
+		if (!m_isOnce)
+		{
+			m_isOnce = true;
+			m_scoreManager->SaveScore();
+			m_gManager->RemoveItem();
+			player->Finish();
+			m_scoreDBAccessDev->Disconnect();
+		}
+	}
+}
+
+void KochaEngine::GamePlay::NormalModeEnd()
+{
+	auto player = m_gManager->GetPlayer();
+	if (m_scoreManager->GetScore() > m_normalModeEndScore)
+	{
+		if (!m_isOnce)
+		{
+			m_isOnce = true;
+			player->Finish();
+			m_gManager->RemoveItem();
+			m_scoreDBAccessDev->Disconnect();
+		}
 	}
 }

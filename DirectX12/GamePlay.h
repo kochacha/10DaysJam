@@ -73,6 +73,7 @@ namespace KochaEngine
 		int32_t m_deathWaitCount;
 		int32_t m_pauseBackCount;
 
+		const int m_normalModeEndScore = 100000;
 		const float m_scrollAmount = 0.25f;
 	public:
 		GamePlay();
@@ -95,5 +96,9 @@ namespace KochaEngine
 		void Ranking();
 		//タイトル画面でのランキング表示処理
 		void ShowRanking();
+		//スコアアタックモード終了処理
+		void ScoreAttackEnd();
+		//ノーマルモード終了処理
+		void NormalModeEnd();
 	};
 }
