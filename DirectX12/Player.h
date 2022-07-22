@@ -38,6 +38,13 @@ namespace KochaEngine
 		//内側黒
 		Texture2D* overDriveGauge[5];
 
+		//一度でも動いたかどうか
+		bool m_isOnceMove;
+		//一度でもスマッシュしたか
+		bool m_isOnceSmash;
+		//スマッシュ可能な状態かどうか
+		bool m_isSmashPossible;
+
 		//ゲーム1プレイが終わっているか
 		bool isFinish;
 		//ヒットストップ中か
@@ -124,5 +131,10 @@ namespace KochaEngine
 		const int GetBackCount();
 		const bool IsHitWall();
 		const bool IsAbleHitSpine();
+
+		//チュートリアル用UI表示関連
+		const bool IsOnceMove() { return m_isOnceMove; }
+		const bool IsOnceSmash() { return m_isOnceSmash; }
+		const bool IsSmashPossible() { return m_isSmashPossible; }
 	};
 }

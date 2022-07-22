@@ -19,130 +19,124 @@
 
 KochaEngine::GamePlay::GamePlay()
 {
-	camera = new Camera();
-	gManager = new GameObjectManager();
+	m_camera = new Camera();
+	m_gManager = new GameObjectManager();
 
-	pManager = new ParticleManager();
-	emitter = new ParticleEmitter(pManager);
-	map = new Map(gManager, camera);
-	lightManager = new LightManager();
-	lightManager = LightManager::Create();
-	iManager = new ItemManager(camera, gManager);
-	sManager = new ScoreManager();
-	sManager->Initialize();
-	pauseManager = new PauseManager();
-	scrollManager = new ScrollManager();
-	scoreDBAccessDev = new ScoreDBAccess();
+	m_pManager = new ParticleManager();
+	m_pEmitter = new ParticleEmitter(m_pManager);
+	m_map = new Map(m_gManager, m_camera);
+	m_lightManager = new LightManager();
+	m_lightManager = LightManager::Create();
+	m_itemManager = new ItemManager(m_camera, m_gManager);
+	m_scoreManager = new ScoreManager();
+	m_scoreManager->Initialize();
+	m_pauseManager = new PauseManager();
+	m_scrollManager = new ScrollManager();
+	m_scoreDBAccessDev = new ScoreDBAccess();
 
-	bgm = new Audio();
-	se = new Audio();
-	flameTexture = new Texture2D("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
-	controlUITexture = new Texture2D("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
-	rankingUITexture = new Texture2D("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
-	finishTexture = new Texture2D("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
-
-	iText = new InputText();
+	m_uqp_bgm = std::make_unique<Audio>();
+	m_uqp_se = std::make_unique<Audio>();
+	m_uqp_flameTexture = std::make_unique<Texture2D>("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
+	m_uqp_controlUITexture = std::make_unique<Texture2D>("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
+	m_uqp_rankingUITexture = std::make_unique<Texture2D>("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
+	m_uqp_moveUITexture = std::make_unique<Texture2D>("Resources/moveUI.png", Vector2(568, 350), Vector2(144, 80), 0);
+	m_uqp_smashUITexture = std::make_unique<Texture2D>("Resources/smashUI.png", Vector2(552, 350), Vector2(176, 80), 0);
+	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
+	m_uqp_iText = std::make_unique<InputText>();
 }
 
 KochaEngine::GamePlay::~GamePlay()
 {
-	gManager->RemoveAll();
-	delete camera;
-	delete lightManager;
-	delete gManager;
-	delete pManager;
-	delete emitter;
-	delete map;
-	delete iManager;
-	delete sManager;
-	delete pauseManager;
-	delete bgm;
-	delete se;
-	delete flameTexture;
-	delete controlUITexture;
-	delete rankingUITexture;
-	delete scrollManager;
-	delete iText;
-	delete finishTexture;
-	delete scoreDBAccessDev;
+	m_gManager->RemoveAll();
+	delete m_camera;
+	delete m_lightManager;
+	delete m_gManager;
+	delete m_pManager;
+	delete m_pEmitter;
+	delete m_map;
+	delete m_itemManager;
+	delete m_scoreManager;
+	delete m_pauseManager;
+	delete m_scrollManager;
+	delete m_scoreDBAccessDev;
 }
 
 void KochaEngine::GamePlay::Initialize()
 {
 	isEnd = false;
 	isGameOver = false;
-	isOnce = false;
-	inGame = false;
+	m_isOnce = false;
+	m_isInGame = false;
 
-	gManager->RemoveAll();	
+	m_gManager->RemoveAll();	
 	
-	lightManager->SetDirectionalLightColor(0, Vector3(1, 1, 1));
-	lightManager->SetDirectionalLightDirection(0, Vector3(0, 0, -1));
-	lightManager->SetDirectionalLightIsActive(0, true);
-	lightManager->SetLightCamera(camera);
+	m_lightManager->SetDirectionalLightColor(0, Vector3(1, 1, 1));
+	m_lightManager->SetDirectionalLightDirection(0, Vector3(0, 0, -1));
+	m_lightManager->SetDirectionalLightIsActive(0, true);
+	m_lightManager->SetLightCamera(m_camera);
 
 	//map->CreateMap(0);
 	const float STAGE_SIZE = 500.0f;
-	gManager->AddObject(new Wall(gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimitはデッドライン＋１６０
-	gManager->AddObject(new DeadLine(camera, gManager, emitter, { STAGE_SIZE - 5.0f,0,0.1f, }));
-	MiniMap* miniMap = new MiniMap(camera, gManager, emitter);
-	gManager->AddObject(miniMap);
-	gManager->GetWall()->ScrollWall(miniMap->GetCorrectionValue());
-	gManager->AddObject(new Player(camera, gManager, emitter,sManager, Vector3(miniMap->GetCorrectionValue(), 0, 0),&inGame));
-	iManager->Initialize(scrollManager);
-	iManager->AddEnhItem(Vector3(110, 10, 0), ItemEmitPosition::FROM_CENTER);
-	pauseManager->Initialize();
-	camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
-	scrollManager->Initialize();
-	iText->Initialize();
+	m_gManager->AddObject(new Wall(m_gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimitはデッドライン＋１６０
+	m_gManager->AddObject(new DeadLine(m_camera, m_gManager, m_pEmitter, { STAGE_SIZE - 5.0f,0,0.1f, }));
+	MiniMap* miniMap = new MiniMap(m_camera, m_gManager, m_pEmitter);
+	m_gManager->AddObject(miniMap);
+	m_gManager->GetWall()->ScrollWall(miniMap->GetCorrectionValue());
+	m_gManager->AddObject(new Player(m_camera, m_gManager, m_pEmitter,m_scoreManager, Vector3(miniMap->GetCorrectionValue(), 0, 0),&m_isInGame));
+	m_itemManager->Initialize(m_scrollManager);
+	m_itemManager->AddEnhItem(Vector3(110, 10, 0), ItemEmitPosition::FROM_CENTER);
+	m_pauseManager->Initialize();
+	m_camera->Initialize(1280, 960, 90, 100, { miniMap->GetCorrectionValue(),0,-120 }, { miniMap->GetCorrectionValue(),0,0 }, { 0,1,0 });
+	m_scrollManager->Initialize();
+	m_uqp_iText->Initialize();
 
-	scoreDBAccessDev->Initialize();
-	isSend = false;
+	m_scoreDBAccessDev->Initialize();
+	m_isSend = false;
 
-	gManager->GetPlayer()->SetPauseManager(pauseManager);
+	m_gManager->GetPlayer()->SetPauseManager(m_pauseManager);
 
-	frameCount = 0;
-	seconds = 0;
-	resetCount = 100;
-	displayRankingCount = 300;
+	m_frameCount = 0;
+	m_seconds = 0;
+	m_resetCount = 100;
+	m_displayRankingCount = 300;
 	
-	isDisplayRanking = false;
-	isShowRank = false;
-	fadeFlag = true;
-	fadeAlpha = 1;
-	endCount = 180;
-	deathWaitCount = 110;
-	pauseBackCount = 0;
-	currentGameMode = GameMode::TITLEMODE;
+	m_isDisplayRanking = false;
+	m_isShowRank = false;
+	m_isFade = true;
+	m_fadeAlpha = 1;
+	m_endCount = 180;
+	m_deathWaitCount = 110;
+	m_pauseBackCount = 0;
+	m_currentGameMode = GameMode::TITLEMODE;
 
-	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
-	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
-	bgm->Init();
-	se->Init();
+	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
+	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
+	m_uqp_bgm->Init();
+	m_uqp_se->Init();
 	
 }
 
 void KochaEngine::GamePlay::Update()
 {
 	Fade();
-	bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
-	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
-	bgm->SetVolume(bgmVolume);
+	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
+	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
+	m_uqp_bgm->SetVolume(m_bgmVolume);
 
-	auto player = gManager->GetPlayer();
+	auto player = m_gManager->GetPlayer();
 	if (!player->IsFinish())
 	{
-		pauseManager->Update();
+		m_pauseManager->Update();
 	}
 
-	if (pauseManager->IsPause())
+	if (m_pauseManager->IsPause())
 	{
-		pauseBackCount = 3;
+		m_pauseBackCount = 3;
 		return; //ポーズ中
 	}
-	else if (pauseBackCount > 0)
+	else if (m_pauseBackCount > 0)
 	{
-		pauseBackCount--;
+		m_pauseBackCount--;
 		return;
 	}
 
@@ -152,20 +146,20 @@ void KochaEngine::GamePlay::Update()
 
 	Scroll();
 		
-	gManager->Update();
-	pManager->Update();
-	camera->Update();	
-	lightManager->Update();
+	m_gManager->Update();
+	m_pManager->Update();
+	m_camera->Update();	
+	m_lightManager->Update();
 
 	
-	if (inGame && !player->IsFinish())
+	if (m_isInGame && !player->IsFinish())
 	{
-		iManager->Update();
-		scrollManager->Update();
+		m_itemManager->Update();
+		m_scrollManager->Update();
 	}
 
 	//ゲーム終了時処理の分岐
-	switch (currentGameMode)
+	switch (m_currentGameMode)
 	{
 	case KochaEngine::GamePlay::TITLEMODE:
 		break;
@@ -182,12 +176,12 @@ void KochaEngine::GamePlay::Update()
 	
 
 	//ポーズメニュ―からリセット
-	if (pauseManager->IsReset())
+	if (m_pauseManager->IsReset())
 	{
 		player->Finish();
-		if (resetCount > 0)
+		if (m_resetCount > 0)
 		{
-			resetCount--;
+			m_resetCount--;
 		}
 		else
 		{
@@ -196,80 +190,92 @@ void KochaEngine::GamePlay::Update()
 	}
 	
 	//タイトル画面
-	if (!inGame)
+	if (!m_isInGame)
 	{
 		Title();
 		ShowRanking();
 	}
 
-	//ゲーム終了　スコアアタックモード用
-	if (gManager->GetWall()->GetMinPos().x >= gManager->GetDeadLine()->GetPosition().x + 5)
+	//ゲーム終了
+	if (m_gManager->GetWall()->GetMinPos().x >= m_gManager->GetDeadLine()->GetPosition().x + 5)
 	{
 		//float x = gManager->GetWall()->GetMaxPos().x;
-		if (!isOnce)
+		if (!m_isOnce)
 		{
-			isOnce = true;
-			sManager->SaveScore();
-			gManager->RemoveItem();
+			m_isOnce = true;
+			m_scoreManager->SaveScore();
+			m_gManager->RemoveItem();
 			player->Finish();
-			scoreDBAccessDev->Disconnect();
+			m_scoreDBAccessDev->Disconnect();
 		}
 	}
 }
 
 void KochaEngine::GamePlay::SpriteDraw()
 {
-	flameTexture->Draw();
-	controlUITexture->Draw();
-	rankingUITexture->Draw();
-	gManager->SpriteDraw();
-	if (scoreDBAccessDev->IsOnline())
+	m_uqp_flameTexture->Draw();
+	m_uqp_controlUITexture->Draw();
+	m_uqp_rankingUITexture->Draw();
+	m_gManager->SpriteDraw();
+
+	auto player = m_gManager->GetPlayer();
+
+	if (!player->IsOnceMove())
 	{
-		if (deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面
+		m_uqp_moveUITexture->Draw();
+	}
+	if (!player->IsOnceSmash() && player->IsSmashPossible())
+	{
+		m_uqp_smashUITexture->Draw();
+	}
+
+	if (m_scoreDBAccessDev->IsOnline())
+	{
+		if (m_deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面
 		{
-			sManager->DrawResultRanking(isShowRank, scoreDBAccessDev->GetRankingName(), scoreDBAccessDev->GetRankingScore(),iText->GetName());
+			m_scoreManager->DrawResultRanking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore(),m_uqp_iText->GetName());
 		}
 		else
 		{
-			sManager->DrawOnlineRinking(isShowRank, scoreDBAccessDev->GetRankingName(), scoreDBAccessDev->GetRankingScore());
+			m_scoreManager->DrawOnlineRinking(m_isShowRank, m_scoreDBAccessDev->GetRankingName(), m_scoreDBAccessDev->GetRankingScore());
 		}
 	}
 	else
 	{
-		sManager->Draw(isShowRank); //オフラインランキングを表示
+		m_scoreManager->Draw(m_isShowRank); //オフラインランキングを表示
 	}
 	
-	pauseManager->Draw();
+	m_pauseManager->Draw();
 
-	bool isFinishFrame = gManager->GetPlayer()->IsFinish() && !pauseManager->IsReset();
+	bool isFinishFrame = m_gManager->GetPlayer()->IsFinish() && !m_pauseManager->IsReset();
 	if (isFinishFrame)
 	{
-		if (deathWaitCount <= 0)
+		if (m_deathWaitCount <= 0)
 		{
-			iText->Draw();
+			m_uqp_iText->Draw();
 		}
 		else
 		{
-			finishTexture->Draw();
+			m_uqp_finishTexture->Draw();
 		}
 	}
 }
 
 void KochaEngine::GamePlay::ObjDraw()
 {
-	gManager->ObjDraw(camera, lightManager);
+	m_gManager->ObjDraw(m_camera, m_lightManager);
 }
 
 void KochaEngine::GamePlay::AlphaObjDraw()
 {
-	gManager->AlphaObjDraw(camera, lightManager);
-	pManager->Draw(camera, lightManager);
+	m_gManager->AlphaObjDraw(m_camera, m_lightManager);
+	m_pManager->Draw(m_camera, m_lightManager);
 }
 
 void KochaEngine::GamePlay::DrawGUI()
 {
 	ImGui::Text("GamePlay");
-	gManager->ShowGUI();
+	m_gManager->ShowGUI();
 }
 
 void KochaEngine::GamePlay::Load()
@@ -278,61 +284,61 @@ void KochaEngine::GamePlay::Load()
 
 KochaEngine::Scenes KochaEngine::GamePlay::Next()
 {
-	gManager->RemoveAll();
+	m_gManager->RemoveAll();
 	return ENDING;
 }
 
 void KochaEngine::GamePlay::CountTime()
 {
-	frameCount++;
-	if (frameCount >= 60)
+	m_frameCount++;
+	if (m_frameCount >= 60)
 	{
-		seconds++;
-		frameCount = 0;
+		m_seconds++;
+		m_frameCount = 0;
 	}
 }
 
 void KochaEngine::GamePlay::Fade()
 {
-	if (fadeFlag)
+	if (m_isFade)
 	{
-		if (fadeAlpha > 0)
+		if (m_fadeAlpha > 0)
 		{
-			fadeAlpha -= 0.02f;
+			m_fadeAlpha -= 0.02f;
 		}
 	}
 	else
 	{
-		if (fadeAlpha < 1.0f)
+		if (m_fadeAlpha < 1.0f)
 		{
-			fadeAlpha += 0.02f;
+			m_fadeAlpha += 0.02f;
 		}
 	}
 }
 
 void KochaEngine::GamePlay::Scroll()
 {
-	auto wall = gManager->GetWall();
-	auto player = gManager->GetPlayer();
+	auto wall = m_gManager->GetWall();
+	auto player = m_gManager->GetPlayer();
 
 	if (player->IsFinish()) return;
 
-	if (inGame)
+	if (m_isInGame)
 	{
 		if (player->GetBackCount() > 0 && player->IsHitWall())
 		{
-			camera->MoveEye({ -10,0,0, });
+			m_camera->MoveEye({ -10,0,0, });
 			wall->ScrollWall(-10);
 		}
-		camera->MoveEye({ scrollManager->GetScrollAmount(),0,0, });
-		wall->ScrollWall(scrollManager->GetScrollAmount());
+		m_camera->MoveEye({ m_scrollManager->GetScrollAmount(),0,0, });
+		wall->ScrollWall(m_scrollManager->GetScrollAmount());
 	}
 	else
 	{
 		//スタート時1番左にいくまでスクロールする
 		if (player->GetBackCount() > 0 && player->IsHitWall() && wall->GetMinPos().x > wall->GetLimitLeftPosX())
 		{
-			camera->MoveEye({ -10,0,0, });
+			m_camera->MoveEye({ -10,0,0, });
 			wall->ScrollWall(-10);
 		}
 	}
@@ -340,45 +346,45 @@ void KochaEngine::GamePlay::Scroll()
 
 void KochaEngine::GamePlay::Title()
 {
-	auto player = gManager->GetPlayer();
+	auto player = m_gManager->GetPlayer();
 	Vector3 pos = player->GetPosition();
 	if (player->IsSmashing())
 	{
 		if (player->GetPosition().y < 10)
 		{
-			currentGameMode = GameMode::SCOREATTAKMODE;
+			m_currentGameMode = GameMode::SCOREATTAKMODE;
 		}
 		else
 		{
-			currentGameMode = GameMode::NORMALMODE;
+			m_currentGameMode = GameMode::NORMALMODE;
 		}
 	}
-	auto wall = gManager->GetWall();
+	auto wall = m_gManager->GetWall();
 	if (wall->GetMinPos().x <= wall->GetLimitLeftPosX())
 	{
-		isShowRank = false;
-		inGame = true;
-		bgm->LoopPlayWave("Resources/Sound/BGM.wav", bgmVolume);
-		sManager->Initialize();
+		m_isShowRank = false;
+		m_isInGame = true;
+		m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM.wav", m_bgmVolume);
+		m_scoreManager->Initialize();
 	}
 }
 
 void KochaEngine::GamePlay::ScoreAttackMode()
 {
-	auto player = gManager->GetPlayer();
+	auto player = m_gManager->GetPlayer();
 	//ゲーム終了時に名前入力画面を表示
-	if (player->IsFinish() && !pauseManager->IsReset())
+	if (player->IsFinish() && !m_pauseManager->IsReset())
 	{
-		if (deathWaitCount > 0)
+		if (m_deathWaitCount > 0)
 		{
-			deathWaitCount--;
+			m_deathWaitCount--;
 		}
 		else
 		{
-			iText->Update();
+			m_uqp_iText->Update();
 		}
 	}
-	if (iText->IsNext())
+	if (m_uqp_iText->IsNext())
 	{
 		//ゲーム終了後ランキング追加処理
 		Ranking();
@@ -387,13 +393,13 @@ void KochaEngine::GamePlay::ScoreAttackMode()
 
 void KochaEngine::GamePlay::NormalMode()
 {
-	auto player = gManager->GetPlayer();
+	auto player = m_gManager->GetPlayer();
 	//ゲーム終了時に名前入力画面を表示
-	if (player->IsFinish() && !pauseManager->IsReset())
+	if (player->IsFinish() && !m_pauseManager->IsReset())
 	{
-		if (deathWaitCount > 0)
+		if (m_deathWaitCount > 0)
 		{
-			deathWaitCount--;
+			m_deathWaitCount--;
 		}
 		else
 		{
@@ -404,22 +410,22 @@ void KochaEngine::GamePlay::NormalMode()
 
 void KochaEngine::GamePlay::Ranking()
 {
-	if (!isSend)
+	if (!m_isSend)
 	{
-		scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+		m_scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
 
-		if (scoreDBAccessDev->IsOnline())
+		if (m_scoreDBAccessDev->IsOnline())
 		{
-			scoreDBAccessDev->GetRankingByAddScoreDB(iText->GetName(), sManager->GetScore()); //サーバーにデータを送る
-			isSend = true;
+			m_scoreDBAccessDev->GetRankingByAddScoreDB(m_uqp_iText->GetName(), m_scoreManager->GetScore()); //サーバーにデータを送る
+			m_isSend = true;
 		}
 	}
-	isShowRank = true;
-	isDisplayRanking = true;
+	m_isShowRank = true;
+	m_isDisplayRanking = true;
 
-	if (displayRankingCount > 0)
+	if (m_displayRankingCount > 0)
 	{
-		displayRankingCount--;
+		m_displayRankingCount--;
 	}
 	else
 	{
@@ -429,32 +435,32 @@ void KochaEngine::GamePlay::Ranking()
 
 void KochaEngine::GamePlay::ShowRanking()
 {
-	if (InputManager::RankingCheckKey() && !iText->IsNext())
+	if (InputManager::RankingCheckKey() && !m_uqp_iText->IsNext())
 	{
-		se->PlayWave("Resources/Sound/decision.wav", seVolume);
-		isShowRank = !isShowRank;
-		if (isShowRank)
+		m_uqp_se->PlayWave("Resources/Sound/decision.wav", m_seVolume);
+		m_isShowRank = !m_isShowRank;
+		if (m_isShowRank)
 		{
-			scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
+			m_scoreDBAccessDev->StartConnection(); //ここで接続できてるか判定
 		}
 		else
 		{
-			scoreDBAccessDev->Disconnect(); //切断処理
+			m_scoreDBAccessDev->Disconnect(); //切断処理
 		}
 
-		if (scoreDBAccessDev->IsOnline())
+		if (m_scoreDBAccessDev->IsOnline())
 		{
-			scoreDBAccessDev->LoadDBRanking(); //オンラインランキングをロード
+			m_scoreDBAccessDev->LoadDBRanking(); //オンラインランキングをロード
 		}
 		else
 		{
-			sManager->LoadRankData(); //オフラインランキングをロード
+			m_scoreManager->LoadRankData(); //オフラインランキングをロード
 		}
 	}
 
-	auto pPlayer = gManager->GetPlayer();
+	auto pPlayer = m_gManager->GetPlayer();
 	if (pPlayer->IsSmashing() || pPlayer->GetBackCount() > 0)
 	{
-		isShowRank = false;
+		m_isShowRank = false;
 	}
 }
