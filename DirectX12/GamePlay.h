@@ -10,6 +10,7 @@
 #include "ItemManager.h"
 #include "ScrollManager.h"
 #include "ScoreDBAccess.h"
+#include <memory>
 
 namespace KochaEngine
 {
@@ -20,7 +21,6 @@ namespace KochaEngine
 	class Text;
 	class InputText;
 	class ScoreDBAccess;
-	
 
 	class GamePlay : public Scene
 	{
@@ -30,48 +30,49 @@ namespace KochaEngine
 			NORMALMODE,
 			SCOREATTAKMODE,
 		};
-		GameMode currentGameMode;
-		Map* map;
-		Camera* camera;
-		GameObjectManager* gManager;
-		ParticleManager* pManager;
-		ParticleEmitter* emitter;
-		LightManager* lightManager;
-		ItemManager* iManager;
-		ScoreManager* sManager;
-		PauseManager* pauseManager;
-		ScrollManager* scrollManager;
-		ScoreDBAccess* scoreDBAccessDev;
+		GameMode m_currentGameMode;
+		Map* m_map;
+		Camera* m_camera;
+		GameObjectManager* m_gManager;
+		ParticleManager* m_pManager;
+		ParticleEmitter* m_pEmitter;
+		LightManager* m_lightManager;
+		ItemManager* m_itemManager;
+		ScoreManager* m_scoreManager;
+		PauseManager* m_pauseManager;
+		ScrollManager* m_scrollManager;
+		ScoreDBAccess* m_scoreDBAccessDev;
 
-		Audio* bgm;
-		Audio* se;
-		Texture2D* flameTexture;
-		Texture2D* controlUITexture;
-		Texture2D* rankingUITexture;
-		Texture2D* finishTexture;
+		std::unique_ptr<Audio> m_uqp_bgm;
+		std::unique_ptr<Audio> m_uqp_se;
+		std::unique_ptr<Texture2D> m_uqp_flameTexture;
+		std::unique_ptr<Texture2D> m_uqp_controlUITexture;
+		std::unique_ptr<Texture2D> m_uqp_rankingUITexture;
+		std::unique_ptr<Texture2D> m_uqp_moveUITexture;
+		std::unique_ptr<Texture2D> m_uqp_smashUITexture;
+		std::unique_ptr<Texture2D> m_uqp_finishTexture;
+		std::unique_ptr<InputText> m_uqp_iText;
 
-		InputText* iText;
+		bool m_isShowRank;
+		bool m_isFade;
+		bool m_isInGame;
+		bool m_isOnce;
+		bool m_isDisplayRanking;
+		bool m_isSend;
+		bool m_isScoreDraw;
+		float m_fadeAlpha;
+		float m_bgmVolume;
+		float m_seVolume;
 
-		bool isShowRank;
-		bool fadeFlag;
-		bool inGame;
-		bool isOnce;
-		bool isDisplayRanking;
-		bool isSend;
-		bool scoreDrawFlag;
-		float fadeAlpha;
-		float bgmVolume;
-		float seVolume;
+		int32_t m_frameCount;
+		int32_t m_seconds;
+		int32_t m_endCount;
+		int32_t m_resetCount;
+		int32_t m_displayRankingCount;
+		int32_t m_deathWaitCount;
+		int32_t m_pauseBackCount;
 
-		int frameCount;
-		int seconds;
-		int endCount;
-		int resetCount;
-		int displayRankingCount;
-		int deathWaitCount;
-		int pauseBackCount;
-
-		const float scrollAmount = 0.25f;
+		const float m_scrollAmount = 0.25f;
 	public:
 		GamePlay();
 		~GamePlay() override;
