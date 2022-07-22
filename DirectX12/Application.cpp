@@ -182,54 +182,58 @@ void KochaEngine::Application::Run()
 
 void KochaEngine::Application::Load()
 {
+	auto device = dx12->GetDevice().Get();
+
 	//Textureのロード
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/white.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/black.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/player0.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/green.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/PIEN.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/kaku4.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/number.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/waku.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/toge.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/item.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wall.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu1.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu2.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu3.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu4.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/Menu5.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/cursor.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/normalGauge.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/gauge.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/controlUI.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rankingUI.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/engineLogo.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/mapUI.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/playerUI.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/emptyGauge.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/star.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/arrow.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/way.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/smashLine.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/wallPush.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/togeGet.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/itemGet.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/circle.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/endLine.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/finish.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/font.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/textCursor.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/rankBack.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/offline.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/online.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/next_ranking.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/next_title.png");
-	Dx12_Texture::LoadTexture(dx12->GetDevice().Get(), "Resources/next_waku.png");
+	Dx12_Texture::LoadTexture(device, "Resources/white.png");
+	Dx12_Texture::LoadTexture(device, "Resources/black.png");
+	Dx12_Texture::LoadTexture(device, "Resources/player0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/green.png");
+	Dx12_Texture::LoadTexture(device, "Resources/PIEN.png");
+	Dx12_Texture::LoadTexture(device, "Resources/kaku4.png");
+	Dx12_Texture::LoadTexture(device, "Resources/number.png");
+	Dx12_Texture::LoadTexture(device, "Resources/waku.png");
+	Dx12_Texture::LoadTexture(device, "Resources/toge.png");
+	Dx12_Texture::LoadTexture(device, "Resources/item.png");
+	Dx12_Texture::LoadTexture(device, "Resources/wall.png");
+	Dx12_Texture::LoadTexture(device, "Resources/Menu1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/Menu2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/Menu3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/Menu4.png");
+	Dx12_Texture::LoadTexture(device, "Resources/Menu5.png");
+	Dx12_Texture::LoadTexture(device, "Resources/cursor.png");
+	Dx12_Texture::LoadTexture(device, "Resources/normalGauge.png");
+	Dx12_Texture::LoadTexture(device, "Resources/gauge.png");
+	Dx12_Texture::LoadTexture(device, "Resources/controlUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/rankingUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/moveUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/smashUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/engineLogo.png");
+	Dx12_Texture::LoadTexture(device, "Resources/mapUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/playerUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/emptyGauge.png");
+	Dx12_Texture::LoadTexture(device, "Resources/star.png");
+	Dx12_Texture::LoadTexture(device, "Resources/arrow.png");
+	Dx12_Texture::LoadTexture(device, "Resources/way.png");
+	Dx12_Texture::LoadTexture(device, "Resources/smashLine.png");
+	Dx12_Texture::LoadTexture(device, "Resources/wallPush.png");
+	Dx12_Texture::LoadTexture(device, "Resources/togeGet.png");
+	Dx12_Texture::LoadTexture(device, "Resources/itemGet.png");
+	Dx12_Texture::LoadTexture(device, "Resources/circle.png");
+	Dx12_Texture::LoadTexture(device, "Resources/endLine.png");
+	Dx12_Texture::LoadTexture(device, "Resources/finish.png");
+	Dx12_Texture::LoadTexture(device, "Resources/font.png");
+	Dx12_Texture::LoadTexture(device, "Resources/textCursor.png");
+	Dx12_Texture::LoadTexture(device, "Resources/rankBack.png");
+	Dx12_Texture::LoadTexture(device, "Resources/offline.png");
+	Dx12_Texture::LoadTexture(device, "Resources/online.png");
+	Dx12_Texture::LoadTexture(device, "Resources/next_ranking.png");
+	Dx12_Texture::LoadTexture(device, "Resources/next_title.png");
+	Dx12_Texture::LoadTexture(device, "Resources/next_waku.png");
 	
 	//.objのロード
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "box");
-	Dx12_Object::LoadObject(dx12->GetDevice().Get(), "plane");
+	Dx12_Object::LoadObject(device, "box");
+	Dx12_Object::LoadObject(device, "plane");
 
 }
 
