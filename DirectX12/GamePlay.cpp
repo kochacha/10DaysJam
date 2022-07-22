@@ -39,6 +39,8 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_flameTexture = std::make_unique<Texture2D>("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
 	m_uqp_controlUITexture = std::make_unique<Texture2D>("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	m_uqp_rankingUITexture = std::make_unique<Texture2D>("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
+	m_uqp_moveUITexture = std::make_unique<Texture2D>("Resources/moveUI.png", Vector2(568, 350), Vector2(144, 80), 0);
+	m_uqp_smashUITexture = std::make_unique<Texture2D>("Resources/smashUI.png", Vector2(552, 350), Vector2(176, 80), 0);
 	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
 	m_uqp_iText = std::make_unique<InputText>();
 }
@@ -215,6 +217,18 @@ void KochaEngine::GamePlay::SpriteDraw()
 	m_uqp_controlUITexture->Draw();
 	m_uqp_rankingUITexture->Draw();
 	m_gManager->SpriteDraw();
+
+	auto player = m_gManager->GetPlayer();
+
+	if (!player->IsOnceMove())
+	{
+		m_uqp_moveUITexture->Draw();
+	}
+	if (!player->IsOnceSmash() && player->IsSmashPossible())
+	{
+		m_uqp_smashUITexture->Draw();
+	}
+
 	if (m_scoreDBAccessDev->IsOnline())
 	{
 		if (m_deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面

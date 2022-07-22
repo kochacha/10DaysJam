@@ -25,6 +25,9 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 hitStopCount(0),
 	 isOnce(false),
 	 isStartOnce(false),
+	 m_isOnceMove(false),
+	 m_isOnceSmash(false),
+	 m_isSmashPossible(false),
 	 inGame(nullptr),
 	 stackCount(0),
 	 speed(0.0f),
@@ -124,6 +127,10 @@ void KochaEngine::Player::Initialize()
 	speed = 0.5f;
 	isHitWall = false;
 	isStartOnce = false;
+
+	m_isOnceMove = false;
+	m_isOnceSmash = false;
+	m_isSmashPossible = false;
 
 	ResetPower();
 	asobiCount = 0;
@@ -499,10 +506,17 @@ void KochaEngine::Player::InputForMove()
 			velocity.Zero();
 			velocity.x = -1;
 
+			m_isOnceSmash = true;
+
 			speed = 10;
 			//猶予時間リセット
 			asobiCount = 0;
 		}
+	}
+
+	if (smashPower > 0)
+	{
+		m_isSmashPossible = true;
 	}
 
 	//衝突判定デバッグ用
@@ -591,6 +605,7 @@ void KochaEngine::Player::Move()
 	//移動中なら
 	if (speed > 0.0f)
 	{
+		m_isOnceMove = true;
 		pEmitter->MoveParticle(Vector3(position.x, position.y, position.z + 1.0f));
 	}
 	//猶予フレームを超えたので、スマッシュ不発
