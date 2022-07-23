@@ -24,6 +24,7 @@ namespace KochaEngine
 
 		void MoveParticle(const Vector3& arg_position);
 		void SmashStar(const Vector3& arg_position);
+		void TogePowerParticle(const Vector3& arg_position);
 		void PowerUp(const Vector3& arg_position);
 		void Clash(const Vector3& arg_position);
 		void SmashScore(const Vector3& arg_position);

@@ -61,6 +61,7 @@ namespace KochaEngine
 			SMASH_SUPPORT,
 			SCORE_SUPPORT,
 			VIVE_SUPPORT,
+			POWER_SUPPORT,
 		};
 
 	private:
@@ -81,7 +82,7 @@ namespace KochaEngine
 		Sprite* menu[5];
 		Sprite* cursor;
 		Sprite* _cursor;
-		Sprite* checkBox[4];
+		Sprite* checkBox[5];
 
 		Audio* se;
 

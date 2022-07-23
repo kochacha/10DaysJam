@@ -28,6 +28,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	 m_isOnceMove(false),
 	 m_isOnceSmash(false),
 	 m_isSmashPossible(false),
+	 m_isTogePower(false),
 	 inGame(nullptr),
 	 stackCount(0),
 	 speed(0.0f),
@@ -55,8 +56,9 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	obj = new Object("plane");
 	wayObj = new Object("plane");
 	smashLine = new Object("plane");
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < MAX_SMASHPOWER; i++)
 	{
+		smashPowerObj[i] = new Object("plane");
 		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
 		emptyGauge[i] = new Texture2D("Resources/emptyGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
 		if (i < 5)
@@ -77,8 +79,9 @@ KochaEngine::Player::~Player()
 	delete obj;
 	delete wayObj;
 	delete smashLine;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < MAX_SMASHPOWER; i++)
 	{
+		delete smashPowerObj[i];
 		delete powarGauge[i];
 		delete emptyGauge[i];
 		if (i < 5)
@@ -110,6 +113,12 @@ void KochaEngine::Player::Initialize()
 	wayObj->SetScale(Vector3(30, 30, 1));
 	wayObj->SetTexture("Resources/way.png");
 	wayObj->SetBillboardType(KochaEngine::Object::BILLBOARD);
+	for (int i = 0; i < MAX_SMASHPOWER; i++)
+	{
+		smashPowerObj[i]->SetScale(Vector3(3, 3, 1));
+		smashPowerObj[i]->SetTexture("Resources/item.png");
+		smashPowerObj[i]->SetBillboardType(KochaEngine::Object::BILLBOARD);
+	}
 	isWayDraw = false;
 	wayRotate = 0;
 	smashLine->SetPosition(Vector3(position.x - 90, position.y, position.z + 0.1f));
@@ -131,6 +140,7 @@ void KochaEngine::Player::Initialize()
 	m_isOnceMove = false;
 	m_isOnceSmash = false;
 	m_isSmashPossible = false;
+	m_isTogePower = false;
 
 	ResetPower();
 	asobiCount = 0;
@@ -212,6 +222,21 @@ void KochaEngine::Player::ObjDraw(Camera* arg_camera, LightManager* arg_lightMan
 
 	//プレイが終わっていれば、以降を表示しない
 	if (isFinish) return;
+
+	if (GameSetting::isShowPowerData)
+	{
+		for (int i = 0; i < MAX_SMASHPOWER; i++)
+		{
+			auto angle = 360.0f / MAX_SMASHPOWER;
+			Vector2 vel = Util::AngleToVector2(-angle * i + 90);
+			smashPowerObj[i]->SetPosition(Vector3(position.x + vel.x * 7.5f, position.y + vel.y * 7.5f, position.z));
+			if (i < smashPower)
+			{
+				smashPowerObj[i]->Draw(arg_camera, arg_lightManager);
+			}
+		}
+	}
+
 
 	if (isWayDraw && GameSetting::isDashData)
 	{
@@ -304,6 +329,8 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			//ヒットストップ
 			isHitStop = true;
 			hitStopCount = 20;
+
+			m_isTogePower = true;
 
 			pEmitter->PowerUp(position);
 
@@ -583,6 +610,11 @@ void KochaEngine::Player::Move()
 		pEmitter->SmashStar(position);
 		ResetPower();
 
+		if (m_isTogePower)
+		{
+			pEmitter->TogePowerParticle(position);
+		}
+
 		if (IsAbleHitSpine())
 		{
 			ableHitAfterTouchWallCount--;
@@ -688,6 +720,7 @@ void KochaEngine::Player::ProcessingAfterUpdatePosition()
 		camera->SetShake(1.00f);
 		se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		scale = Vector3(1, 20, 10);
+		m_isTogePower = false;
 	}
 }
 

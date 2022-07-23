@@ -24,6 +24,8 @@ namespace KochaEngine
 		Vector3 endScale;
 		//移動方向の矢印表示用
 		Object* wayObj;
+		//プレイヤー周りに表示する用
+		Object* smashPowerObj[10];
 		//矢印を表示するかどうか
 		bool isWayDraw;
 		//矢印回転角度
@@ -63,6 +65,8 @@ namespace KochaEngine
 		float speed;
 		//壁に接触しているかどうか
 		bool isHitWall;
+		//トゲを巻き込んでいるか
+		bool m_isTogePower;
 
 		//スマッシュ関連
 		//スマッシュのパワー
@@ -94,6 +98,7 @@ namespace KochaEngine
 		void ProcessingAfterUpdatePosition();
 		void ScaleAnimation();
 		void SetObjParam();
+		void DrawPower();
 		//コントローラ振動
 		void CommonVib(const int arg_time);
 		//パワーのリセット

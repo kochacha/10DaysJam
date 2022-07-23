@@ -7,3 +7,4 @@ bool KochaEngine::GameSetting::isDashData = true;
 bool KochaEngine::GameSetting::isSmashData = true;
 bool KochaEngine::GameSetting::isScoreData = true;
 bool KochaEngine::GameSetting::isVibData = true;
+bool KochaEngine::GameSetting::isShowPowerData = true;
