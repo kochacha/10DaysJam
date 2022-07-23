@@ -63,6 +63,8 @@ namespace KochaEngine
 		float speed;
 		//壁に接触しているかどうか
 		bool isHitWall;
+		//プレイヤーが一番左までスマッシュしたか
+		bool isLeftLimit;
 
 		//スマッシュ関連
 		//スマッシュのパワー
@@ -114,7 +116,11 @@ namespace KochaEngine
 		//パワーアップ
 		void PowerUp(const GameObjectType arg_objectType);
 		//通常時のおじゃまトゲとの衝突時処理
-		void PowerDown();
+		void HitJammingSpine();
+		//ボスにスマッシュで衝突したとき
+		void SuspendSmash();
+		//通常時のボスとの衝突時処理
+		void HitJammingBoss();
 
 		const bool IsFinish();
 		//外側から動的にisFinishをtrueにする
@@ -136,5 +142,7 @@ namespace KochaEngine
 		const bool IsOnceMove() { return m_isOnceMove; }
 		const bool IsOnceSmash() { return m_isOnceSmash; }
 		const bool IsSmashPossible() { return m_isSmashPossible; }
+
+		const bool IsLeftLimit() { return isLeftLimit; }
 	};
 }

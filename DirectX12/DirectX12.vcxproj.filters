@@ -226,6 +226,7 @@
     <ClCompile Include="InputText.cpp">
       <Filter>Source\UI</Filter>
     </ClCompile>
+    <ClCompile Include="JammingBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -533,6 +534,7 @@
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
+    <ClInclude Include="JammingBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX12.rc">

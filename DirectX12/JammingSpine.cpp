@@ -128,7 +128,7 @@ void KochaEngine::JammingSpine::Hit()
 	else if(!player->IsStuning())
 	{
 		//プレイヤーはパワーダウン
-		player->PowerDown();
+		player->HitJammingSpine();
 	}
 }
 

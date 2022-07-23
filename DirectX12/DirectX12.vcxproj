@@ -204,6 +204,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InputText.cpp" />
     <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="JammingBoss.cpp" />
     <ClCompile Include="JammingSpine.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputText.h" />
     <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="JammingBoss.h" />
     <ClInclude Include="JammingSpine.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Map.h" />

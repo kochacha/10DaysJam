@@ -27,6 +27,7 @@ namespace KochaEngine
 		WALL,
 		DEADLINE,
 		MINI_MAP,
+		JAMMING_BOSS,
 	};
 
 	class GameObject

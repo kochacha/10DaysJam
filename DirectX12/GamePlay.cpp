@@ -16,6 +16,7 @@
 #include "InputManager.h"
 #include "Text.h"
 #include "InputText.h"
+#include "JammingBoss.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -107,13 +108,14 @@ void KochaEngine::GamePlay::Initialize()
 	m_endCount = 180;
 	m_deathWaitCount = 110;
 	m_pauseBackCount = 0;
-	m_currentGameMode = GameMode::TITLEMODE;
+	m_currentGameMode = GameMode::SCOREATTAKMODE;
 
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	m_uqp_bgm->Init();
 	m_uqp_se->Init();
 	
+	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { 0,0,0 }, m_itemManager));
 }
 
 void KochaEngine::GamePlay::Update()
