@@ -12,6 +12,7 @@ KochaEngine::Map::Map(GameObjectManager* arg_gManager, Camera* arg_camera)
 	if (arg_camera == nullptr) return;
 	gManager = arg_gManager;
 	camera = arg_camera;
+	csvReader = CSVReader::GetInstance();
 }
 
 KochaEngine::Map::~Map()
@@ -22,7 +23,7 @@ void KochaEngine::Map::CreateMap(const int arg_mapNum)
 {
 	char fileName[64];
 	sprintf_s(fileName, 64, "Resources/Map/Field%d.csv", arg_mapNum);
-	csvReader.LoadCSV(arg_mapNum, fileName);
+	csvReader->LoadCSV(fileName);
 	//mapData = csvReader.GetMapData(arg_mapNum);
 
 	auto x_Data = mapData[0].size();

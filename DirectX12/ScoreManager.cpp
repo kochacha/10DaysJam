@@ -174,9 +174,9 @@ void KochaEngine::ScoreManager::SaveRankData(int arg_rank, int arg_score)
 void KochaEngine::ScoreManager::LoadRankData()
 {
 	rankScore.resize(RANK_COUNT);
-	CSVReader reader;
-	reader.LoadCSV(0, "Resources/ScoreData.txt");
-	std::vector<std::vector<int>> tmp = reader.GetMapData(0);
+	CSVReader* reader = CSVReader::GetInstance();
+	reader->LoadCSV("Resources/ScoreData.txt", "LocalScoreData", true);
+	std::vector<std::vector<int>> tmp = reader->GetMapData("LocalScoreData");
 	for (int i = 0; i < RANK_COUNT; i++)
 	{
 		rankScore[i] = tmp[0][i];

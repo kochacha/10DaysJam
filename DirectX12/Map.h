@@ -14,7 +14,7 @@ namespace KochaEngine
 
 		GameObjectManager* gManager;
 		Camera* camera;
-		CSVReader csvReader;
+		CSVReader* csvReader;
 
 	public:
 		Map(GameObjectManager* arg_gManager, Camera* arg_camera);
