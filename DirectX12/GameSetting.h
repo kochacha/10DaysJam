@@ -5,7 +5,7 @@ namespace KochaEngine
 	class GameSetting
 	{
 	public:
-		static const int SETTING_VOL = 7;
+		static const int SETTING_VOL = 8;
 
 		static int masterVolume;
 		static int bgmVolume;
@@ -14,5 +14,6 @@ namespace KochaEngine
 		static bool isSmashData;
 		static bool isScoreData;
 		static bool isVibData;
+		static bool isShowPowerData;
 	};
 }

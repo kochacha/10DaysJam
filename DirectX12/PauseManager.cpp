@@ -20,6 +20,7 @@ KochaEngine::PauseManager::PauseManager()
 	checkBox[1] = new Sprite("Resources/black.png", Vector2(760, 460), Vector2(32, 32), 0);
 	checkBox[2] = new Sprite("Resources/black.png", Vector2(760, 550), Vector2(32, 32), 0);
 	checkBox[3] = new Sprite("Resources/black.png", Vector2(760, 645), Vector2(32, 32), 0);
+	checkBox[4] = new Sprite("Resources/black.png", Vector2(760, 740), Vector2(32, 32), 0);
 
 	soundNum[0] = new Number(Vector2(720, 360), Vector2(32, 32), 2);
 	soundNum[1] = new Number(Vector2(720, 455), Vector2(32, 32), 2);
@@ -36,7 +37,7 @@ KochaEngine::PauseManager::~PauseManager()
 	{
 		delete menu[i];
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		delete checkBox[i];
 	}
@@ -135,6 +136,7 @@ void KochaEngine::PauseManager::Draw()
 		if (GameSetting::isSmashData) checkBox[1]->Draw();
 		if (GameSetting::isScoreData) checkBox[2]->Draw();
 		if (GameSetting::isVibData) checkBox[3]->Draw();
+		if (GameSetting::isShowPowerData) checkBox[4]->Draw();
 		break;
 	default:
 		break;
@@ -625,7 +627,7 @@ void KochaEngine::PauseManager::SupportTab()
 		cursor->SetPosition(Vector2(CENTER_POS_X, 360));
 		if (InputManager::UpCursorKey())
 		{
-			nowSupport = PauseManager::VIVE_SUPPORT;
+			nowSupport = PauseManager::POWER_SUPPORT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		else if (InputManager::DownCursorKey())
@@ -684,13 +686,31 @@ void KochaEngine::PauseManager::SupportTab()
 		}
 		else if (InputManager::DownCursorKey())
 		{
-			nowSupport = PauseManager::DASH_SUPPORT;
+			nowSupport = PauseManager::POWER_SUPPORT;
 			se->PlayWave("Resources/Sound/select.wav", seVolume);
 		}
 		if (InputManager::DecisionKey())
 		{
 			GameSetting::isVibData = !GameSetting::isVibData;
 			if (GameSetting::isVibData) Input::Vibration(60000, 20);
+			se->PlayWave("Resources/Sound/decision.wav", seVolume);
+		}
+		break;
+	case KochaEngine::PauseManager::POWER_SUPPORT:
+		cursor->SetPosition(Vector2(CENTER_POS_X, 740));
+		if (InputManager::UpCursorKey())
+		{
+			nowSupport = PauseManager::VIVE_SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		else if (InputManager::DownCursorKey())
+		{
+			nowSupport = PauseManager::DASH_SUPPORT;
+			se->PlayWave("Resources/Sound/select.wav", seVolume);
+		}
+		if (InputManager::DecisionKey())
+		{
+			GameSetting::isShowPowerData = !GameSetting::isShowPowerData;
 			se->PlayWave("Resources/Sound/decision.wav", seVolume);
 		}
 		break;

@@ -196,6 +196,11 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/toge.png");
 	Dx12_Texture::LoadTexture(device, "Resources/item.png");
 	Dx12_Texture::LoadTexture(device, "Resources/wall.png");
+	Dx12_Texture::LoadTexture(device, "Resources/endlessTile.png");
+	Dx12_Texture::LoadTexture(device, "Resources/endlessPlate.png");
+	Dx12_Texture::LoadTexture(device, "Resources/normalTile.png");
+	Dx12_Texture::LoadTexture(device, "Resources/normalPlate.png");
+	Dx12_Texture::LoadTexture(device, "Resources/selectTile.png");
 	Dx12_Texture::LoadTexture(device, "Resources/Menu1.png");
 	Dx12_Texture::LoadTexture(device, "Resources/Menu2.png");
 	Dx12_Texture::LoadTexture(device, "Resources/Menu3.png");
@@ -268,6 +273,7 @@ void KochaEngine::Application::LoadGameSettings()
 	GameSetting::isSmashData = gameSetData[4];
 	GameSetting::isScoreData = gameSetData[5];
 	GameSetting::isVibData = gameSetData[6];
+	GameSetting::isShowPowerData = gameSetData[7];
 }
 
 void KochaEngine::Application::SaveGameSettings()
@@ -279,6 +285,7 @@ void KochaEngine::Application::SaveGameSettings()
     gameSetData[4] = GameSetting::isSmashData;
 	gameSetData[5] = GameSetting::isScoreData;
 	gameSetData[6] = GameSetting::isVibData;
+	gameSetData[7] = GameSetting::isShowPowerData;
 
 	std::ofstream ofs("Resources/GameSetting.txt");
 	for (int i = 0; i < GameSetting::SETTING_VOL; i++)

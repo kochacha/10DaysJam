@@ -50,6 +50,26 @@ void KochaEngine::ParticleEmitter::SmashStar(const Vector3& arg_position)
 
 }
 
+void KochaEngine::ParticleEmitter::TogePowerParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = arg_position;
+
+	auto randScale = (float)Util::GetIntRand(3, 5);
+	auto randY = (float)(Util::GetIntRand(0, 50) - 25) * 0.4f;
+	param.life = 25;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, randY);
+	param.moveScale = Vector3(-randScale / (float)param.life, -randScale / (float)param.life, 0);
+	param.scale = Vector3(randScale, randScale, 1);
+	param.textureName = "Resources/green.png";
+	param.velocity = Vector3(0, randY, 0);
+	param.color = Vector4(0, 0, 0, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}
+
 void KochaEngine::ParticleEmitter::PowerUp(const Vector3& arg_position)
 {
 	ParticleParam param;
