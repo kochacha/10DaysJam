@@ -16,6 +16,7 @@
 #include "InputManager.h"
 #include "Text.h"
 #include "InputText.h"
+#include "JammingBoss.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -114,6 +115,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_uqp_bgm->Init();
 	m_uqp_se->Init();
 	
+	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { 0,0,0 }, m_itemManager));
 }
 
 void KochaEngine::GamePlay::Update()

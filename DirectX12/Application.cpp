@@ -230,6 +230,9 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/next_ranking.png");
 	Dx12_Texture::LoadTexture(device, "Resources/next_title.png");
 	Dx12_Texture::LoadTexture(device, "Resources/next_waku.png");
+	Dx12_Texture::LoadTexture(device, "Resources/boss.png");
+	Dx12_Texture::LoadTexture(device, "Resources/bossGet.png");
+	Dx12_Texture::LoadTexture(device, "Resources/bonusGet.png");
 	
 	//.objのロード
 	Dx12_Object::LoadObject(device, "box");
