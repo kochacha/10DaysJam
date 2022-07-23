@@ -51,6 +51,11 @@ namespace KochaEngine
 		std::unique_ptr<Texture2D> m_uqp_rankingUITexture;
 		std::unique_ptr<Texture2D> m_uqp_moveUITexture;
 		std::unique_ptr<Texture2D> m_uqp_smashUITexture;
+		std::unique_ptr<Texture2D> m_uqp_endlessTileTexture;
+		std::unique_ptr<Texture2D> m_uqp_normalTileTexture;
+		std::unique_ptr<Texture2D> m_uqp_selectTileTexture;
+		std::unique_ptr<Texture2D> m_uqp_endlessPlateTexture;
+		std::unique_ptr<Texture2D> m_uqp_normalPlateTexture;
 		std::unique_ptr<Texture2D> m_uqp_finishTexture;
 		std::unique_ptr<InputText> m_uqp_iText;
 

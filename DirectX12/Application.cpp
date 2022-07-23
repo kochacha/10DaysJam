@@ -196,6 +196,11 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/toge.png");
 	Dx12_Texture::LoadTexture(device, "Resources/item.png");
 	Dx12_Texture::LoadTexture(device, "Resources/wall.png");
+	Dx12_Texture::LoadTexture(device, "Resources/endlessTile.png");
+	Dx12_Texture::LoadTexture(device, "Resources/endlessPlate.png");
+	Dx12_Texture::LoadTexture(device, "Resources/normalTile.png");
+	Dx12_Texture::LoadTexture(device, "Resources/normalPlate.png");
+	Dx12_Texture::LoadTexture(device, "Resources/selectTile.png");
 	Dx12_Texture::LoadTexture(device, "Resources/Menu1.png");
 	Dx12_Texture::LoadTexture(device, "Resources/Menu2.png");
 	Dx12_Texture::LoadTexture(device, "Resources/Menu3.png");

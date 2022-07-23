@@ -41,6 +41,11 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_rankingUITexture = std::make_unique<Texture2D>("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
 	m_uqp_moveUITexture = std::make_unique<Texture2D>("Resources/moveUI.png", Vector2(568, 350), Vector2(144, 80), 0);
 	m_uqp_smashUITexture = std::make_unique<Texture2D>("Resources/smashUI.png", Vector2(552, 350), Vector2(176, 80), 0);
+	m_uqp_endlessTileTexture = std::make_unique<Texture2D>("Resources/endlessTile.png", Vector2(55, 405), Vector2(70, 270), 0);
+	m_uqp_normalTileTexture = std::make_unique<Texture2D>("Resources/normalTile.png", Vector2(55, 132), Vector2(70, 270), 0);
+	m_uqp_selectTileTexture = std::make_unique<Texture2D>("Resources/selectTile.png", Vector2(55, 405), Vector2(70, 270), 0);
+	m_uqp_endlessPlateTexture = std::make_unique<Texture2D>("Resources/endlessPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
+	m_uqp_normalPlateTexture = std::make_unique<Texture2D>("Resources/normalPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
 	m_uqp_iText = std::make_unique<InputText>();
 }
@@ -213,20 +218,35 @@ void KochaEngine::GamePlay::Update()
 void KochaEngine::GamePlay::SpriteDraw()
 {
 	m_uqp_flameTexture->Draw();
-	m_uqp_controlUITexture->Draw();
-	m_uqp_rankingUITexture->Draw();
-	m_gManager->SpriteDraw();
-
 	auto player = m_gManager->GetPlayer();
 
 	if (!player->IsOnceMove())
 	{
 		m_uqp_moveUITexture->Draw();
 	}
-	if (!player->IsOnceSmash() && player->IsSmashPossible())
+	if (!player->IsOnceSmash())
 	{
-		m_uqp_smashUITexture->Draw();
+		m_uqp_normalTileTexture->Draw();
+		m_uqp_endlessTileTexture->Draw();
+
+		if (player->GetPosition().y < 10)
+		{
+			m_uqp_selectTileTexture->Draw(Vector2(55, 405));
+		}
+		else
+		{
+			m_uqp_selectTileTexture->Draw(Vector2(55, 132));
+		}
+
+		if (player->IsSmashPossible())
+		{
+			m_uqp_smashUITexture->Draw();
+		}	
 	}
+
+	m_uqp_controlUITexture->Draw();
+	m_uqp_rankingUITexture->Draw();
+	m_gManager->SpriteDraw();
 
 	m_pauseManager->Draw();
 
@@ -235,9 +255,10 @@ void KochaEngine::GamePlay::SpriteDraw()
 	switch (m_currentGameMode)
 	{
 	case KochaEngine::GamePlay::NORMALMODE:
-
 		m_scoreManager->Draw(m_isShowRank);
 		m_scoreManager->DrawQuotaScore(m_quotaScore);
+
+		m_uqp_normalPlateTexture->Draw();
 
 		if (isFinishFrame)
 		{
@@ -248,6 +269,9 @@ void KochaEngine::GamePlay::SpriteDraw()
 		}
 		break;
 	case KochaEngine::GamePlay::SCOREATTAKMODE:
+
+		m_uqp_endlessPlateTexture->Draw();
+
 		if (m_scoreDBAccessDev->IsOnline())
 		{
 			if (m_deathWaitCount <= 0) //deathWaitCount <= 0 = ゲーム終了時のリザルト画面
