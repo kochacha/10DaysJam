@@ -42,12 +42,12 @@ void KochaEngine::JammingBoss::Initialize()
 
 	velocity.Zero();
 
-	sphere.radius = 4.0f;
+	sphere.radius = 6.0f;
 
 	SetObjParam();
 
 	obj->SetRotate(Vector3(0, 0, 180));
-	obj->SetScale(Vector3(10, 30, 10));
+	obj->SetScale(Vector3(10, 25, 10));
 	obj->SetTexture("Resources/boss.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 }
@@ -70,14 +70,34 @@ void KochaEngine::JammingBoss::Update()
 	}
 
 	SetObjParam();
+
+	gManager->HitObject(this, PLAYER);
+
+	//プレイヤーが一番左まで到達した時(ボスが死ぬ時)
+	if (gManager->GetPlayer()->IsLeftLimit())
+	{
+		//Dead();
+	}
 }
 
 void KochaEngine::JammingBoss::Hit()
 {
+	auto player = gManager->GetPlayer();
+	//通常時なら
+	if (player->IsSmashing())
+	{
+		//プレイヤーはパワーダウン
+		player->SuspendSmash();
+	}
+	else
+	{
+		player->HitJammingBoss();
+	}
 }
 
 void KochaEngine::JammingBoss::Dead()
 {
+	isDelete = true;
 }
 
 void KochaEngine::JammingBoss::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
@@ -90,7 +110,7 @@ void KochaEngine::JammingBoss::ObjDraw(Camera* arg_camera, LightManager* arg_lig
 
 KochaEngine::GameObjectType KochaEngine::JammingBoss::GetType()
 {
-	return GameObjectType();
+	return JAMMING_BOSS;
 }
 
 KochaEngine::Vector3 KochaEngine::JammingBoss::GetPrearrangedPosition() const

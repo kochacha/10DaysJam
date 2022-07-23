@@ -139,6 +139,7 @@ void KochaEngine::Player::Initialize()
 	addSmashScore = 0;
 
 	isStun = false;	
+	isLeftLimit = false;
 
 	velocity.Zero();
 	sphere.radius = 5.0f;
@@ -319,7 +320,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	}
 }
 
-void KochaEngine::Player::PowerDown()
+void KochaEngine::Player::HitJammingSpine()
 {
 	CommonVib(10);
 	se->PlayWave("Resources/Sound/toge.wav", seVolume);
@@ -335,6 +336,48 @@ void KochaEngine::Player::PowerDown()
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
 	speed = 6.0f;
+	isStun = true;
+}
+
+void KochaEngine::Player::SuspendSmash()
+{
+	CommonVib(10);
+	se->PlayWave("Resources/Sound/toge.wav", seVolume);
+
+	//スマッシュパワー減算
+	pEmitter->Clash(position);
+
+	backCount = 0;
+	isSmashing = false;
+	//isHitWall = false;
+
+	smashPower--;
+	if (smashPower < 0)
+	{
+		smashPower = 0;
+	}
+
+	overDirveSmashPower = 0;
+
+	velocity.x = 1;
+	velocity.y = 0;
+	velocity.normalize();
+	speed = 8.0f;
+	isStun = true;
+}
+
+void KochaEngine::Player::HitJammingBoss()
+{
+	CommonVib(10);
+	se->PlayWave("Resources/Sound/toge.wav", seVolume);
+
+	//スマッシュパワー減算
+	pEmitter->Clash(position);
+
+	velocity.x = 1;
+	velocity.y = 0;
+	velocity.normalize();
+	speed = 8.0f;
 	isStun = true;
 }
 
@@ -476,7 +519,6 @@ void KochaEngine::Player::InputForMove()
 					velocity.y = -1;
 				}
 			}
-
 			if (velocity.x != 0 || velocity.y != 0)
 			{
 				speed = 6.5f;
@@ -625,8 +667,9 @@ void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
 
-	int leftWall = gManager->GetWall()->GetMinPos().x;
-	int rightWall = gManager->GetWall()->GetMaxPos().x;
+	float leftWall = gManager->GetWall()->GetMinPos().x;
+	float rightWall = gManager->GetWall()->GetMaxPos().x;
+
 	
 	if (position.x <= leftWall)
 	{
@@ -651,8 +694,8 @@ void KochaEngine::Player::MoveY()
 {
 	position.y += velocity.y * speed;
 
-	int DownWall = gManager->GetWall()->GetMinPos().y;
-	int UpWall = gManager->GetWall()->GetMaxPos().y;
+	float DownWall = gManager->GetWall()->GetMinPos().y;
+	float UpWall = gManager->GetWall()->GetMaxPos().y;
 
 	if (position.y <= DownWall)
 	{
@@ -678,6 +721,12 @@ void KochaEngine::Player::ProcessingAfterUpdatePosition()
 	{
 		//押し戻し距離を強制的に0にする
 		backCount = 0;
+		
+		isLeftLimit = true;
+	}
+	else
+	{
+		isLeftLimit = false;
 	}
 	//スマッシュ中に押し戻し距離が0になったら
 	if (addSmashScore != 0 && backCount == 0)
