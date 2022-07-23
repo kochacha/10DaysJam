@@ -39,6 +39,7 @@ KochaEngine::JammingBoss::~JammingBoss()
 void KochaEngine::JammingBoss::Initialize()
 {
 	isAlpha = true;
+	isOnce = false;
 
 	velocity.Zero();
 
@@ -54,6 +55,16 @@ void KochaEngine::JammingBoss::Initialize()
 
 void KochaEngine::JammingBoss::Update()
 {
+
+	if (isFinish)
+	{
+		if (!isOnce)
+		{
+			isOnce = true;	
+			isDelete = true;
+		}
+		return;
+	}
 
 	float leftWall = gManager->GetWall()->GetMinPos().x;
 	float rightWall = gManager->GetWall()->GetMaxPos().x;
@@ -76,7 +87,7 @@ void KochaEngine::JammingBoss::Update()
 	//プレイヤーが一番左まで到達した時(ボスが死ぬ時)
 	if (gManager->GetPlayer()->IsLeftLimit())
 	{
-		//Dead();
+		Dead();
 	}
 }
 
@@ -97,7 +108,7 @@ void KochaEngine::JammingBoss::Hit()
 
 void KochaEngine::JammingBoss::Dead()
 {
-	isDelete = true;
+	isFinish = true;
 }
 
 void KochaEngine::JammingBoss::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
