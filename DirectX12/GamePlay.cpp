@@ -114,13 +114,14 @@ void KochaEngine::GamePlay::Initialize()
 	m_deathWaitCount = 110;
 	m_pauseBackCount = 0;
 	m_currentGameMode = GameMode::SCOREATTAKMODE;
+	m_isSpawnBoss = false;
 
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	m_uqp_bgm->Init();
 	m_uqp_se->Init();
 	
-	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { 0,0,0 }, m_itemManager));
+	
 }
 
 void KochaEngine::GamePlay::Update()
@@ -376,11 +377,14 @@ void KochaEngine::GamePlay::Scroll()
 	{
 		if (player->GetBackCount() > 0 && player->IsHitWall())
 		{
-			m_camera->MoveEye({ -10,0,0, });
-			wall->ScrollWall(-10);
+			m_camera->MoveEye({ -10.0f,0,0, });
+			wall->ScrollWall(-10.0f);
 		}
+		
 		m_camera->MoveEye({ m_scrollManager->GetScrollAmount(),0,0, });
 		wall->ScrollWall(m_scrollManager->GetScrollAmount());
+		
+		
 	}
 	else
 	{
@@ -535,8 +539,31 @@ void KochaEngine::GamePlay::ScoreAttackEnd()
 
 void KochaEngine::GamePlay::NormalModeEnd()
 {
+	auto wall = m_gManager->GetWall();
 	auto player = m_gManager->GetPlayer();
-	if (m_scoreManager->GetScore() > m_quotaScore)
+
+	if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
+	{
+		if (player->GetPosition().x >= 77)
+		{
+			//テスト用　スマッシュしてたらボスは生成しない
+			//ボス出現　一度だけ通る
+			m_isSpawnBoss = true;
+			float bossPosY = KochaEngine::Util::GetIntRand(10, 50) - 20;
+			m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager));
+		}
+		else
+		{
+			m_camera->MoveEye({ 5,0,0, });
+			wall->ScrollWall(5);
+		}
+	}
+	
+	auto boss = m_gManager->GetBoss();
+
+	if (boss == nullptr) { return; }
+
+	if (boss->IsFinish())
 	{
 		if (!m_isOnce)
 		{

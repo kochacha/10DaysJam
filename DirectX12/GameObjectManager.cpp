@@ -214,3 +214,17 @@ KochaEngine::DeadLine* KochaEngine::GameObjectManager::GetDeadLine()
 	}
 	return nullptr;
 }
+
+KochaEngine::JammingBoss* KochaEngine::GameObjectManager::GetBoss()
+{
+	auto end = gameObjects.end();
+	for (auto it = gameObjects.begin(); it != end; ++it)
+	{
+		if ((*it)->GetType() == JAMMING_BOSS)
+		{
+			JammingBoss* jammingBoss = static_cast<JammingBoss*>(static_cast<void*>(*it));
+			return jammingBoss;
+		}
+	}
+	return nullptr;
+}

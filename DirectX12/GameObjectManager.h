@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include "DeadLine.h"
+#include "JammingBoss.h"
 #include <vector>
 
 namespace KochaEngine
@@ -35,6 +36,8 @@ namespace KochaEngine
 		Player* GetPlayer();
 		Wall* GetWall();
 		DeadLine* GetDeadLine();
+		//ノーマルモード用
+		JammingBoss* GetBoss();
 
 		void Remove();
 		void RemoveItem();
