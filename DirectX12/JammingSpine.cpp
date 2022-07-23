@@ -88,7 +88,8 @@ void KochaEngine::JammingSpine::Update()
 	SetObjParam();
 
 	//ç∂ï«Ç…Ç†ÇΩÇÈ
-	if (position.x <= pWall->GetMinPos().x - 20.0f)
+	static const float surviveLength = 100.0f;
+	if (position.x <= pWall->GetMinPos().x - 20.0f - surviveLength)
 	{
 		Dead();
 		return;
