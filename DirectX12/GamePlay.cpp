@@ -109,6 +109,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_isDisplayRanking = false;
 	m_isShowRank = false;
 	m_isFade = true;
+	m_isModeSelect = false;
 	m_fadeAlpha = 1;
 	m_endCount = 180;
 	m_deathWaitCount = 110;
@@ -235,10 +236,20 @@ void KochaEngine::GamePlay::SpriteDraw()
 		if (player->GetPosition().y < 10)
 		{
 			m_uqp_selectTileTexture->Draw(Vector2(55, 405));
+			if (m_isModeSelect)
+			{
+				m_isModeSelect = false;
+				m_uqp_se->PlayWave("Resources/Sound/decision.wav", m_seVolume);
+			}
 		}
 		else
 		{
 			m_uqp_selectTileTexture->Draw(Vector2(55, 132));
+			if (!m_isModeSelect)
+			{
+				m_isModeSelect = true;
+				m_uqp_se->PlayWave("Resources/Sound/decision.wav", m_seVolume);
+			}
 		}
 
 		if (player->IsSmashPossible())
@@ -261,7 +272,10 @@ void KochaEngine::GamePlay::SpriteDraw()
 		m_scoreManager->Draw(m_isShowRank);
 		m_scoreManager->DrawQuotaScore(m_quotaScore);
 
-		m_uqp_normalPlateTexture->Draw();
+		if (player->IsOnceSmash())
+		{
+			m_uqp_normalPlateTexture->Draw();
+		}
 
 		if (isFinishFrame)
 		{
@@ -273,7 +287,10 @@ void KochaEngine::GamePlay::SpriteDraw()
 		break;
 	case KochaEngine::GamePlay::SCOREATTAKMODE:
 
-		m_uqp_endlessPlateTexture->Draw();
+		if (player->IsOnceSmash())
+		{
+			m_uqp_endlessPlateTexture->Draw();
+		}
 
 		if (m_scoreDBAccessDev->IsOnline())
 		{

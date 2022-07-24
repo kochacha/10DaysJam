@@ -67,6 +67,7 @@ namespace KochaEngine
 		bool m_isSend;
 		bool m_isScoreDraw;
 		bool m_isSpawnBoss;
+		bool m_isModeSelect;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;
