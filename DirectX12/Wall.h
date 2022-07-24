@@ -32,7 +32,7 @@ namespace KochaEngine
 		GameObjectType GetType();
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
 		//�ǂ͈̔͂̍X�V
-		void ScrollWall(float amount);
+		void ScrollWall(const float amount);
 
 		const Vector2 GetMinPos();
 		const Vector2 GetMaxPos();

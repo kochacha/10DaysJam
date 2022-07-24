@@ -66,7 +66,7 @@ void KochaEngine::Wall::ObjDraw(Camera* arg_camera, LightManager* arg_lightManag
 	obj->Draw(arg_camera, arg_lightManager);
 }
 
-void KochaEngine::Wall::ScrollWall(float amount)
+void KochaEngine::Wall::ScrollWall(const float amount)
 {
 	//xÀ•W‚¾‚¯“¯‚¶•ª‚¸‚ç‚·
 	minPos.x += amount;

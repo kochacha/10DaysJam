@@ -153,7 +153,7 @@ void KochaEngine::GamePlay::Update()
 	if (player->IsHitStop()) return;
 
 	Scroll();
-		
+
 	m_gManager->Update();
 	m_pManager->Update();
 	m_camera->Update();	
@@ -165,6 +165,8 @@ void KochaEngine::GamePlay::Update()
 		m_itemManager->Update();
 		m_scrollManager->Update();
 	}
+
+	
 
 	//ƒQ[ƒ€I—¹Žžˆ—‚Ì•ªŠò
 	switch (m_currentGameMode)
@@ -375,15 +377,18 @@ void KochaEngine::GamePlay::Scroll()
 
 	if (m_isInGame)
 	{
+		int debugBackCount = player->GetBackCount();
+		bool debugIshitWall = player->IsHitWall();
 		if (player->GetBackCount() > 0 && player->IsHitWall())
 		{
 			m_camera->MoveEye({ -10.0f,0,0, });
 			wall->ScrollWall(-10.0f);
 		}
-		
-		m_camera->MoveEye({ m_scrollManager->GetScrollAmount(),0,0, });
-		wall->ScrollWall(m_scrollManager->GetScrollAmount());
-		
+		else
+		{
+			m_camera->MoveEye({ m_scrollManager->GetScrollAmount(),0,0, });
+			wall->ScrollWall(m_scrollManager->GetScrollAmount());
+		}
 		
 	}
 	else

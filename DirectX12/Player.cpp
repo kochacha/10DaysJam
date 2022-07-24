@@ -272,6 +272,11 @@ void KochaEngine::Player::ShowGUI()
 	float _position[3] = { position.x, position.y, position.z };
 	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
 	ImGui::InputInt("##PlayerBackCount", &backCount);
+
+	float minpos = gManager->GetWall()->GetMinPos().x;
+	float playerPosX = position.x;
+	ImGui::InputFloat("wallminPosX", &minpos);
+	ImGui::InputFloat("playerPosX", &playerPosX);
 }
 
 KochaEngine::GameObjectType KochaEngine::Player::GetType()
@@ -354,11 +359,6 @@ void KochaEngine::Player::HitJammingSpine()
 
 	//スマッシュパワー減算
 	pEmitter->Clash(position);
-	/*smashPower--;
-	if (smashPower < 0)
-	{
-		smashPower = 0;
-	}*/
 
 	velocity.x = -velocity.x;
 	velocity.y = -velocity.y;
@@ -618,31 +618,6 @@ void KochaEngine::Player::InputForMove()
 
 void KochaEngine::Player::Move()
 {
-	//スマッシュして壁に当たるまでの間
-	if (isSmashing)
-	{
-		int wallPosX = gManager->GetWall()->GetMinPos().x;
-		if (position.x <= wallPosX)
-		{
-			isSmashing = false;
-			position.x = wallPosX;
-			if (*inGame)
-			{
-				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 15.0f); //ここの倍率で戻る量が変わる
-			}
-			else
-			{
-				backCount = 10000;
-			}
-
-			isHitWall = true;
-			ableHitAfterTouchWallCount = 10;
-
-			//仮置き
-			ResetPower();
-		}
-	}
-
 	//壁押し戻し距離が残っているなら
 	if (backCount > 0)
 	{
@@ -650,7 +625,7 @@ void KochaEngine::Player::Move()
 		addSmashScore++;
 		backCount--;
 		pEmitter->SmashStar(position);
-		ResetPower();
+		//ResetPower();
 
 		if (m_isTogePower)
 		{
@@ -673,6 +648,32 @@ void KochaEngine::Player::Move()
 			}
 		}
 	}
+
+	//スマッシュして壁に当たるまでの間
+	if (isSmashing)
+	{
+		float wallPosX = gManager->GetWall()->GetMinPos().x;
+		if (position.x <= wallPosX)
+		{
+			isSmashing = false;
+			position.x = wallPosX;
+			if (*inGame)
+			{
+				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 15.0f); //ここの倍率で戻る量が変わる
+			}
+			else
+			{
+				backCount = 10000;
+			}
+
+			isHitWall = true;
+			ableHitAfterTouchWallCount = 10;
+
+			//仮置き
+			ResetPower();
+		}
+	}
+
 
 	velocity.normalize();
 
@@ -705,6 +706,7 @@ void KochaEngine::Player::MoveX()
 	
 	if (position.x <= leftWall)
 	{
+		isHitWall = true;
 		if (backCount <= 0)
 		{
 			position.x = leftWall;
@@ -741,19 +743,35 @@ void KochaEngine::Player::MoveY()
 
 void KochaEngine::Player::ProcessingAfterUpdatePosition()
 {
+	float wallPosX = gManager->GetWall()->GetMinPos().x;
 	//押し戻し中でなく,Wallより左にいれば
-	if (backCount <= 0 && position.x > gManager->GetWall()->GetMinPos().x)
+	if (backCount <= 0)
 	{
-		//壁に接触していない
-		isHitWall = false;
+		if (position.x > wallPosX)
+		{
+			if (!isSmashing)
+			{
+				//壁に接触していない
+				isHitWall = false;
+			}		
+		}
+		else
+		{
+			isHitWall = true;
+		}
 	}
 
+	/*if (position.x <= wallPosX)
+	{
+		isHitWall = true;		
+	}*/
+
+
 	//壁の実体が一番左まで来たら
-	if (gManager->GetWall()->GetMinPos().x <= gManager->GetWall()->GetLimitLeftPosX())
+	if (wallPosX <= gManager->GetWall()->GetLimitLeftPosX())
 	{
 		//押し戻し距離を強制的に0にする
 		backCount = 0;
-		
 		isLeftLimit = true;
 	}
 	else
