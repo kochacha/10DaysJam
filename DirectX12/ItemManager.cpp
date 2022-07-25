@@ -24,12 +24,27 @@ KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg
 	enhancementItems.clear();
 	jammingSpines.clear();
 	memset(arrayEmitHight, 0.0f, sizeof(arrayEmitHight));
+
+	for (int i = 0; i < 30; i++)
+	{
+		Object* tag = new Object("plane");
+		tag->SetRotate(Vector3(0, 0, 0));
+		tag->SetTexture("Resources/togeTag.png");
+		tag->SetBillboardType(Object::BillboardType::BILLBOARD);
+		spineTags.push_back(tag);
+	}
 }
 
 KochaEngine::ItemManager::~ItemManager()
 {
 	enhancementItems.clear();
 	jammingSpines.clear();
+	for (auto tag : spineTags)
+	{
+		delete tag;
+		tag = nullptr;
+	}
+	spineTags.clear();
 }
 
 void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
@@ -51,6 +66,8 @@ void KochaEngine::ItemManager::Initialize(ScrollManager* arg_scrollManager)
 		arrayEmitHight[i] = pWall->GetPlayableSize().y * 0.5f - unitHeight * i;
 		arrayEmitHight[10 - i] = -pWall->GetPlayableSize().y * 0.5f + unitHeight * i;
 	}
+
+	activeTagCount = 0;
 }
 
 void KochaEngine::ItemManager::Update()
@@ -84,6 +101,16 @@ void KochaEngine::ItemManager::Update()
 		}
 	}
 #endif _DEBUG
+}
+
+void KochaEngine::ItemManager::Draw(Camera* arg_camera, LightManager* arg_lightManager)
+{
+	CheckTagActivation();
+
+	for (int i = 0; i < activeTagCount; i++)
+	{
+		spineTags[i]->Draw(arg_camera, arg_lightManager);
+	}
 }
 
 void KochaEngine::ItemManager::DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType)
@@ -434,5 +461,21 @@ const bool KochaEngine::ItemManager::GetIsSpineMove()
 	else
 	{
 		return false;
+	}
+}
+
+void KochaEngine::ItemManager::CheckTagActivation()
+{
+	activeTagCount = 0;
+
+	for (auto spine : jammingSpines)
+	{
+		if (spine->IsCutOffScreen())
+		{
+			spineTags[activeTagCount]->SetPosition(spine->GetTagPosition());
+			spineTags[activeTagCount]->SetScale(spine->GetTagScale());
+
+			activeTagCount++;
+		}
 	}
 }

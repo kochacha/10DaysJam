@@ -318,6 +318,7 @@ void KochaEngine::GamePlay::ObjDraw()
 
 void KochaEngine::GamePlay::AlphaObjDraw()
 {
+	m_itemManager->Draw(m_camera, m_lightManager);
 	m_gManager->AlphaObjDraw(m_camera, m_lightManager);
 	m_pManager->Draw(m_camera, m_lightManager);
 }

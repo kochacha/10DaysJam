@@ -43,6 +43,9 @@ namespace KochaEngine
 		float arrayEmitHight[11];
 		//生成時の座標チェックカウント
 		int hitCheckCount;
+		//見切れたトゲのタグ描画用
+		std::vector<Object*> spineTags;
+		unsigned int activeTagCount;
 
 		//配列から削除
 		void DeleteFromItems(EnhancementItem* arg_enhItem);
@@ -67,6 +70,8 @@ namespace KochaEngine
 		const unsigned int GetEmitTypeCoefficient();
 		//動くトゲにするかどうか
 		const bool GetIsSpineMove();
+		//
+		void CheckTagActivation();
 
 	public:
 		ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager);
@@ -74,6 +79,7 @@ namespace KochaEngine
 
 		void Initialize(ScrollManager* arg_scrollManager);
 		void Update();
+		void Draw(Camera* arg_camera, LightManager* arg_lightManager);
 		//アイテム側からの削除申請
 		void DeleteFromVector(GameObject* arg_pObj, const GameObjectType arg_objType);
 		//外部からの生成依頼

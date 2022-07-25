@@ -142,6 +142,12 @@ void KochaEngine::JammingSpine::Dead()
 void KochaEngine::JammingSpine::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
 {
 	if (arg_camera == nullptr) return;
+
+	if (IsCutOffScreen())
+	{
+		return;
+	}
+
 	float cameraPosX = arg_camera->GetEye().x;
 	const float CAMERA_DISTANCE_X = 100;
 	if (abs(position.x - cameraPosX) > CAMERA_DISTANCE_X) return;
@@ -211,4 +217,19 @@ const float KochaEngine::JammingSpine::GetVerticalMoveSpeed()
 	}
 
 	return answerVal;
+}
+
+bool KochaEngine::JammingSpine::IsCutOffScreen()
+{
+	return position.x <= pWall->GetMinPos().x - 10.0f;
+}
+
+KochaEngine::Vector3 KochaEngine::JammingSpine::GetTagPosition() const
+{
+	return Vector3(pWall->GetMinPos().x + 5.0f, position.y , position.z - 1.0f);
+}
+
+KochaEngine::Vector3 KochaEngine::JammingSpine::GetTagScale() const
+{
+	return Vector3(-15, 10, 10);
 }
