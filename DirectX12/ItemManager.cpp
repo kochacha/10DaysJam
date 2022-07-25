@@ -105,6 +105,11 @@ void KochaEngine::ItemManager::Update()
 
 void KochaEngine::ItemManager::Draw(Camera* arg_camera, LightManager* arg_lightManager)
 {
+	if (!gManager->GetWall())
+	{
+		return;
+	}
+
 	CheckTagActivation();
 
 	for (int i = 0; i < activeTagCount; i++)

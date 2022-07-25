@@ -158,6 +158,7 @@ void KochaEngine::GameObjectManager::RemoveItem()
 			++it;
 			continue;
 		}
+		(*it)->Dead();
 		delete* it;
 		it = gameObjects.erase(it);
 	}
