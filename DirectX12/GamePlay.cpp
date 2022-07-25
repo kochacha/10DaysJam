@@ -115,6 +115,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_pauseBackCount = 0;
 	m_currentGameMode = GameMode::SCOREATTAKMODE;
 	m_isSpawnBoss = false;
+	m_isScroll = true;
 
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
@@ -152,7 +153,11 @@ void KochaEngine::GamePlay::Update()
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
-	Scroll();
+	if (m_isScroll)
+	{
+		Scroll();
+	}
+
 
 	m_gManager->Update();
 	m_pManager->Update();
@@ -452,6 +457,22 @@ void KochaEngine::GamePlay::ScoreAttackMode()
 
 void KochaEngine::GamePlay::NormalMode()
 {
+	if (!m_isScroll && !m_isSpawnBoss)
+	{
+		SpawnBoss();
+	}
+
+	auto boss = m_gManager->GetBoss();
+
+	if (boss != nullptr)
+	{
+		if (m_gManager->GetBoss()->IsSpawnEnd())
+		{
+			m_isScroll = true;
+		}
+	}
+	
+
 	auto player = m_gManager->GetPlayer();
 	//ゲーム終了時に名前入力画面を表示
 	if (player->IsFinish() && !m_pauseManager->IsReset())
@@ -549,19 +570,36 @@ void KochaEngine::GamePlay::NormalModeEnd()
 
 	if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
 	{
-		if (player->GetPosition().x >= 77)
+		
+		float pAddValue = 5.0f;
+
+		if (player->GetPosition().x < 77 && !m_isSpawnBoss)
 		{
-			//テスト用　スマッシュしてたらボスは生成しない
-			//ボス出現　一度だけ通る
-			m_isSpawnBoss = true;
-			float bossPosY = KochaEngine::Util::GetIntRand(10, 50) - 20;
-			m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager));
-		}
-		else
-		{
+			pAddValue = 5.0f;
+
 			m_camera->MoveEye({ 5,0,0, });
 			wall->ScrollWall(5);
-		}
+			player->AddPlayerPosX(pAddValue);
+			if (player->GetPosition().x >= 77)
+			{
+				m_isScroll = false;
+
+			}
+		}	
+		else if (player->GetPosition().x > 77 && !m_isSpawnBoss)
+		{
+
+			pAddValue = -5.0f;
+
+			m_camera->MoveEye({ -5,0,0, });
+			wall->ScrollWall(-5);
+			player->AddPlayerPosX(pAddValue);
+			if (player->GetPosition().x <= 77)
+			{
+				m_isScroll = false;			
+			}
+		}			
+		
 	}
 	
 	auto boss = m_gManager->GetBoss();
@@ -578,4 +616,12 @@ void KochaEngine::GamePlay::NormalModeEnd()
 			m_scoreDBAccessDev->Disconnect();
 		}
 	}
+}
+
+void KochaEngine::GamePlay::SpawnBoss()
+{
+	auto wall = m_gManager->GetWall();
+	float bossPosY = KochaEngine::Util::GetIntRand(10, 50) - 20;
+	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager));
+	m_isSpawnBoss = true;
 }

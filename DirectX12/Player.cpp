@@ -408,6 +408,11 @@ void KochaEngine::Player::HitJammingBoss()
 	isStun = true;
 }
 
+void KochaEngine::Player::AddPlayerPosX(const float arg_addValue)
+{
+	position.x += arg_addValue;
+}
+
 const bool KochaEngine::Player::IsFinish()
 {
 	return isFinish;

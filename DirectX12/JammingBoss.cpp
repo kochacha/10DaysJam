@@ -40,10 +40,13 @@ void KochaEngine::JammingBoss::Initialize()
 {
 	isAlpha = true;
 	isOnce = false;
+	isSpawnEnd = false;
 
 	velocity.Zero();
 
 	sphere.radius = 6.0f;
+
+	spawnCount = 120;
 
 	SetObjParam();
 
@@ -51,20 +54,6 @@ void KochaEngine::JammingBoss::Initialize()
 	obj->SetScale(Vector3(10, 25, 10));
 	obj->SetTexture("Resources/boss.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
-}
-
-void KochaEngine::JammingBoss::Update()
-{
-
-	if (isFinish)
-	{
-		if (!isOnce)
-		{
-			isOnce = true;	
-			isDelete = true;
-		}
-		return;
-	}
 
 	float leftWall = gManager->GetWall()->GetMinPos().x;
 	float rightWall = gManager->GetWall()->GetMaxPos().x;
@@ -81,14 +70,51 @@ void KochaEngine::JammingBoss::Update()
 	}
 
 	SetObjParam();
+}
 
-	gManager->HitObject(this, PLAYER);
-
-	//プレイヤーが一番左まで到達した時(ボスが死ぬ時)
-	if (gManager->GetPlayer()->IsLeftLimit())
+void KochaEngine::JammingBoss::Update()
+{
+	if (!isSpawnEnd)
 	{
-		Dead();
+		Spawn();
 	}
+	else
+	{
+		if (isFinish)
+		{
+			if (!isOnce)
+			{
+				isOnce = true;
+				isDelete = true;
+			}
+			return;
+		}
+
+		float leftWall = gManager->GetWall()->GetMinPos().x;
+		float rightWall = gManager->GetWall()->GetMaxPos().x;
+
+
+		if (gManager->GetPlayer()->GetBackCount() <= 0)
+		{
+			position.x = leftWall - 2;
+		}
+		//壁を押してるように見せる
+		else
+		{
+			position.x = leftWall + 20;
+		}
+
+		SetObjParam();
+
+		gManager->HitObject(this, PLAYER);
+
+		//プレイヤーが一番左まで到達した時(ボスが死ぬ時)
+		if (gManager->GetPlayer()->IsLeftLimit())
+		{
+			Dead();
+		}
+	}
+	
 }
 
 void KochaEngine::JammingBoss::Hit()
@@ -127,4 +153,14 @@ KochaEngine::GameObjectType KochaEngine::JammingBoss::GetType()
 KochaEngine::Vector3 KochaEngine::JammingBoss::GetPrearrangedPosition() const
 {
 	return Vector3();
+}
+
+void KochaEngine::JammingBoss::Spawn()
+{
+	//登場演出処理ここに書く
+	spawnCount--;
+	if (spawnCount <= 0)
+	{
+		isSpawnEnd = true;
+	}
 }

@@ -66,7 +66,8 @@ namespace KochaEngine
 		bool m_isDisplayRanking;
 		bool m_isSend;
 		bool m_isScoreDraw;
-		bool m_isSpawnBoss;
+		bool m_isSpawnBoss; //ボスがスポーンしているか
+		bool m_isScroll;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;
@@ -106,5 +107,7 @@ namespace KochaEngine
 		void ScoreAttackEnd();
 		//ノーマルモード終了処理
 		void NormalModeEnd();
+		//ボス登場演出処理
+		void SpawnBoss();
 	};
 }

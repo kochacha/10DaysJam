@@ -127,6 +127,8 @@ namespace KochaEngine
 		//通常時のボスとの衝突時処理
 		void HitJammingBoss();
 
+		void AddPlayerPosX(const float arg_addValue);
+
 		const bool IsFinish();
 		//外側から動的にisFinishをtrueにする
 		void Finish();
