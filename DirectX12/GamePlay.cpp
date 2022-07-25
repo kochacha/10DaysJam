@@ -38,6 +38,8 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_bgm = std::make_unique<Audio>();
 	m_uqp_se = std::make_unique<Audio>();
 	m_uqp_flameTexture = std::make_unique<Texture2D>("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
+	m_uqp_heartUITexture = std::make_unique<Texture2D>("Resources/heartUI.png", Vector2(70, 795), Vector2(64, 64), 0);
+	m_uqp_dokuroUITexture = std::make_unique<Texture2D>("Resources/dokuroUI.png", Vector2(1140, 795), Vector2(64, 64), 0);
 	m_uqp_controlUITexture = std::make_unique<Texture2D>("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	m_uqp_rankingUITexture = std::make_unique<Texture2D>("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
 	m_uqp_moveUITexture = std::make_unique<Texture2D>("Resources/moveUI.png", Vector2(568, 350), Vector2(144, 80), 0);
@@ -222,6 +224,9 @@ void KochaEngine::GamePlay::Update()
 void KochaEngine::GamePlay::SpriteDraw()
 {
 	m_uqp_flameTexture->Draw();
+	//m_uqp_heartUITexture->Draw();
+	m_uqp_dokuroUITexture->Draw();
+
 	auto player = m_gManager->GetPlayer();
 
 	if (!player->IsOnceMove())

@@ -47,6 +47,8 @@ namespace KochaEngine
 		std::unique_ptr<Audio> m_uqp_bgm;
 		std::unique_ptr<Audio> m_uqp_se;
 		std::unique_ptr<Texture2D> m_uqp_flameTexture;
+		std::unique_ptr<Texture2D> m_uqp_heartUITexture;
+		std::unique_ptr<Texture2D> m_uqp_dokuroUITexture;
 		std::unique_ptr<Texture2D> m_uqp_controlUITexture;
 		std::unique_ptr<Texture2D> m_uqp_rankingUITexture;
 		std::unique_ptr<Texture2D> m_uqp_moveUITexture;

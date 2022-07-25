@@ -24,7 +24,7 @@ KochaEngine::MiniMap::MiniMap(Camera* arg_camera,GameObjectManager* arg_gManager
 	miniMapSize = { 1000, 60 };
 	miniMapPos = { 140, 800 };
 	mapBar = new Texture2D("Resources/mapUI.png", miniMapPos, miniMapSize, 0);
-	mapPlayer = new Texture2D("Resources/playerUI.png", Vector2(100, 800), Vector2(50, 50), 0);
+	mapPlayer = new Texture2D("Resources/playerUI.png", Vector2(100, 805), Vector2(50, 50), 0);
 	
 	auto wall = gManager->GetWall();
 	mapStartX = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
@@ -43,7 +43,7 @@ KochaEngine::MiniMap::~MiniMap()
 
 void KochaEngine::MiniMap::Initialize()
 {
-	mapPlayerPos = { 640,800 };
+	mapPlayerPos = { 640,805 };
 	
 }
 
