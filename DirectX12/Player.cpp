@@ -793,6 +793,13 @@ void KochaEngine::Player::ProcessingAfterUpdatePosition()
 		se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		scale = Vector3(1, 20, 10);
 		m_isTogePower = false;
+
+		if (*inGame && isLeftLimit)
+		{
+			sManager->AddScore(500000);
+			pEmitter->BonusParticle(Vector3(position.x + 30.0f, 0, position.z));
+			se->PlayWave("Resources/Sound/bonus.wav", seVolume);
+		}
 	}
 }
 

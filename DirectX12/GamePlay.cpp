@@ -38,6 +38,8 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_bgm = std::make_unique<Audio>();
 	m_uqp_se = std::make_unique<Audio>();
 	m_uqp_flameTexture = std::make_unique<Texture2D>("Resources/waku.png", Vector2(0, 0), Vector2(1280, 960), 0);
+	m_uqp_heartUITexture = std::make_unique<Texture2D>("Resources/heartUI.png", Vector2(70, 795), Vector2(64, 64), 0);
+	m_uqp_dokuroUITexture = std::make_unique<Texture2D>("Resources/dokuroUI.png", Vector2(1140, 795), Vector2(64, 64), 0);
 	m_uqp_controlUITexture = std::make_unique<Texture2D>("Resources/controlUI.png", Vector2(0, 900), Vector2(1280, 32), 0);
 	m_uqp_rankingUITexture = std::make_unique<Texture2D>("Resources/rankingUI.png", Vector2(850, 900), Vector2(192, 32), 0);
 	m_uqp_moveUITexture = std::make_unique<Texture2D>("Resources/moveUI.png", Vector2(568, 350), Vector2(144, 80), 0);
@@ -49,6 +51,11 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_normalPlateTexture = std::make_unique<Texture2D>("Resources/normalPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
 	m_uqp_iText = std::make_unique<InputText>();
+
+	for (int i = 0; i < 3; i++)
+	{
+		m_uqp_backLine[i] = std::make_unique<Object>("plane");
+	}
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -109,6 +116,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_isDisplayRanking = false;
 	m_isShowRank = false;
 	m_isFade = true;
+	m_isModeSelect = false;
 	m_fadeAlpha = 1;
 	m_endCount = 180;
 	m_deathWaitCount = 110;
@@ -122,7 +130,12 @@ void KochaEngine::GamePlay::Initialize()
 	m_uqp_bgm->Init();
 	m_uqp_se->Init();
 	
-	
+	for (int i = 0; i < 3; i++)
+	{
+		m_uqp_backLine[i]->SetPosition(Vector3(-272.0f + 260.0f * i, 10, 1.0f));
+		m_uqp_backLine[i]->SetScale(Vector3(2, 110, 1));
+		m_uqp_backLine[i]->SetTexture("Resources/backLine.png");
+	}
 }
 
 void KochaEngine::GamePlay::Update()
@@ -228,6 +241,9 @@ void KochaEngine::GamePlay::Update()
 void KochaEngine::GamePlay::SpriteDraw()
 {
 	m_uqp_flameTexture->Draw();
+	//m_uqp_heartUITexture->Draw();
+	m_uqp_dokuroUITexture->Draw();
+
 	auto player = m_gManager->GetPlayer();
 
 	if (!player->IsOnceMove())
@@ -242,10 +258,20 @@ void KochaEngine::GamePlay::SpriteDraw()
 		if (player->GetPosition().y < 10)
 		{
 			m_uqp_selectTileTexture->Draw(Vector2(55, 405));
+			if (m_isModeSelect)
+			{
+				m_isModeSelect = false;
+				m_uqp_se->PlayWave("Resources/Sound/decision.wav", m_seVolume);
+			}
 		}
 		else
 		{
 			m_uqp_selectTileTexture->Draw(Vector2(55, 132));
+			if (!m_isModeSelect)
+			{
+				m_isModeSelect = true;
+				m_uqp_se->PlayWave("Resources/Sound/decision.wav", m_seVolume);
+			}
 		}
 
 		if (player->IsSmashPossible())
@@ -268,7 +294,10 @@ void KochaEngine::GamePlay::SpriteDraw()
 		m_scoreManager->Draw(m_isShowRank);
 		m_scoreManager->DrawQuotaScore(m_quotaScore);
 
-		m_uqp_normalPlateTexture->Draw();
+		if (player->IsOnceSmash())
+		{
+			m_uqp_normalPlateTexture->Draw();
+		}
 
 		if (isFinishFrame)
 		{
@@ -280,7 +309,10 @@ void KochaEngine::GamePlay::SpriteDraw()
 		break;
 	case KochaEngine::GamePlay::SCOREATTAKMODE:
 
-		m_uqp_endlessPlateTexture->Draw();
+		if (player->IsOnceSmash())
+		{
+			m_uqp_endlessPlateTexture->Draw();
+		}
 
 		if (m_scoreDBAccessDev->IsOnline())
 		{
@@ -325,6 +357,11 @@ void KochaEngine::GamePlay::ObjDraw()
 
 void KochaEngine::GamePlay::AlphaObjDraw()
 {
+
+	for (int i = 0; i < 3; i++)
+	{
+		m_uqp_backLine[i]->Draw(m_camera, m_lightManager);
+	}
 	m_itemManager->Draw(m_camera, m_lightManager);
 	m_gManager->AlphaObjDraw(m_camera, m_lightManager);
 	m_pManager->Draw(m_camera, m_lightManager);

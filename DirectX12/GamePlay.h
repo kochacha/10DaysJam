@@ -47,6 +47,8 @@ namespace KochaEngine
 		std::unique_ptr<Audio> m_uqp_bgm;
 		std::unique_ptr<Audio> m_uqp_se;
 		std::unique_ptr<Texture2D> m_uqp_flameTexture;
+		std::unique_ptr<Texture2D> m_uqp_heartUITexture;
+		std::unique_ptr<Texture2D> m_uqp_dokuroUITexture;
 		std::unique_ptr<Texture2D> m_uqp_controlUITexture;
 		std::unique_ptr<Texture2D> m_uqp_rankingUITexture;
 		std::unique_ptr<Texture2D> m_uqp_moveUITexture;
@@ -59,6 +61,8 @@ namespace KochaEngine
 		std::unique_ptr<Texture2D> m_uqp_finishTexture;
 		std::unique_ptr<InputText> m_uqp_iText;
 
+		std::unique_ptr<Object> m_uqp_backLine[3];
+
 		bool m_isShowRank;
 		bool m_isFade;
 		bool m_isInGame;
@@ -68,6 +72,7 @@ namespace KochaEngine
 		bool m_isScoreDraw;
 		bool m_isSpawnBoss; //ボスがスポーンしているか
 		bool m_isScroll;
+		bool m_isModeSelect;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;

@@ -215,3 +215,21 @@ void KochaEngine::ParticleEmitter::DeadParticle(const Vector3& arg_position)
 		pManager->AddParticle(new Particle(param));
 	}
 }
+
+void KochaEngine::ParticleEmitter::BonusParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = Vector3(arg_position.x, arg_position.y, arg_position.z);
+
+	param.life = 150;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(-32, 12, 1);
+	param.textureName = "Resources/bonusGet.png";
+	param.velocity = Vector3(0, 0.2f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}

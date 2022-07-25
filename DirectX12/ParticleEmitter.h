@@ -31,5 +31,6 @@ namespace KochaEngine
 		void HitScore(const Vector3& arg_position, const bool arg_flag);
 		void SpawnParticle(const Vector3& arg_position);
 		void DeadParticle(const Vector3& arg_position);
+		void BonusParticle(const Vector3& arg_position);
 	};
 }
