@@ -16,6 +16,9 @@ namespace KochaEngine
 
 		bool isFinish;
 		bool isOnce;
+		bool isSpawnEnd;
+
+		int spawnCount;
 		
 		void SetObjParam();
 
@@ -31,6 +34,8 @@ namespace KochaEngine
 		GameObjectType GetType();
 		Vector3 GetPrearrangedPosition()const;
 		const bool IsFinish() { return isFinish; }
+		const bool IsSpawnEnd() { return isSpawnEnd; }
 
+		void Spawn();
 	};
 }
