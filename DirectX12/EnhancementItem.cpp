@@ -4,6 +4,8 @@
 #include "Wall.h"
 #include "Util.h"
 
+const int MOVE_FRAME = 15;
+
 KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option)
 	:gManager(nullptr),
 	 iManager(nullptr),
@@ -34,7 +36,7 @@ KochaEngine::EnhancementItem::EnhancementItem(Camera* arg_camera, GameObjectMana
 		position = emittedPlayerPosition;
 		//スマッシュ中生成時の目標座標
 		prearrangedPosition = arg_position;
-		moveCount = 5;
+		moveCount = MOVE_FRAME;
 		break;
 	default:
 		position = arg_position;
@@ -74,11 +76,20 @@ void KochaEngine::EnhancementItem::Update()
 	//スマッシュ中に生成されていたら
 	if (moveCount >= 0)
 	{
+		obj->SetTexture("Resources/itemShadow.png");
+		float scaleValue = Util::EaseOut(3, 10, (MOVE_FRAME - moveCount) / (float)MOVE_FRAME);
+		obj->SetScale(Vector3(scaleValue, scaleValue, scaleValue));
+
 		//線形補間で目標座標まで移動
-		position.x = Util::Lerp(emittedPlayerPosition.x, prearrangedPosition.x, (5 - moveCount) / 5.0f);
-		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
+		position.x = Util::Lerp(emittedPlayerPosition.x, prearrangedPosition.x, (MOVE_FRAME - moveCount) / (float)MOVE_FRAME);
+		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (MOVE_FRAME - moveCount) / (float)MOVE_FRAME);
 
 		moveCount--;
+	}
+	else
+	{
+		obj->SetTexture("Resources/item.png");
+		obj->SetScale(Vector3(10, 10, 10));
 	}
 
 	SetObjParam();

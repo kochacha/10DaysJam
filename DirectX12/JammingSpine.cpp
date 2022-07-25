@@ -4,6 +4,11 @@
 #include "Wall.h"
 #include "Util.h"
 
+const int MOVE_FRAME = 15;
+const float DEAD_X = 120.0f;
+const float CUT_OFF_X = 10.0f;
+const float SURVIVE_LENGTH = DEAD_X - CUT_OFF_X;
+
 KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove)
 	:gManager(nullptr),
 	 iManager(nullptr),
@@ -36,7 +41,7 @@ KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* a
 		position = emittedPlayerPosition;
 		//スマッシュ中生成時の目標座標
 		prearrangedPosition = arg_position;
-		moveCount = 5;
+		moveCount = MOVE_FRAME;
 		break;
 	default:
 		position = arg_position;
@@ -76,11 +81,20 @@ void KochaEngine::JammingSpine::Update()
 	//スマッシュ中に生成されていたら
 	if (moveCount >= 0)
 	{
+		obj->SetTexture("Resources/togeShadow.png");
+		float scaleValue = Util::EaseOut(3, 10, (MOVE_FRAME - moveCount) / (float)MOVE_FRAME);
+		obj->SetScale(Vector3(scaleValue, scaleValue, scaleValue));
+
 		//線形補間で目標座標まで移動
-		position.x = Util::Lerp(emittedPlayerPosition.x, prearrangedPosition.x, (5 - moveCount) / 5.0f);
-		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (5 - moveCount) / 5.0f);
+		position.x = Util::Lerp(emittedPlayerPosition.x, prearrangedPosition.x, (MOVE_FRAME - moveCount) / (float)MOVE_FRAME);
+		position.y = Util::Lerp(emittedPlayerPosition.y, prearrangedPosition.y, (MOVE_FRAME - moveCount) / (float)MOVE_FRAME);
 
 		moveCount--;
+	}
+	else
+	{
+		obj->SetTexture("Resources/toge.png");
+		obj->SetScale(Vector3(10, 10, 10));
 	}
 
 	MoveVertical();
@@ -88,8 +102,7 @@ void KochaEngine::JammingSpine::Update()
 	SetObjParam();
 
 	//左壁にあたる
-	static const float surviveLength = 100.0f;
-	if (position.x <= pWall->GetMinPos().x - 20.0f - surviveLength)
+	if (position.x <= pWall->GetMinPos().x - DEAD_X)
 	{
 		Dead();
 		return;
@@ -221,15 +234,19 @@ const float KochaEngine::JammingSpine::GetVerticalMoveSpeed()
 
 bool KochaEngine::JammingSpine::IsCutOffScreen()
 {
-	return position.x <= pWall->GetMinPos().x - 10.0f;
+	return position.x <= pWall->GetMinPos().x - CUT_OFF_X;
 }
 
 KochaEngine::Vector3 KochaEngine::JammingSpine::GetTagPosition() const
 {
-	return Vector3(pWall->GetMinPos().x + 5.0f, position.y , position.z - 1.0f);
+	float posRate = (pWall->GetMinPos().x - position.x) - CUT_OFF_X;  //0～SURVIVE_LENGTHになるはず
+	float posValue = Util::EaseOut(5.0f, 1.5f, posRate / SURVIVE_LENGTH);
+	return Vector3(pWall->GetMinPos().x + posValue - 2.0f, position.y , position.z - 1.0f);
 }
 
 KochaEngine::Vector3 KochaEngine::JammingSpine::GetTagScale() const
 {
-	return Vector3(-15, 10, 10);
+	float posRate = (pWall->GetMinPos().x - position.x) - CUT_OFF_X;  //0～SURVIVE_LENGTHになるはず
+	float scaleValue = Util::EaseOut(10.0f, 3.0f, posRate / SURVIVE_LENGTH);
+	return Vector3(-1.5f, 1.0f, 1.0f) * scaleValue;
 }
