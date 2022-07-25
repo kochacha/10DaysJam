@@ -51,6 +51,11 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_normalPlateTexture = std::make_unique<Texture2D>("Resources/normalPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
 	m_uqp_iText = std::make_unique<InputText>();
+
+	for (int i = 0; i < 3; i++)
+	{
+		m_uqp_backLine[i] = std::make_unique<Object>("plane");
+	}
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -124,7 +129,12 @@ void KochaEngine::GamePlay::Initialize()
 	m_uqp_bgm->Init();
 	m_uqp_se->Init();
 	
-	
+	for (int i = 0; i < 3; i++)
+	{
+		m_uqp_backLine[i]->SetPosition(Vector3(-272.0f + 260.0f * i, 10, 1.0f));
+		m_uqp_backLine[i]->SetScale(Vector3(2, 110, 1));
+		m_uqp_backLine[i]->SetTexture("Resources/backLine.png");
+	}
 }
 
 void KochaEngine::GamePlay::Update()
@@ -340,6 +350,10 @@ void KochaEngine::GamePlay::ObjDraw()
 
 void KochaEngine::GamePlay::AlphaObjDraw()
 {
+	for (int i = 0; i < 3; i++)
+	{
+		m_uqp_backLine[i]->Draw(m_camera, m_lightManager);
+	}
 	m_gManager->AlphaObjDraw(m_camera, m_lightManager);
 	m_pManager->Draw(m_camera, m_lightManager);
 }

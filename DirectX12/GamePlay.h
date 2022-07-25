@@ -61,6 +61,8 @@ namespace KochaEngine
 		std::unique_ptr<Texture2D> m_uqp_finishTexture;
 		std::unique_ptr<InputText> m_uqp_iText;
 
+		std::unique_ptr<Object> m_uqp_backLine[3];
+
 		bool m_isShowRank;
 		bool m_isFade;
 		bool m_isInGame;
