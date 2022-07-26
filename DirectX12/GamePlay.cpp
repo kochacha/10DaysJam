@@ -189,12 +189,12 @@ void KochaEngine::GamePlay::Update()
 	//ƒQ[ƒ€I—¹Žžˆ—‚Ì•ªŠò
 	switch (m_currentGameMode)
 	{
-	case KochaEngine::GamePlay::TITLEMODE:
+	case KochaEngine::GameMode::TITLEMODE:
 		break;
-	case KochaEngine::GamePlay::NORMALMODE:
+	case KochaEngine::GameMode::NORMALMODE:
 		NormalMode();
 		break;
-	case KochaEngine::GamePlay::SCOREATTAKMODE:
+	case KochaEngine::GameMode::SCOREATTAKMODE:
 		ScoreAttackMode();
 		break;
 	default:
@@ -224,12 +224,12 @@ void KochaEngine::GamePlay::Update()
 
 	switch (m_currentGameMode)
 	{
-	case KochaEngine::GamePlay::TITLEMODE:
+	case KochaEngine::GameMode::TITLEMODE:
 		break;
-	case KochaEngine::GamePlay::NORMALMODE:
+	case KochaEngine::GameMode::NORMALMODE:
 		NormalModeEnd();
 		break;
-	case KochaEngine::GamePlay::SCOREATTAKMODE:
+	case KochaEngine::GameMode::SCOREATTAKMODE:
 		ScoreAttackEnd();
 		break;
 	default:
@@ -290,7 +290,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 
 	switch (m_currentGameMode)
 	{
-	case KochaEngine::GamePlay::NORMALMODE:
+	case KochaEngine::GameMode::NORMALMODE:
 		m_scoreManager->Draw(m_isShowRank);
 		m_scoreManager->DrawQuotaScore(m_quotaScore);
 
@@ -307,7 +307,7 @@ void KochaEngine::GamePlay::SpriteDraw()
 			}
 		}
 		break;
-	case KochaEngine::GamePlay::SCOREATTAKMODE:
+	case KochaEngine::GameMode::SCOREATTAKMODE:
 
 		if (player->IsOnceSmash())
 		{
@@ -495,7 +495,7 @@ void KochaEngine::GamePlay::ScoreAttackMode()
 
 void KochaEngine::GamePlay::NormalMode()
 {
-	if (!m_isScroll && !m_isSpawnBoss)
+	if (!m_isScroll && !m_isSpawnBoss && m_gManager->GetPlayer()->GetBackCount() <= 0)
 	{
 		SpawnBoss();
 	}
@@ -660,6 +660,6 @@ void KochaEngine::GamePlay::SpawnBoss()
 {
 	auto wall = m_gManager->GetWall();
 	float bossPosY = KochaEngine::Util::GetIntRand(10, 50) - 20;
-	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager));
+	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager,&m_currentGameMode));
 	m_isSpawnBoss = true;
 }

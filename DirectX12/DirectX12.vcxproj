@@ -272,6 +272,7 @@
     <ClInclude Include="FieldAlphaObject.h" />
     <ClInclude Include="FieldObject.h" />
     <ClInclude Include="Figure2D.h" />
+    <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameOver.h" />

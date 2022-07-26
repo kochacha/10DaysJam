@@ -251,9 +251,9 @@ void KochaEngine::Camera::Shake()
 	}
 }
 
-void KochaEngine::Camera::SetShake(const float arg_power)
+void KochaEngine::Camera::SetShake(const int arg_shakeTime, const float arg_power)
 {
-	shakeTime = 24;
+	shakeTime = arg_shakeTime;
 	shakePower = arg_power;
 	shakeFlag = true;
 }

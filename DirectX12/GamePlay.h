@@ -11,6 +11,7 @@
 #include "ScrollManager.h"
 #include "ScoreDBAccess.h"
 #include <memory>
+#include "GameMode.h"
 
 namespace KochaEngine
 {
@@ -22,16 +23,13 @@ namespace KochaEngine
 	class InputText;
 	class ScoreDBAccess;
 
+	
+
 	class GamePlay : public Scene
 	{
 	private:
-		enum GameMode
-		{
-			TITLEMODE,
-			NORMALMODE,
-			SCOREATTAKMODE,
-		};
-		GameMode m_currentGameMode;
+		
+		KochaEngine::GameMode m_currentGameMode;
 		Map* m_map;
 		Camera* m_camera;
 		GameObjectManager* m_gManager;
