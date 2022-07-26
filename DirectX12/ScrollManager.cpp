@@ -37,7 +37,7 @@ void KochaEngine::ScrollManager::DeleteInstance()
 void KochaEngine::ScrollManager::Initialize()
 {
 	scrollLevel = 1;
-	scrollAmount = 0.25f;
+	scrollAmount = 0.30f;
 	frameCount = 0;
 	time = 0;
 	ScrollSpeedUp();
@@ -65,37 +65,39 @@ void KochaEngine::ScrollManager::Update()
 
 void KochaEngine::ScrollManager::ScrollSpeedUp()
 {
-	//ˆê‰‹æŠÔ‚²‚Æ‚É’l‚ğ’²®‚Å‚«‚é‚æ‚¤‚É‚µ‚Æ‚¢‚½
-	switch (scrollLevel)
-	{
-	case 1:
-		scrollAmount = 0.25f;
-		break;
-	case 2:
-		scrollAmount = 0.40f;
-		break;
-	case 3:
-		scrollAmount = 0.55f;
-		break;
-	case 4:
-		scrollAmount = 0.65f;
-		break;
-	case 5:
-		scrollAmount = 0.75f;
-		break;
-	case 6:
-		scrollAmount = 0.85f;
-		break;
-	case 7:
-		scrollAmount = 0.95f;
-		break;
-	case 8:
-		scrollAmount = 1.00f;
-		break;
-	default:
-		scrollAmount = scrollAmount + 0.025f;
-		break;
-	}
+	////ˆê‰‹æŠÔ‚²‚Æ‚É’l‚ğ’²®‚Å‚«‚é‚æ‚¤‚É‚µ‚Æ‚¢‚½
+	//switch (scrollLevel)
+	//{
+	//case 1:
+	//	scrollAmount = 0.30f;
+	//	break;
+	//case 2:
+	//	scrollAmount = 0.40f;
+	//	break;
+	//case 3:
+	//	scrollAmount = 0.50f;
+	//	break;
+	//case 4:
+	//	scrollAmount = 0.60f;
+	//	break;
+	//case 5:
+	//	scrollAmount = 0.80f;
+	//	break;
+	//case 6:
+	//	scrollAmount = 0.90f;
+	//	break;
+	//case 7:
+	//	scrollAmount = 1.00f;
+	//	break;
+	//case 8:
+	//	scrollAmount = 1.10f;
+	//	break;
+	//default:
+	//	scrollAmount = scrollAmount + 0.05f;
+	//	break;
+	//}
+
+	scrollAmount = scrollAmount + 0.05f;
 }
 
 const float KochaEngine::ScrollManager::GetScrollAmount()

@@ -329,6 +329,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			{
 				pEmitter->HitScore(position, true);
 			}
+			pEmitter->PowerUPUIParticle(position);
 		}
 
 		//ƒTƒEƒ“ƒhÄ¶
@@ -669,7 +670,7 @@ void KochaEngine::Player::Move()
 			position.x = wallPosX;
 			if (*inGame)
 			{
-				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 15.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+				backCount = (smashPower * 7.0f) + (overDirveSmashPower * 21.0f); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
 			}
 			else
 			{

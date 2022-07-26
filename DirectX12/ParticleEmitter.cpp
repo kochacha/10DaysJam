@@ -233,3 +233,21 @@ void KochaEngine::ParticleEmitter::BonusParticle(const Vector3& arg_position)
 
 	pManager->AddParticle(new Particle(param));
 }
+
+void KochaEngine::ParticleEmitter::PowerUPUIParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = Vector3(arg_position.x, arg_position.y + 12.0f, arg_position.z);
+
+	param.life = 40;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(-32, 8, 1);
+	param.textureName = "Resources/powerUPUI.png";
+	param.velocity = Vector3(0, 0.25f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}
