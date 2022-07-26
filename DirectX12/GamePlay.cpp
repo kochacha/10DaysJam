@@ -611,20 +611,20 @@ void KochaEngine::GamePlay::NormalModeEnd()
 		
 		float pAddValue = 5.0f;
 
-		if (player->GetPosition().x < 77 && !m_isSpawnBoss)
+		if (wall->GetMinPos().x < 0 && !m_isSpawnBoss)
 		{
 			pAddValue = 5.0f;
 
 			m_camera->MoveEye({ 5,0,0, });
 			wall->ScrollWall(5);
 			player->AddPlayerPosX(pAddValue);
-			if (player->GetPosition().x >= 77)
+			if (wall->GetMinPos().x >= 0)
 			{
 				m_isScroll = false;
 
 			}
 		}	
-		else if (player->GetPosition().x > 77 && !m_isSpawnBoss)
+		else if (wall->GetMinPos().x > 0 && !m_isSpawnBoss)
 		{
 
 			pAddValue = -5.0f;
@@ -632,7 +632,7 @@ void KochaEngine::GamePlay::NormalModeEnd()
 			m_camera->MoveEye({ -5,0,0, });
 			wall->ScrollWall(-5);
 			player->AddPlayerPosX(pAddValue);
-			if (player->GetPosition().x <= 77)
+			if (wall->GetMinPos().x <= 0)
 			{
 				m_isScroll = false;			
 			}
