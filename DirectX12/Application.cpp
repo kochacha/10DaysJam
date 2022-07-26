@@ -200,6 +200,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/heartUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/backLine.png");
 	Dx12_Texture::LoadTexture(device, "Resources/bonusGet.png");
+	Dx12_Texture::LoadTexture(device, "Resources/powerUPUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/endlessTile.png");
 	Dx12_Texture::LoadTexture(device, "Resources/endlessPlate.png");
 	Dx12_Texture::LoadTexture(device, "Resources/normalTile.png");
