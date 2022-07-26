@@ -11,9 +11,15 @@ namespace KochaEngine
 		int time;//•b
 		int scrollLevel;
 
-	public:
+		static ScrollManager* instance;
 		ScrollManager();
 		~ScrollManager();
+		ScrollManager(const ScrollManager& another) = delete;
+		ScrollManager& operator=(const ScrollManager& another) = delete;
+
+	public:
+		static ScrollManager* GetInstance();
+		static void DeleteInstance();
 
 		void Initialize();
 		void Update();

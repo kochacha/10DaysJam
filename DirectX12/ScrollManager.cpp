@@ -1,6 +1,8 @@
 #include "ScrollManager.h"
 #include "Input.h"
 
+KochaEngine::ScrollManager* KochaEngine::ScrollManager::instance = nullptr;
+
 KochaEngine::ScrollManager::ScrollManager()
 	:scrollAmount(0.0f),
 	 frameCount(0),
@@ -12,6 +14,24 @@ KochaEngine::ScrollManager::ScrollManager()
 
 KochaEngine::ScrollManager::~ScrollManager()
 {
+}
+
+KochaEngine::ScrollManager* KochaEngine::ScrollManager::GetInstance()
+{
+	if (!instance)
+	{
+		instance = new ScrollManager();
+	}
+	return instance;
+}
+
+void KochaEngine::ScrollManager::DeleteInstance()
+{
+	if (instance)
+	{
+		delete instance;
+		instance = nullptr;
+	}
 }
 
 void KochaEngine::ScrollManager::Initialize()
@@ -26,7 +46,7 @@ void KochaEngine::ScrollManager::Initialize()
 void KochaEngine::ScrollManager::Update()
 {
 	//w’è•b”Œo‚Á‚½‚ç
-	if (time >= 10)
+	if (time >= 30)
 	{
 		//ƒŒƒxƒ‹‚ğã‚°‚é
 		scrollLevel += 1;

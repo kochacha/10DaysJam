@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "InputManager.h"
 #include "PauseManager.h"
+#include "ScrollManager.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 	:gManager(nullptr),
@@ -271,12 +272,16 @@ void KochaEngine::Player::ShowGUI()
 {
 	float _position[3] = { position.x, position.y, position.z };
 	ImGui::InputFloat3("##PlayerPosition", _position, "%f");
-	ImGui::InputInt("##PlayerBackCount", &backCount);
+	ImGui::InputInt("PlayerBackCount", &backCount);
+	ImGui::InputInt("playerADScore", &addSmashScore);
+	ImGui::InputInt("ableHitAfterTouchWallCount", &ableHitAfterTouchWallCount);
 
 	float minpos = gManager->GetWall()->GetMinPos().x;
 	float playerPosX = position.x;
+	float scrollAmount = ScrollManager::GetInstance()->GetScrollAmount();
 	ImGui::InputFloat("wallminPosX", &minpos);
 	ImGui::InputFloat("playerPosX", &playerPosX);
+	ImGui::InputFloat("scrollAmount", &scrollAmount);
 }
 
 KochaEngine::GameObjectType KochaEngine::Player::GetType()
@@ -672,7 +677,7 @@ void KochaEngine::Player::Move()
 			}
 
 			isHitWall = true;
-			ableHitAfterTouchWallCount = 10;
+			ableHitAfterTouchWallCount = 30;
 
 			//仮置き
 			ResetPower();
@@ -789,6 +794,7 @@ void KochaEngine::Player::ProcessingAfterUpdatePosition()
 		//スマッシュを終了する
 		CommonVib(20);
 		addSmashScore = 0;
+		ableHitAfterTouchWallCount = 0;
 		camera->SetShake(1.00f);
 		se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		scale = Vector3(1, 20, 10);

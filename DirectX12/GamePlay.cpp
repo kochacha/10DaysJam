@@ -32,7 +32,7 @@ KochaEngine::GamePlay::GamePlay()
 	m_scoreManager = new ScoreManager();
 	m_scoreManager->Initialize();
 	m_pauseManager = new PauseManager();
-	m_scrollManager = new ScrollManager();
+	m_scrollManager = ScrollManager::GetInstance();
 	m_scoreDBAccessDev = new ScoreDBAccess();
 
 	m_uqp_bgm = std::make_unique<Audio>();
@@ -70,7 +70,7 @@ KochaEngine::GamePlay::~GamePlay()
 	delete m_itemManager;
 	delete m_scoreManager;
 	delete m_pauseManager;
-	delete m_scrollManager;
+	ScrollManager::DeleteInstance();
 	delete m_scoreDBAccessDev;
 }
 
