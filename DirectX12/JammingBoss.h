@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "GameMode.h"
 
 namespace KochaEngine
 {
@@ -14,16 +15,19 @@ namespace KochaEngine
 		ItemManager* iManager;
 		Wall* pWall;
 
+		GameMode* crrentGameMode;
+
 		bool isFinish;
 		bool isOnce;
 		bool isSpawnEnd;
 
 		int spawnCount;
+		int easeCount;
 		
 		void SetObjParam();
 
 	public:
-		JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position, ItemManager* arg_iManager);
+		JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position, ItemManager* arg_iManager,GameMode* arg_gameMode);
 		~JammingBoss() override;
 
 		void Initialize() override;

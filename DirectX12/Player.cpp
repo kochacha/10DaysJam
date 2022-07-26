@@ -796,7 +796,7 @@ void KochaEngine::Player::ProcessingAfterUpdatePosition()
 		CommonVib(20);
 		addSmashScore = 0;
 		ableHitAfterTouchWallCount = 0;
-		camera->SetShake(1.00f);
+		camera->SetShake(24, 1.00f);
 		se->PlayWave("Resources/Sound/hit.wav", seVolume);
 		scale = Vector3(1, 20, 10);
 		m_isTogePower = false;

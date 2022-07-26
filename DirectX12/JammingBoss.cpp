@@ -11,7 +11,7 @@ void KochaEngine::JammingBoss::SetObjParam()
 	obj->SetPosition(position);
 }
 
-KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter,const Vector3& arg_position, ItemManager* arg_iManager)
+KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter,const Vector3& arg_position, ItemManager* arg_iManager, GameMode* arg_gameMode)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
@@ -22,6 +22,8 @@ KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg
 	gManager = arg_gManager;
 	iManager = arg_iManager;
 	pWall = gManager->GetWall();
+
+	crrentGameMode = arg_gameMode;
 
 	obj = new Object("plane");
 	Initialize();
@@ -69,7 +71,15 @@ void KochaEngine::JammingBoss::Initialize()
 		position.x = leftWall + 20;
 	}
 
+	position.x -= 30;
+
 	SetObjParam();
+
+	if (*crrentGameMode == GameMode::NORMALMODE)
+	{
+		camera->SetShake(60, 0.8f);
+	}
+	
 }
 
 void KochaEngine::JammingBoss::Update()
@@ -158,9 +168,18 @@ KochaEngine::Vector3 KochaEngine::JammingBoss::GetPrearrangedPosition() const
 void KochaEngine::JammingBoss::Spawn()
 {
 	//“oê‰‰oˆ—‚±‚±‚É‘‚­
-	spawnCount--;
+	float wallPosX = gManager->GetWall()->GetMinPos().x - 2;
+	position.x = Util::EaseIn(position.x, wallPosX, 0.4f);
+	SetObjParam();
+	
+	if (position.x >= wallPosX - 1)
+	{
+		spawnCount--;
+	}
+	
 	if (spawnCount <= 0)
 	{
 		isSpawnEnd = true;
 	}
+	
 }
