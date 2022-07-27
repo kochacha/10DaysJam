@@ -23,6 +23,8 @@ namespace KochaEngine
 
 		int spawnCount;
 		int easeCount;
+
+		float speed;
 		
 		void SetObjParam();
 
@@ -35,6 +37,7 @@ namespace KochaEngine
 		void Hit()override;
 		void Dead()override;
 		void ObjDraw(Camera* arg_camera, LightManager* arg_lightManager) override;
+		void MoveY();
 		GameObjectType GetType();
 		Vector3 GetPrearrangedPosition()const;
 		const bool IsFinish() { return isFinish; }
