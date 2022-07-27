@@ -246,6 +246,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/togeTag.png");
 	Dx12_Texture::LoadTexture(device, "Resources/itemShadow.png");
 	Dx12_Texture::LoadTexture(device, "Resources/togeShadow.png");
+	Dx12_Texture::LoadTexture(device, "Resources/boss_smash.png");
 	
 	//.objのロード
 	Dx12_Object::LoadObject(device, "box");
