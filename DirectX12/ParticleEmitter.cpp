@@ -251,3 +251,30 @@ void KochaEngine::ParticleEmitter::PowerUPUIParticle(const Vector3& arg_position
 
 	pManager->AddParticle(new Particle(param));
 }
+
+void KochaEngine::ParticleEmitter::LeftWallHitParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+
+	for (int i = 0; i < 40; i++)
+	{
+		//auto randPosX = (float)(Util::GetIntRand(0, 30) - 15) * 0.2f;
+		auto randPosY = (float)(Util::GetIntRand(0, 74) - 37);
+		param.position = Vector3(arg_position.x, arg_position.y + randPosY, arg_position.z + 1.1f);
+		auto randLife = Util::GetIntRand(50, 80);
+		param.life = randLife;
+		param.moveColor = Vector4(0, 0, 0, 0);
+		auto randScale = (float)Util::GetIntRand(3, 7);
+		param.moveRotate = Vector3(0, 0, randScale);
+		float moveScale = randScale / (float)param.life;
+		param.moveScale = Vector3(-moveScale, -moveScale, 0);
+		param.scale = Vector3(randScale, randScale, 1);
+		param.textureName = "Resources/star.png";
+		auto randVelX = (float)Util::GetIntRand(0, 10) * 0.2f;
+		param.velocity = Vector3(randVelX, 0, 0);
+		param.color = Vector4(1, 1, 1, 1);
+		param.rotate = Vector3(0, 0, randLife);
+
+		pManager->AddParticle(new Particle(param));
+	}
+}
