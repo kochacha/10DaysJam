@@ -606,39 +606,42 @@ void KochaEngine::GamePlay::NormalModeEnd()
 	auto wall = m_gManager->GetWall();
 	auto player = m_gManager->GetPlayer();
 
-	if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
+	if (player->GetBackCount() <= 0)
 	{
-		
-		float pAddValue = 5.0f;
-
-		if (wall->GetMinPos().x < 0 && !m_isSpawnBoss)
-		{
-			pAddValue = 5.0f;
-
-			m_camera->MoveEye({ 5,0,0, });
-			wall->ScrollWall(5);
-			player->AddPlayerPosX(pAddValue);
-			if (wall->GetMinPos().x >= 0)
-			{
-				m_isScroll = false;
-
-			}
-		}	
-		else if (wall->GetMinPos().x > 0 && !m_isSpawnBoss)
+		if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
 		{
 
-			pAddValue = -5.0f;
+			float pAddValue = 5.0f;
 
-			m_camera->MoveEye({ -5,0,0, });
-			wall->ScrollWall(-5);
-			player->AddPlayerPosX(pAddValue);
-			if (wall->GetMinPos().x <= 0)
+			if (wall->GetMinPos().x < 0 && !m_isSpawnBoss)
 			{
-				m_isScroll = false;			
+				pAddValue = 6.0f;
+
+				m_camera->MoveEye({ 5,0,0, });
+				wall->ScrollWall(5);
+				player->AddPlayerPosX(pAddValue);
+				if (wall->GetMinPos().x >= 0)
+				{
+					m_isScroll = false;
+
+				}
 			}
-		}			
-		
+			else if (wall->GetMinPos().x > 0 && !m_isSpawnBoss)
+			{
+				pAddValue = -6.0f;
+
+				m_camera->MoveEye({ -5,0,0, });
+				wall->ScrollWall(-5);
+				player->AddPlayerPosX(pAddValue);
+				if (wall->GetMinPos().x <= 0)
+				{
+					m_isScroll = false;
+				}
+			}
+
+		}
 	}
+	
 	
 	auto boss = m_gManager->GetBoss();
 

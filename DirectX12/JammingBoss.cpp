@@ -46,9 +46,13 @@ void KochaEngine::JammingBoss::Initialize()
 
 	velocity.Zero();
 
-	sphere.radius = 6.0f;
+	sphere.radius = 8.0f;
 
 	spawnCount = 120;
+
+	speed = 0.5f;
+	velocity.Zero();
+	velocity.y = 1.0f;
 
 	SetObjParam();
 
@@ -114,6 +118,8 @@ void KochaEngine::JammingBoss::Update()
 			position.x = leftWall + 20;
 		}
 
+		MoveY();
+
 		SetObjParam();
 
 		gManager->HitObject(this, PLAYER);
@@ -153,6 +159,28 @@ void KochaEngine::JammingBoss::ObjDraw(Camera* arg_camera, LightManager* arg_lig
 	if (arg_lightManager == nullptr) return;
 
 	obj->Draw(arg_camera, arg_lightManager);
+}
+
+void KochaEngine::JammingBoss::MoveY()
+{
+	if (gManager->GetPlayer()->GetBackCount() <= 0)
+	{
+		position.y += velocity.y * speed;
+	}
+
+	float DownWall = gManager->GetWall()->GetMinPos().y + 6;
+	float UpWall = gManager->GetWall()->GetMaxPos().y - 6;
+
+	if (position.y <= DownWall)
+	{
+		position.y = DownWall;
+		velocity.y = -velocity.y;
+	}
+	if (position.y >= UpWall)
+	{
+		position.y = UpWall;
+		velocity.y = -velocity.y;
+	}
 }
 
 KochaEngine::GameObjectType KochaEngine::JammingBoss::GetType()
