@@ -23,6 +23,7 @@ namespace KochaEngine
 
 		int spawnCount;
 		int easeCount;
+		int texChangeCount;
 
 		float speed;
 		

@@ -49,6 +49,7 @@ void KochaEngine::JammingBoss::Initialize()
 	sphere.radius = 8.0f;
 
 	spawnCount = 120;
+	texChangeCount = 30;
 
 	speed = 0.5f;
 	velocity.Zero();
@@ -165,7 +166,21 @@ void KochaEngine::JammingBoss::MoveY()
 {
 	if (gManager->GetPlayer()->GetBackCount() <= 0)
 	{
+		if (texChangeCount <= 0)
+		{
+			obj->SetTexture("Resources/boss.png");
+		}
+		else
+		{
+			texChangeCount--;
+		}
+	
 		position.y += velocity.y * speed;
+	}
+	else
+	{
+		obj->SetTexture("Resources/boss_smash.png");
+		texChangeCount = 30;
 	}
 
 	float DownWall = gManager->GetWall()->GetMinPos().y + 6;
