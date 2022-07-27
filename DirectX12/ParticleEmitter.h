@@ -33,5 +33,6 @@ namespace KochaEngine
 		void DeadParticle(const Vector3& arg_position);
 		void BonusParticle(const Vector3& arg_position);
 		void PowerUPUIParticle(const Vector3& arg_position);
+		void LeftWallHitParticle(const Vector3& arg_position);
 	};
 }
