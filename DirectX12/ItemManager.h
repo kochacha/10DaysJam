@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "GameMode.h"
 
 namespace KochaEngine
 {

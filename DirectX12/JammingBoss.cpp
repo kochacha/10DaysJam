@@ -4,6 +4,8 @@
 #include "ItemManager.h"
 #include "Wall.h"
 #include "Util.h"
+#include "Audio.h"
+#include "GameSetting.h"
 
 void KochaEngine::JammingBoss::SetObjParam()
 {
@@ -25,6 +27,8 @@ KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg
 
 	crrentGameMode = arg_gameMode;
 
+	se = new Audio();
+
 	obj = new Object("plane");
 	Initialize();
 
@@ -36,6 +40,7 @@ KochaEngine::JammingBoss::~JammingBoss()
 	{
 		delete obj;
 	}
+	delete se;
 }
 
 void KochaEngine::JammingBoss::Initialize()
@@ -44,11 +49,13 @@ void KochaEngine::JammingBoss::Initialize()
 	isOnce = false;
 	isSpawnEnd = false;
 
+	se->Init();
+
 	velocity.Zero();
 
 	sphere.radius = 8.0f;
 
-	firstInterval = 120;
+	firstInterval = 200;
 	secondInterval = 60;
 	texChangeCount = 30;
 
@@ -82,15 +89,18 @@ void KochaEngine::JammingBoss::Initialize()
 
 	SetObjParam();
 
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	if (*crrentGameMode == GameMode::NORMALMODE)
 	{
 		camera->SetShake(firstInterval, 1.2f);
+		se->PlayWave("Resources/Sound/gogogo.wav", seVolume / 1.0f);
 	}
 	
 }
 
 void KochaEngine::JammingBoss::Update()
 {
+	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	if (!isSpawnEnd)
 	{
 		Spawn();
@@ -121,11 +131,19 @@ void KochaEngine::JammingBoss::Update()
 			position.x = leftWall + 20;
 		}
 
-		MoveY();
+		if (*crrentGameMode == GameMode::NORMALMODE)
+		{
+			MoveY();
+		}
+		
 
 		SetObjParam();
 
-		gManager->HitObject(this, PLAYER);
+		if (!gManager->GetPlayer()->IsFinish())
+		{
+			gManager->HitObject(this, PLAYER);
+		}
+	
 
 		//プレイヤーが一番左まで到達した時(ボスが死ぬ時)
 		if (gManager->GetPlayer()->IsLeftLimit())
@@ -233,6 +251,7 @@ void KochaEngine::JammingBoss::Spawn()
 	if (easeCount == 20)
 	{
 		camera->SetShake(10, 3.0f);
+		se->PlayWave("Resources/Sound/don.wav", seVolume * 1.5f);
 	}
 	
 	

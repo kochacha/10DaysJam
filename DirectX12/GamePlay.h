@@ -80,7 +80,7 @@ namespace KochaEngine
 		bool m_isScroll;
 		bool m_isModeSelect;
 		bool m_isGameClear;
-		bool m_isOnceSpawnItemReset;//ボス登場したときアイテムを消す用
+		bool m_isItemSpawnStop;//ボス登場したときアイテムを消す用
 		bool m_isMoonAppear;
 		bool m_isRocketAppear;
 		bool m_isFlagAppear;
@@ -98,6 +98,7 @@ namespace KochaEngine
 		int32_t m_pauseBackCount;
 		int32_t m_bossSpawnInterval;
 		int32_t m_backScreenEffectRate;
+		int32_t m_clearEffectRate;
 		int16_t m_backObjUpdateCount;
 		int8_t m_moonTexNum;
 		int8_t m_rocketTexNum;
