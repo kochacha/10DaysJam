@@ -12,6 +12,8 @@ bool KochaEngine::InputManager::SmashKey()
     bool result =
         Input::TriggerPadRightTrigger() ||
         Input::TriggerPadLeftTrigger() ||
+        Input::TriggerPadButton(XINPUT_GAMEPAD_RIGHT_SHOULDER) || 
+        Input::TriggerPadButton(XINPUT_GAMEPAD_LEFT_SHOULDER) ||
         Input::TriggerKey(DIK_RETURN);
     return result;
 }
