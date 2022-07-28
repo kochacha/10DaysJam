@@ -17,6 +17,7 @@
 #include "Text.h"
 #include "InputText.h"
 #include "JammingBoss.h"
+#include "Application.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -50,8 +51,8 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_endlessPlateTexture = std::make_unique<Texture2D>("Resources/endlessPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_normalPlateTexture = std::make_unique<Texture2D>("Resources/normalPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
-	m_uqp_congratulationTexture = std::make_unique<Texture2D>("Resources/congratulationUI.png", Vector2(384, 350), Vector2(512, 128), 0);
-	m_uqp_gameOverTexture = std::make_unique<Texture2D>("Resources/gameover.png", Vector2(384, 350), Vector2(512, 128), 0);
+	m_uqp_congratulationTexture = std::make_unique<Texture2D>("Resources/congratulationUI.png", Vector2(128, 300), Vector2(1024, 128), 0);
+	m_uqp_gameOverTexture = std::make_unique<Texture2D>("Resources/gameover.png", Vector2(272, 300), Vector2(736, 128), 0);
 	m_uqp_toTitleTexture = std::make_unique<Texture2D>("Resources/toTitleUI.png", Vector2(512, 550), Vector2(256, 64), 0);
 	m_uqp_iText = std::make_unique<InputText>();
 
@@ -160,17 +161,17 @@ void KochaEngine::GamePlay::Initialize()
 		m_uqp_backLine[i]->SetTexture("Resources/backLine.png");
 	}
 
-	m_uqp_moon->SetScale(Vector3(-48, 48, 1));
+	m_uqp_moon->SetScale(Vector3(-24, 24, 1));
 	m_uqp_moon->SetTexture("Resources/moon_0.png");
 
-	m_uqp_rocket->SetScale(Vector3(48, 48, 1));
+	m_uqp_rocket->SetScale(Vector3(24, 24, 1));
 	m_uqp_rocket->SetTexture("Resources/rocket_0.png");
 
-	m_uqp_flag->SetScale(Vector3(-28, 28, 1));
+	m_uqp_flag->SetScale(Vector3(-14, 14, 1));
 	m_uqp_flag->SetTexture("Resources/flag_0.png");
 	
-	m_uqp_peropero->SetScale(Vector3(32, 32, 1));
-	m_uqp_peropero->SetRotate(Vector3(0, 0, 30));
+	m_uqp_peropero->SetScale(Vector3(24, 24, 1));
+	m_uqp_peropero->SetRotate(Vector3(0, 0, 0));
 	m_uqp_peropero->SetTexture("Resources/peropero_0.png");
 }
 
@@ -220,7 +221,7 @@ void KochaEngine::GamePlay::Update()
 		m_scrollManager->Update();
 	}
 
-	BackScreenEffect();
+	m_pauseManager->SetIsInGame(m_isInGame);
 
 	//ゲーム終了時処理の分岐
 	switch (m_currentGameMode)
@@ -232,6 +233,7 @@ void KochaEngine::GamePlay::Update()
 		break;
 	case KochaEngine::GameMode::SCOREATTAKMODE:
 		ScoreAttackMode();
+		BackScreenEffect();
 		break;
 	default:
 		break;
@@ -341,6 +343,10 @@ void KochaEngine::GamePlay::SpriteDraw()
 			{
 				if (m_deathWaitCount <= 120)
 				{
+					if (m_deathWaitCount == 119)
+					{
+						m_uqp_se->PlayWave("Resources/Sound/dash.wav", m_seVolume);
+					}
 					m_uqp_congratulationTexture->Draw();
 				}
 			}
@@ -348,12 +354,20 @@ void KochaEngine::GamePlay::SpriteDraw()
 			{
 				if (m_deathWaitCount <= 240)
 				{
+					if (m_deathWaitCount == 239)
+					{
+						m_uqp_se->PlayWave("Resources/Sound/dash.wav", m_seVolume);
+					}
 					m_uqp_gameOverTexture->Draw();
 				}
 			}
 
-			if (m_deathWaitCount <= 0)
+			if (m_deathWaitCount <= 1)
 			{
+				if (m_deathWaitCount == 1)
+				{
+					m_uqp_se->PlayWave("Resources/Sound/dash.wav", m_seVolume);
+				}
 				m_uqp_toTitleTexture->Draw();
 			}
 				
@@ -598,6 +612,7 @@ void KochaEngine::GamePlay::NormalMode()
 		{
 			if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
 			{
+				m_uqp_se->PlayWave("Resources/Sound/decision.wav", m_seVolume);
 				Initialize();
 			}
 		}
@@ -796,10 +811,10 @@ void KochaEngine::GamePlay::BackScreenEffect()
 
 	auto wallPosition = m_gManager->GetWall()->GetMinPos();
 	auto starPosition = Vector3(wallPosition.x + 80.0f, wallPosition.y, 0);
-	auto moonPosition = Vector3(wallPosition.x + 132.0f, wallPosition.y + 45.0f, 1.15f);
-	auto rocketPosition = Vector3(wallPosition.x + 18.0f, wallPosition.y + 15.0f, 1.16f);
-	auto flagPosition = Vector3(wallPosition.x + 128.0f, wallPosition.y + 45.0f, 1.17f);
-	auto peroperoPosition = Vector3(wallPosition.x + 32.0f, wallPosition.y + 45.0f, 1.18f);
+	auto moonPosition = Vector3(wallPosition.x + 137.0f, wallPosition.y + 50.0f, 1.15f);
+	auto rocketPosition = Vector3(wallPosition.x + 25.0f, wallPosition.y + 5.0f, 1.16f);
+	auto flagPosition = Vector3(wallPosition.x + 133.0f, wallPosition.y + 50.0f, 1.17f);
+	auto peroperoPosition = Vector3(wallPosition.x + 135.0f, wallPosition.y + 5.0f, 1.18f);
 
 	m_uqp_moon->SetPosition(moonPosition);
 	m_uqp_rocket->SetPosition(rocketPosition);
@@ -807,7 +822,7 @@ void KochaEngine::GamePlay::BackScreenEffect()
 	m_uqp_peropero->SetPosition(peroperoPosition);
 
 	bool isEmitt = false;
-	if (m_backScreenEffectRate < 15)
+	if (m_backScreenEffectRate < 20)
 	{
 		m_backScreenEffectRate++;
 	}
@@ -854,6 +869,14 @@ void KochaEngine::GamePlay::BackScreenEffect()
 	{
 	case 1:
 		//何もなし
+		//m_isMoonAppear = true;
+		//m_isRocketAppear = true;
+		//m_isFlagAppear = true;
+		//m_isPeroperoAppear = true;
+		//if (isEmitt)
+		//{
+		//	m_pEmitter->ShootingPeroParticle(starPosition);
+		//}
 		break;
 	case 2:
 		//星パチパチ
@@ -872,76 +895,135 @@ void KochaEngine::GamePlay::BackScreenEffect()
 
 		break;
 	case 4:
+		Application::paletteType = KochaEngine::PaletteType::SEPIA;
+		Application::isChange = true;
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM6.wav", m_bgmVolume);
+		}
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+		}
 
+		break;
+	case 5:
 		//月出現
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
-			m_pEmitter->BackStarParticle(starPosition, true);
 		}
 		m_isMoonAppear = true;
 
 		break;
-	case 5:
+	case 6:
 		//流れ星
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 		}
-
 		break;
-	case 6:
+	case 7:
 		//流れ星強化
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 		break;
-	case 7:
+	case 8:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE1;
+		Application::isChange = true;
+		if (isEmitt)
+		{
+			m_pEmitter->ShootingStarParticle(starPosition, false);
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM4.wav", m_bgmVolume);
+		}
+
+		break;
+	case 9:
 		//ロケット出現
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, false);
-			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 		m_isRocketAppear = true;
 		break;
-	case 8:
+	case 10:
 		//旗出現
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, false);
-			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 		m_isFlagAppear = true;
 		break;
-	case 9:
+	case 11:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE2;
+		Application::isChange = true;
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM5.wav", m_bgmVolume);
+		}
+		break;
+	case 12:
 		//ぺろぺろキャンディー出現
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingStarParticle(starPosition, false);
-			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 		m_isPeroperoAppear = true;
+		break;
+	case 13:
+		//ぺろキャン流星群
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingPeroParticle(starPosition);
+		}
+		break;
+	case 14:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE6;
+		Application::isChange = true;
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingPeroParticle(starPosition);
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM3.wav", m_bgmVolume);
+		}
 		break;
 	default:
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingStarParticle(starPosition, false);
-			m_pEmitter->ShootingStarParticle(starPosition, true);
+			m_pEmitter->BackStarParticle(starPosition, true);
 		}
 
 		break;

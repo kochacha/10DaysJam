@@ -5,6 +5,7 @@ KochaEngine::ScrollManager* KochaEngine::ScrollManager::instance = nullptr;
 
 KochaEngine::ScrollManager::ScrollManager()
 	:scrollAmount(0.0f),
+	 isBGMChange(false),
 	 frameCount(0),
 	 time(0),
 	 scrollLevel(0)
@@ -36,8 +37,9 @@ void KochaEngine::ScrollManager::DeleteInstance()
 
 void KochaEngine::ScrollManager::Initialize()
 {
+	isBGMChange = false;
 	scrollLevel = 1;
-	scrollAmount = 0.40f;
+	scrollAmount = 0.50f;
 	frameCount = 0;
 	time = 0;
 	ScrollSpeedUp();
@@ -46,10 +48,11 @@ void KochaEngine::ScrollManager::Initialize()
 void KochaEngine::ScrollManager::Update()
 {
 	//指定秒数経ったら
-	if (time >= 30)
+	if (time >= 25)
 	{
 		//レベルを上げる
 		scrollLevel += 1;
+		isBGMChange = true;
 		ScrollSpeedUp();
 		time = 0;
 	}
@@ -69,7 +72,7 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 	switch (scrollLevel)
 	{
 	case 1:
-		scrollAmount = 0.40f;
+		scrollAmount = 0.50f;
 		//何もなし
 		break;
 	case 2:
@@ -77,23 +80,16 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 		//星パチパチ
 		break;
 	case 3:
-		scrollAmount = 1.00f;
+		scrollAmount = 0.80f;
 		//星パチパチ強化
 		break;
 	case 4:
-		scrollAmount = 1.20f;
+		scrollAmount = 1.00f;
 		//月出現
 		break;
 	case 5:
-		scrollAmount = 1.40f;
+		scrollAmount = 1.20f;
 		//流れ星
-		break;
-	case 6:
-		scrollAmount = 1.60f;
-		//流れ星強化
-		break;
-	case 7:
-		scrollAmount = 1.80f;
 		break;
 	default:
 		scrollAmount = scrollAmount + 0.1f;

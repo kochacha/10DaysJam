@@ -23,6 +23,7 @@ KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg
 	camera = arg_camera;
 	gManager = arg_gManager;
 	iManager = arg_iManager;
+	pEmitter = arg_pEmitter;
 	pWall = gManager->GetWall();
 
 	crrentGameMode = arg_gameMode;
@@ -171,6 +172,7 @@ void KochaEngine::JammingBoss::Hit()
 
 void KochaEngine::JammingBoss::Dead()
 {
+	pEmitter->BossDeadParticle(position);
 	isFinish = true;
 }
 

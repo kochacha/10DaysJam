@@ -72,6 +72,7 @@ namespace KochaEngine
 		bool isDisplayScore;
 		bool isVib;
 		bool isReset;
+		bool isInGame;
 
 		float seVolume;
 
@@ -117,5 +118,7 @@ namespace KochaEngine
 		//bool IsDisplayScore() { return isDisplayScore; }
 		//bool IsVib() { return isVib; }
 		bool IsReset() { return isReset; }
+
+		void SetIsInGame(const bool arg_isInGame) { isInGame = arg_isInGame; }
 	};
 }
