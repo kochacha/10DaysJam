@@ -37,7 +37,7 @@ void KochaEngine::ScrollManager::DeleteInstance()
 void KochaEngine::ScrollManager::Initialize()
 {
 	scrollLevel = 1;
-	scrollAmount = 0.30f;
+	scrollAmount = 0.40f;
 	frameCount = 0;
 	time = 0;
 	ScrollSpeedUp();
@@ -65,39 +65,42 @@ void KochaEngine::ScrollManager::Update()
 
 void KochaEngine::ScrollManager::ScrollSpeedUp()
 {
-	////一応区間ごとに値を調整できるようにしといた
-	//switch (scrollLevel)
-	//{
-	//case 1:
-	//	scrollAmount = 0.30f;
-	//	break;
-	//case 2:
-	//	scrollAmount = 0.40f;
-	//	break;
-	//case 3:
-	//	scrollAmount = 0.50f;
-	//	break;
-	//case 4:
-	//	scrollAmount = 0.60f;
-	//	break;
-	//case 5:
-	//	scrollAmount = 0.80f;
-	//	break;
-	//case 6:
-	//	scrollAmount = 0.90f;
-	//	break;
-	//case 7:
-	//	scrollAmount = 1.00f;
-	//	break;
-	//case 8:
-	//	scrollAmount = 1.10f;
-	//	break;
-	//default:
-	//	scrollAmount = scrollAmount + 0.05f;
-	//	break;
-	//}
+	//一応区間ごとに値を調整できるようにしといた
+	switch (scrollLevel)
+	{
+	case 1:
+		scrollAmount = 0.40f;
+		//何もなし
+		break;
+	case 2:
+		scrollAmount = 0.70f;
+		//星パチパチ
+		break;
+	case 3:
+		scrollAmount = 1.00f;
+		//星パチパチ強化
+		break;
+	case 4:
+		scrollAmount = 1.20f;
+		//流れ星
+		break;
+	case 5:
+		scrollAmount = 1.40f;
+		//流れ星強化
+		break;
+	case 6:
+		scrollAmount = 1.60f;
+		//月出現
+		break;
+	case 7:
+		scrollAmount = 1.80f;
+		break;
+	default:
+		scrollAmount = scrollAmount + 0.1f;
+		break;
+	}
 
-	scrollAmount = scrollAmount + 0.05f;
+	//scrollAmount = scrollAmount + 0.05f;
 }
 
 const float KochaEngine::ScrollManager::GetScrollAmount()

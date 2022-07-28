@@ -56,6 +56,10 @@ KochaEngine::GamePlay::GamePlay()
 	{
 		m_uqp_backLine[i] = std::make_unique<Object>("plane");
 	}
+	m_uqp_moon = std::make_unique<Object>("plane");
+	m_uqp_rocket = std::make_unique<Object>("plane");
+	m_uqp_flag = std::make_unique<Object>("plane");
+	m_uqp_peropero = std::make_unique<Object>("plane");
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -112,11 +116,21 @@ void KochaEngine::GamePlay::Initialize()
 	m_seconds = 0;
 	m_resetCount = 100;
 	m_displayRankingCount = 300;
+	m_backScreenEffectRate = 0;
+	m_backObjUpdateCount = 0;
+	m_moonTexNum = 0;
+	m_rocketTexNum = 0;
+	m_flagTexNum = 0;
+	m_peroperoTexNum = 0;
 	
 	m_isDisplayRanking = false;
 	m_isShowRank = false;
 	m_isFade = true;
 	m_isModeSelect = false;
+	m_isMoonAppear = false;
+	m_isRocketAppear = false;
+	m_isFlagAppear = false;
+	m_isPeroperoAppear = false;
 	m_fadeAlpha = 1;
 	m_endCount = 180;
 	m_deathWaitCount = 110;
@@ -136,6 +150,19 @@ void KochaEngine::GamePlay::Initialize()
 		m_uqp_backLine[i]->SetScale(Vector3(2, 110, 1));
 		m_uqp_backLine[i]->SetTexture("Resources/backLine.png");
 	}
+
+	m_uqp_moon->SetScale(Vector3(-48, 48, 1));
+	m_uqp_moon->SetTexture("Resources/moon_0.png");
+
+	m_uqp_rocket->SetScale(Vector3(48, 48, 1));
+	m_uqp_rocket->SetTexture("Resources/rocket_0.png");
+
+	m_uqp_flag->SetScale(Vector3(-28, 28, 1));
+	m_uqp_flag->SetTexture("Resources/flag_0.png");
+	
+	m_uqp_peropero->SetScale(Vector3(32, 32, 1));
+	m_uqp_peropero->SetRotate(Vector3(0, 0, 30));
+	m_uqp_peropero->SetTexture("Resources/peropero_0.png");
 }
 
 void KochaEngine::GamePlay::Update()
@@ -184,7 +211,7 @@ void KochaEngine::GamePlay::Update()
 		m_scrollManager->Update();
 	}
 
-	
+	BackScreenEffect();
 
 	//ゲーム終了時処理の分岐
 	switch (m_currentGameMode)
@@ -357,6 +384,22 @@ void KochaEngine::GamePlay::ObjDraw()
 
 void KochaEngine::GamePlay::AlphaObjDraw()
 {
+	if (m_isMoonAppear)
+	{
+		m_uqp_moon->Draw(m_camera, m_lightManager);
+	}
+	if (m_isRocketAppear)
+	{
+		m_uqp_rocket->Draw(m_camera, m_lightManager);
+	}
+	if (m_isFlagAppear)
+	{
+		m_uqp_flag->Draw(m_camera, m_lightManager);
+	}
+	if (m_isPeroperoAppear)
+	{
+		m_uqp_peropero->Draw(m_camera, m_lightManager);
+	}
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -665,4 +708,163 @@ void KochaEngine::GamePlay::SpawnBoss()
 	float bossPosY = KochaEngine::Util::GetIntRand(10, 50) - 20;
 	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager,&m_currentGameMode));
 	m_isSpawnBoss = true;
+}
+
+void KochaEngine::GamePlay::BackScreenEffect()
+{
+	//画面横サイズ160
+
+	auto wallPosition = m_gManager->GetWall()->GetMinPos();
+	auto starPosition = Vector3(wallPosition.x + 80.0f, wallPosition.y, 0);
+	auto moonPosition = Vector3(wallPosition.x + 130.0f, wallPosition.y + 45.0f, 1.15f);
+	auto rocketPosition = Vector3(wallPosition.x + 18.0f, wallPosition.y + 15.0f, 1.16f);
+	auto flagPosition = Vector3(wallPosition.x + 126.0f, wallPosition.y + 45.0f, 1.17f);
+	auto peroperoPosition = Vector3(wallPosition.x + 32.0f, wallPosition.y + 45.0f, 1.18f);
+
+	m_uqp_moon->SetPosition(moonPosition);
+	m_uqp_rocket->SetPosition(rocketPosition);
+	m_uqp_flag->SetPosition(flagPosition);
+	m_uqp_peropero->SetPosition(peroperoPosition);
+
+	bool isEmitt = false;
+	if (m_backScreenEffectRate < 15)
+	{
+		m_backScreenEffectRate++;
+	}
+	else
+	{
+		m_backScreenEffectRate = 0;
+		isEmitt = true;
+	}
+
+	if (m_backObjUpdateCount < 30)
+	{
+		m_backObjUpdateCount++;
+	}
+	else if (m_isMoonAppear && m_moonTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_moonTexNum++;
+		auto pathStr = std::to_string(m_moonTexNum) + ".png";
+		m_uqp_moon->SetTexture("Resources/moon_" + pathStr);
+	}
+	else if (m_isRocketAppear && m_rocketTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_rocketTexNum++;
+		auto pathStr = std::to_string(m_rocketTexNum) + ".png";
+		m_uqp_rocket->SetTexture("Resources/rocket_" + pathStr);
+	}
+	else if (m_isFlagAppear && m_flagTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_flagTexNum++;
+		auto pathStr = std::to_string(m_flagTexNum) + ".png";
+		m_uqp_flag->SetTexture("Resources/flag_" + pathStr);
+	}
+	else if(m_isPeroperoAppear && m_peroperoTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_peroperoTexNum++;
+		auto pathStr = std::to_string(m_peroperoTexNum) + ".png";
+		m_uqp_peropero->SetTexture("Resources/peropero_" + pathStr);
+	}
+
+	switch (m_scrollManager->GetScrollLevel())
+	{
+	case 1:
+		//何もなし
+		break;
+	case 2:
+		//星パチパチ
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition,false);
+		}
+		break;
+	case 3:
+		//星パチパチ強化
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition,false);
+			m_pEmitter->BackStarParticle(starPosition,true);
+		}
+
+		break;
+	case 4:
+		//流れ星
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition,false);
+		}
+
+		break;
+	case 5:
+		//流れ星強化
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition,false);
+			m_pEmitter->ShootingStarParticle(starPosition,true);
+		}
+
+		break;
+	case 6:
+		//月出現
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, false);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isMoonAppear = true;
+		break;
+	case 7:
+		//ロケット出現
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, false);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isRocketAppear = true;
+		break;
+	case 8:
+		//旗出現
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, false);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isFlagAppear = true;
+		break;
+	case 9:
+		//ぺろぺろキャンディー出現
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, false);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isPeroperoAppear = true;
+		break;
+	default:
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, false);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+
+		break;
+	}
 }

@@ -278,3 +278,82 @@ void KochaEngine::ParticleEmitter::LeftWallHitParticle(const Vector3& arg_positi
 		pManager->AddParticle(new Particle(param));
 	}
 }
+
+void KochaEngine::ParticleEmitter::BackStarParticle(const Vector3& arg_position, const bool arg_flag)
+{
+	ParticleParam param;
+	auto randPosX = (float)(Util::GetIntRand(0, 200) - 90);
+	auto randPosY = (float)(Util::GetIntRand(0, 80));
+	param.position = Vector3(arg_position.x + randPosX, arg_position.y + randPosY, arg_position.z + 1.2f);
+	if (!arg_flag)
+	{
+		param.textureName = "Resources/backStar1.png";
+	}
+	else
+	{
+		param.textureName = "Resources/backStar2.png";
+	}
+	auto randAngle = (float)Util::GetIntRand(0, 90);
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (i == 0)
+		{
+			auto randScale = (float)Util::GetIntRand(7, 9);
+			float moveScale = randScale / 30.0f;
+			param.life = 30;
+			param.moveColor = Vector4(0, 0, 0, 0);
+			param.moveRotate = Vector3(0, 0, randScale * 0.25f);
+			param.moveScale = Vector3(-moveScale, -moveScale, 0);
+			param.scale = Vector3(randScale, randScale, 1);
+			param.velocity = Vector3(0, 0, 0);
+			param.color = Vector4(1, 1, 1, 1);
+			param.rotate = Vector3(0, 0, randScale * 10.0f);
+		}
+		else
+		{
+			param.life = 20;
+			param.moveColor = Vector4(0, 0, 0, 0);
+			param.moveRotate = Vector3(0, 0, 3);
+			float moveScale = 3.0f / (float)param.life;
+			param.moveScale = Vector3(-moveScale, -moveScale, 0);
+			param.scale = Vector3(4, 4, 1);
+			param.color = Vector4(1, 1, 1, 1);
+			param.rotate = Vector3(0, 0, 0);
+			Vector2 vel = Util::AngleToVector2(randAngle + 120.0f * i);
+			param.velocity = Vector3(vel.x * 1.5f, vel.y * 1.5f, 0);
+		}
+
+		pManager->AddParticle(new Particle(param));
+	}
+}
+
+void KochaEngine::ParticleEmitter::ShootingStarParticle(const Vector3& arg_position, const bool arg_flag)
+{
+	ParticleParam param;
+	auto randPosX = (float)(Util::GetIntRand(20, 200));
+	param.position = Vector3(arg_position.x + randPosX, arg_position.y + 80.0f, arg_position.z + 1.2f);
+	if (!arg_flag)
+	{
+		param.textureName = "Resources/backStar1.png";
+	}
+	else
+	{
+		param.textureName = "Resources/backStar2.png";
+	}
+
+
+
+	auto randScale = (float)Util::GetIntRand(3, 6);
+	auto randVel = (float)Util::GetIntRand(8, 15) * 0.1f;
+	param.life = 120;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, randScale);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(randScale, randScale, 1);
+	param.velocity = Vector3(-randVel, -randVel * 0.8f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}
