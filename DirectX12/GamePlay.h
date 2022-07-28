@@ -64,6 +64,10 @@ namespace KochaEngine
 		
 
 		std::unique_ptr<Object> m_uqp_backLine[3];
+		std::unique_ptr<Object> m_uqp_moon;
+		std::unique_ptr<Object> m_uqp_rocket;
+		std::unique_ptr<Object> m_uqp_flag;
+		std::unique_ptr<Object> m_uqp_peropero;
 
 		bool m_isShowRank;
 		bool m_isFade;
@@ -77,6 +81,10 @@ namespace KochaEngine
 		bool m_isModeSelect;
 		bool m_isGameClear;
 		bool m_isOnceSpawnItemReset;//ボス登場したときアイテムを消す用
+		bool m_isMoonAppear;
+		bool m_isRocketAppear;
+		bool m_isFlagAppear;
+		bool m_isPeroperoAppear;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;
@@ -89,6 +97,12 @@ namespace KochaEngine
 		int32_t m_deathWaitCount;
 		int32_t m_pauseBackCount;
 		int32_t m_bossSpawnInterval;
+		int32_t m_backScreenEffectRate;
+		int16_t m_backObjUpdateCount;
+		int8_t m_moonTexNum;
+		int8_t m_rocketTexNum;
+		int8_t m_flagTexNum;
+		int8_t m_peroperoTexNum;
 
 		const int m_quotaScore = 100000;
 		const float m_scrollAmount = 0.25f;
@@ -121,5 +135,7 @@ namespace KochaEngine
 		void SpawnBoss();
 		//ボス戦前の半分に戻るスクロール
 		void SpawnScroll();
+		//背景演出
+		void BackScreenEffect();
 	};
 }
