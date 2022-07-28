@@ -98,6 +98,7 @@ namespace KochaEngine
 		int32_t m_pauseBackCount;
 		int32_t m_bossSpawnInterval;
 		int32_t m_backScreenEffectRate;
+		int32_t m_clearEffectRate;
 		int16_t m_backObjUpdateCount;
 		int8_t m_moonTexNum;
 		int8_t m_rocketTexNum;
