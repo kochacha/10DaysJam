@@ -21,7 +21,8 @@ namespace KochaEngine
 		bool isOnce;
 		bool isSpawnEnd;
 
-		int spawnCount;
+		int firstInterval;
+		int secondInterval;
 		int easeCount;
 		int texChangeCount;
 

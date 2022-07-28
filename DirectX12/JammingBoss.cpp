@@ -48,12 +48,14 @@ void KochaEngine::JammingBoss::Initialize()
 
 	sphere.radius = 8.0f;
 
-	spawnCount = 120;
+	firstInterval = 120;
+	secondInterval = 60;
 	texChangeCount = 30;
 
 	speed = 0.5f;
 	velocity.Zero();
 	velocity.y = 1.0f;
+	easeCount = 0;
 
 	SetObjParam();
 
@@ -82,7 +84,7 @@ void KochaEngine::JammingBoss::Initialize()
 
 	if (*crrentGameMode == GameMode::NORMALMODE)
 	{
-		camera->SetShake(60, 0.8f);
+		camera->SetShake(firstInterval, 1.2f);
 	}
 	
 }
@@ -212,15 +214,35 @@ void KochaEngine::JammingBoss::Spawn()
 {
 	//登場演出処理ここに書く
 	float wallPosX = gManager->GetWall()->GetMinPos().x - 2;
-	position.x = Util::EaseIn(position.x, wallPosX, 0.4f);
-	SetObjParam();
-	
-	if (position.x >= wallPosX - 1)
+
+	//登場前のカメラシェイクを待つインターバル
+	if (firstInterval <= 0)
 	{
-		spawnCount--;
+		position.x = Util::EaseInQuad(position.x, wallPosX, 30, easeCount);
+		if (easeCount <= 30)
+		{
+			easeCount++;
+		}
+		SetObjParam();
+	}
+	else
+	{
+		firstInterval--;
 	}
 	
-	if (spawnCount <= 0)
+	if (easeCount == 20)
+	{
+		camera->SetShake(10, 3.0f);
+	}
+	
+	
+	//ボスが移動し終わった後のインターバル
+	if (position.x >= wallPosX - 1)
+	{
+		secondInterval--;
+	}
+	
+	if (secondInterval <= 0)
 	{
 		isSpawnEnd = true;
 	}

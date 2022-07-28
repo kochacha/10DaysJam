@@ -50,6 +50,9 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_endlessPlateTexture = std::make_unique<Texture2D>("Resources/endlessPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_normalPlateTexture = std::make_unique<Texture2D>("Resources/normalPlate.png", Vector2(1040, 725), Vector2(200, 50), 0);
 	m_uqp_finishTexture = std::make_unique<Texture2D>("Resources/finish.png", Vector2(384, 350), Vector2(512, 128), 0);
+	m_uqp_congratulationTexture = std::make_unique<Texture2D>("Resources/congratulationUI.png", Vector2(384, 350), Vector2(512, 128), 0);
+	m_uqp_gameOverTexture = std::make_unique<Texture2D>("Resources/gameover.png", Vector2(384, 350), Vector2(512, 128), 0);
+	m_uqp_toTitleTexture = std::make_unique<Texture2D>("Resources/toTitleUI.png", Vector2(512, 550), Vector2(256, 64), 0);
 	m_uqp_iText = std::make_unique<InputText>();
 
 	for (int i = 0; i < 3; i++)
@@ -80,6 +83,7 @@ void KochaEngine::GamePlay::Initialize()
 	isGameOver = false;
 	m_isOnce = false;
 	m_isInGame = false;
+	m_isGameClear = false;
 
 	m_gManager->RemoveAll();	
 	
@@ -119,11 +123,13 @@ void KochaEngine::GamePlay::Initialize()
 	m_isModeSelect = false;
 	m_fadeAlpha = 1;
 	m_endCount = 180;
-	m_deathWaitCount = 110;
+	m_deathWaitCount = 300;
 	m_pauseBackCount = 0;
 	m_currentGameMode = GameMode::SCOREATTAKMODE;
 	m_isSpawnBoss = false;
 	m_isScroll = true;
+	m_bossSpawnInterval = 60;
+	m_isOnceSpawnItemReset = false;
 
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
@@ -301,10 +307,26 @@ void KochaEngine::GamePlay::SpriteDraw()
 
 		if (isFinishFrame)
 		{
-			if (m_deathWaitCount >= 0)
+			if (m_isGameClear)
 			{
-				m_uqp_finishTexture->Draw();
+				if (m_deathWaitCount <= 120)
+				{
+					m_uqp_congratulationTexture->Draw();
+				}
 			}
+			else
+			{
+				if (m_deathWaitCount <= 240)
+				{
+					m_uqp_gameOverTexture->Draw();
+				}
+			}
+
+			if (m_deathWaitCount <= 0)
+			{
+				m_uqp_toTitleTexture->Draw();
+			}
+				
 		}
 		break;
 	case KochaEngine::GameMode::SCOREATTAKMODE:
@@ -497,16 +519,22 @@ void KochaEngine::GamePlay::NormalMode()
 {
 	if (!m_isScroll && !m_isSpawnBoss && m_gManager->GetPlayer()->GetBackCount() <= 0)
 	{
-		SpawnBoss();
+		m_bossSpawnInterval--;
+		if (m_bossSpawnInterval <= 0)
+		{
+			SpawnBoss();
+		}
+		
 	}
 
 	auto boss = m_gManager->GetBoss();
 
 	if (boss != nullptr)
 	{
-		if (m_gManager->GetBoss()->IsSpawnEnd())
+		if (!m_isScroll && m_gManager->GetBoss()->IsSpawnEnd())
 		{
 			m_isScroll = true;
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM2.wav", m_bgmVolume);
 		}
 	}
 	
@@ -519,10 +547,14 @@ void KochaEngine::GamePlay::NormalMode()
 		{
 			m_deathWaitCount--;
 		}
-		else
+		if (m_deathWaitCount <= 0)
 		{
-			Initialize();
+			if (Input::TriggerPadButton(XINPUT_GAMEPAD_A))
+			{
+				Initialize();
+			}
 		}
+		
 	}
 }
 
@@ -605,52 +637,32 @@ void KochaEngine::GamePlay::NormalModeEnd()
 {
 	auto wall = m_gManager->GetWall();
 	auto player = m_gManager->GetPlayer();
+	auto boss = m_gManager->GetBoss();
 
-	if (player->GetBackCount() <= 0)
+	SpawnScroll();
+	
+	//ゲームオーバー
+	if (m_gManager->GetWall()->GetMinPos().x >= m_gManager->GetDeadLine()->GetPosition().x + 5)
 	{
-		if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
+		//float x = gManager->GetWall()->GetMaxPos().x;
+		if (!m_isOnce)
 		{
-
-			float pAddValue = 5.0f;
-
-			if (wall->GetMinPos().x < 0 && !m_isSpawnBoss)
-			{
-				pAddValue = 6.0f;
-
-				m_camera->MoveEye({ 5,0,0, });
-				wall->ScrollWall(5);
-				player->AddPlayerPosX(pAddValue);
-				if (wall->GetMinPos().x >= 0)
-				{
-					m_isScroll = false;
-
-				}
-			}
-			else if (wall->GetMinPos().x > 0 && !m_isSpawnBoss)
-			{
-				pAddValue = -6.0f;
-
-				m_camera->MoveEye({ -5,0,0, });
-				wall->ScrollWall(-5);
-				player->AddPlayerPosX(pAddValue);
-				if (wall->GetMinPos().x <= 0)
-				{
-					m_isScroll = false;
-				}
-			}
-
+			m_isOnce = true;
+			m_scoreManager->SaveScore();
+			m_gManager->RemoveItem();
+			player->Finish();
+			m_scoreDBAccessDev->Disconnect();
 		}
 	}
-	
-	
-	auto boss = m_gManager->GetBoss();
 
 	if (boss == nullptr) { return; }
 
+	//ゲームクリア
 	if (boss->IsFinish())
 	{
 		if (!m_isOnce)
 		{
+			m_isGameClear = true;
 			m_isOnce = true;
 			player->Finish();
 			m_gManager->RemoveItem();
@@ -665,4 +677,51 @@ void KochaEngine::GamePlay::SpawnBoss()
 	float bossPosY = KochaEngine::Util::GetIntRand(10, 50) - 20;
 	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, { wall->GetPosition().x,bossPosY,0 }, m_itemManager,&m_currentGameMode));
 	m_isSpawnBoss = true;
+}
+
+void KochaEngine::GamePlay::SpawnScroll()
+{
+	if (!m_isOnceSpawnItemReset)
+	{
+		m_gManager->RemoveItem();
+		m_isOnceSpawnItemReset = true;
+	}
+	auto wall = m_gManager->GetWall();
+	auto player = m_gManager->GetPlayer();
+
+	if (player->GetBackCount() <= 0)
+	{
+		if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
+		{
+			float pAddValue = 5.0f;
+
+			if (wall->GetMinPos().x < 0 && m_isScroll)
+			{
+				pAddValue = 6.0f;
+
+				m_camera->MoveEye({ 5,0,0, });
+				wall->ScrollWall(5);
+				player->AddPlayerPosX(pAddValue);
+				if (wall->GetMinPos().x >= 0)
+				{
+					m_isScroll = false;
+					m_uqp_bgm->Stop();
+				}
+			}
+			else if (wall->GetMinPos().x > 0 && m_isScroll)
+			{
+				pAddValue = -6.0f;
+
+				m_camera->MoveEye({ -5,0,0, });
+				wall->ScrollWall(-5);
+				player->AddPlayerPosX(pAddValue);
+				if (wall->GetMinPos().x <= 0)
+				{
+					m_isScroll = false;
+					m_uqp_bgm->Stop();
+				}
+			}
+
+		}
+	}
 }

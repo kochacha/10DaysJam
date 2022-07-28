@@ -248,6 +248,10 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/togeShadow.png");
 	Dx12_Texture::LoadTexture(device, "Resources/boss_smash.png");
 	Dx12_Texture::LoadTexture(device, "Resources/deadTag.png");
+	Dx12_Texture::LoadTexture(device, "Resources/congratulationUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/gameover.png"); 
+	Dx12_Texture::LoadTexture(device, "Resources/powerDOWNUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/toTitleUI.png");
 	
 	//.objのロード
 	Dx12_Object::LoadObject(device, "box");
