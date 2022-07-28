@@ -412,3 +412,24 @@ void KochaEngine::ParticleEmitter::ShootingPeroParticle(const Vector3& arg_posit
 
 	pManager->AddParticle(new Particle(param));
 }
+
+void KochaEngine::ParticleEmitter::SnowParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	auto randPosX = (float)(Util::GetIntRand(0, 220) - 80);
+	param.position = Vector3(arg_position.x + randPosX, arg_position.y + 80.0f, arg_position.z + 1.2f);
+	param.textureName = "Resources/snow.png";
+
+	auto randScale = (float)Util::GetIntRand(6, 10);
+	auto randVel = (float)Util::GetIntRand(8, 15) * 0.1f;
+	param.life = 180;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, randScale * 0.2f);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(randScale, randScale, 1);
+	param.velocity = Vector3(0, -randVel * 0.7f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}

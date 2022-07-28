@@ -105,7 +105,7 @@ namespace KochaEngine
 		int8_t m_flagTexNum;
 		int8_t m_peroperoTexNum;
 
-		const int m_quotaScore = 100000;
+		const int m_quotaScore = 7000000;
 		const float m_scrollAmount = 0.25f;
 	public:
 		GamePlay();

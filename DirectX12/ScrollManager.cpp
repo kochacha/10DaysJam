@@ -48,7 +48,7 @@ void KochaEngine::ScrollManager::Initialize()
 void KochaEngine::ScrollManager::Update()
 {
 	//w’è•b”Œo‚Á‚½‚ç
-	if (time >= 25)
+	if (time >= 20)
 	{
 		//ƒŒƒxƒ‹‚ğã‚°‚é
 		scrollLevel += 1;

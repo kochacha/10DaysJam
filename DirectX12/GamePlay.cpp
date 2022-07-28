@@ -90,6 +90,9 @@ void KochaEngine::GamePlay::Initialize()
 	m_isInGame = false;
 	m_isGameClear = false;
 
+	Application::paletteType = KochaEngine::PaletteType::GAMEBOY;
+	Application::isChange = true;
+
 	m_gManager->RemoveAll();	
 	
 	m_lightManager->SetDirectionalLightColor(0, Vector3(1, 1, 1));
@@ -1008,7 +1011,6 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingPeroParticle(starPosition);
 		}
 		if (m_scrollManager->IsBGMChange())
 		{
@@ -1017,13 +1019,22 @@ void KochaEngine::GamePlay::BackScreenEffect()
 			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM3.wav", m_bgmVolume);
 		}
 		break;
+	case 15:
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->SnowParticle(starPosition);
+			m_pEmitter->SnowParticle(starPosition);
+		}
+		break;
 	default:
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
-			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->SnowParticle(starPosition);
+			m_pEmitter->SnowParticle(starPosition);
 		}
 
 		break;

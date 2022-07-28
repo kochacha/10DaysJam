@@ -39,5 +39,6 @@ namespace KochaEngine
 		void BackStarParticle(const Vector3& arg_position, const bool arg_flag);
 		void ShootingStarParticle(const Vector3& arg_position, const bool arg_flag);
 		void ShootingPeroParticle(const Vector3& arg_position);
+		void SnowParticle(const Vector3& arg_position);
 	};
 }
