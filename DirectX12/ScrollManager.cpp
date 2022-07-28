@@ -82,15 +82,15 @@ void KochaEngine::ScrollManager::ScrollSpeedUp()
 		break;
 	case 4:
 		scrollAmount = 1.20f;
-		//—¬‚ê¯
+		//ŒoŒ»
 		break;
 	case 5:
 		scrollAmount = 1.40f;
-		//—¬‚ê¯‹­‰»
+		//—¬‚ê¯
 		break;
 	case 6:
 		scrollAmount = 1.60f;
-		//ŒoŒ»
+		//—¬‚ê¯‹­‰»
 		break;
 	case 7:
 		scrollAmount = 1.80f;

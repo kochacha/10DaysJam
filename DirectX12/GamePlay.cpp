@@ -792,28 +792,28 @@ void KochaEngine::GamePlay::BackScreenEffect()
 
 		break;
 	case 4:
+
+		//月出現
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+		}
+		m_isMoonAppear = true;
+
+		break;
+	case 5:
 		//流れ星
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingStarParticle(starPosition,false);
-		}
-
-		break;
-	case 5:
-		//流れ星強化
-		if (isEmitt)
-		{
-			m_pEmitter->BackStarParticle(starPosition, false);
-			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingStarParticle(starPosition,false);
-			m_pEmitter->ShootingStarParticle(starPosition,true);
+			m_pEmitter->ShootingStarParticle(starPosition, false);
 		}
 
 		break;
 	case 6:
-		//月出現
+		//流れ星強化
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
@@ -821,7 +821,6 @@ void KochaEngine::GamePlay::BackScreenEffect()
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
-		m_isMoonAppear = true;
 		break;
 	case 7:
 		//ロケット出現
