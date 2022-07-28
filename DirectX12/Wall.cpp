@@ -3,8 +3,9 @@
 #include "Util.h"
 
 const float DrawTagLength = 230.0f;
-const float DifferenceLimitToSpwanDeadLine = 15.0f;
+const float DifferenceLimitToSpwanDeadLine = 20.0f;
 const float CloseDeadLineLength = DrawTagLength + DifferenceLimitToSpwanDeadLine;
+const float DrawMarkLength = 9.5f;
 
 KochaEngine::Wall::Wall(GameObjectManager* arg_gManager, const Vector2& arg_minPos, const Vector2& arg_maxPos,const float& arg_limitLeftPosX, const float& arg_limitRightPosX)
 	:gManager(nullptr),
@@ -30,6 +31,13 @@ KochaEngine::Wall::Wall(GameObjectManager* arg_gManager, const Vector2& arg_minP
 	deadLineTag->SetTexture("Resources/deadTag.png");
 	deadLineTag->SetBillboardType(Object::BillboardType::BILLBOARD);
 
+	deadLineMark = new Object("plane");
+	deadLineMark->SetRotate(Vector3(0, 0, 0));
+	deadLineMark->SetTexture("Resources/deadMark.png");
+	deadLineMark->SetBillboardType(Object::BillboardType::BILLBOARD);
+	deadLineMark->SetScale(Vector3(12.0f, 12.0f, 12.0f));
+	deadLineMark->SetPosition(Vector3(limitRightPosX - DrawMarkLength, 11.0f, -0.5f));
+
 	Initialize();
 }
 
@@ -37,6 +45,7 @@ KochaEngine::Wall::~Wall()
 {
 	delete obj;
 	delete deadLineTag;
+	delete deadLineMark;
 }
 
 void KochaEngine::Wall::Initialize()
@@ -79,6 +88,7 @@ void KochaEngine::Wall::ObjDraw(Camera* arg_camera, LightManager* arg_lightManag
 		PreparationDeadLineTag();
 		deadLineTag->Draw(arg_camera, arg_lightManager);
 	}
+	deadLineMark->Draw(arg_camera, arg_lightManager);
 	obj->Draw(arg_camera, arg_lightManager);
 }
 

@@ -24,6 +24,8 @@ namespace KochaEngine
 
 		//デッドライン出現予告
 		Object* deadLineTag;
+		//デッドライン強調
+		Object* deadLineMark;
 
 	public:
 		Wall(GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos, const float& limitLeftPos, const float& limitRightPos);

@@ -270,6 +270,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/gameover.png"); 
 	Dx12_Texture::LoadTexture(device, "Resources/powerDOWNUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/toTitleUI.png");
+	Dx12_Texture::LoadTexture(device, "Resources/deadMark.png");
 	
 	//.objのロード
 	Dx12_Object::LoadObject(device, "box");
