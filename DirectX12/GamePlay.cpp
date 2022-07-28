@@ -1092,13 +1092,26 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		}
 		m_isOldmanAppear = true;
 		break;
+	case 18:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE3;
+		Application::isChange = true;
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM2.wav", m_bgmVolume);
+		}
+		break;
 	default:
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->SnowParticle(starPosition);
-			m_pEmitter->SnowParticle(starPosition);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 
 		break;
