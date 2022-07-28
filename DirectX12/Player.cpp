@@ -382,6 +382,7 @@ void KochaEngine::Player::SuspendSmash()
 
 	//スマッシュパワー減算
 	pEmitter->Clash(position);
+	pEmitter->PowerDOWNUIParticle(position);
 
 	backCount = 0;
 	isSmashing = false;

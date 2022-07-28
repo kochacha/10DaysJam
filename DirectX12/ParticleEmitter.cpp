@@ -234,6 +234,24 @@ void KochaEngine::ParticleEmitter::BonusParticle(const Vector3& arg_position)
 	pManager->AddParticle(new Particle(param));
 }
 
+void KochaEngine::ParticleEmitter::BossDeadParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = Vector3(arg_position.x + 12.0f, arg_position.y, arg_position.z);
+
+	param.life = 150;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(-24, 8, 1);
+	param.textureName = "Resources/bossGet.png";
+	param.velocity = Vector3(0, 0.2f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}
+
 void KochaEngine::ParticleEmitter::PowerUPUIParticle(const Vector3& arg_position)
 {
 	ParticleParam param;
@@ -246,6 +264,24 @@ void KochaEngine::ParticleEmitter::PowerUPUIParticle(const Vector3& arg_position
 	param.scale = Vector3(-32, 8, 1);
 	param.textureName = "Resources/powerUPUI.png";
 	param.velocity = Vector3(0, 0.25f, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 0);
+
+	pManager->AddParticle(new Particle(param));
+}
+
+void KochaEngine::ParticleEmitter::PowerDOWNUIParticle(const Vector3& arg_position)
+{
+	ParticleParam param;
+	param.position = Vector3(arg_position.x + 30.0f, arg_position.y - 10.0f, arg_position.z);
+
+	param.life = 40;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(-34, 8, 1);
+	param.textureName = "Resources/powerDOWNUI.png";
+	param.velocity = Vector3(0.25f, -0.25f, 0);
 	param.color = Vector4(1, 1, 1, 1);
 	param.rotate = Vector3(0, 0, 0);
 

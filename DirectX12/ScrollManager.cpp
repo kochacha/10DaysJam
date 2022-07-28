@@ -5,6 +5,7 @@ KochaEngine::ScrollManager* KochaEngine::ScrollManager::instance = nullptr;
 
 KochaEngine::ScrollManager::ScrollManager()
 	:scrollAmount(0.0f),
+	 isBGMChange(false),
 	 frameCount(0),
 	 time(0),
 	 scrollLevel(0)
@@ -36,6 +37,7 @@ void KochaEngine::ScrollManager::DeleteInstance()
 
 void KochaEngine::ScrollManager::Initialize()
 {
+	isBGMChange = false;
 	scrollLevel = 1;
 	scrollAmount = 0.50f;
 	frameCount = 0;
@@ -50,6 +52,7 @@ void KochaEngine::ScrollManager::Update()
 	{
 		//ƒŒƒxƒ‹‚ğã‚°‚é
 		scrollLevel += 1;
+		isBGMChange = true;
 		ScrollSpeedUp();
 		time = 0;
 	}

@@ -32,7 +32,9 @@ namespace KochaEngine
 		void SpawnParticle(const Vector3& arg_position);
 		void DeadParticle(const Vector3& arg_position);
 		void BonusParticle(const Vector3& arg_position);
+		void BossDeadParticle(const Vector3& arg_position);
 		void PowerUPUIParticle(const Vector3& arg_position);
+		void PowerDOWNUIParticle(const Vector3& arg_position);
 		void LeftWallHitParticle(const Vector3& arg_position);
 		void BackStarParticle(const Vector3& arg_position, const bool arg_flag);
 		void ShootingStarParticle(const Vector3& arg_position, const bool arg_flag);

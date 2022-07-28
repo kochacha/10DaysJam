@@ -876,7 +876,12 @@ void KochaEngine::GamePlay::BackScreenEffect()
 	case 4:
 		Application::paletteType = KochaEngine::PaletteType::SEPIA;
 		Application::isChange = true;
-
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM6.wav", m_bgmVolume);
+		}
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
@@ -916,6 +921,12 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		{
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM4.wav", m_bgmVolume);
+		}
 
 		break;
 	case 9:
@@ -943,6 +954,12 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM5.wav", m_bgmVolume);
 		}
 		break;
 	case 12:
@@ -972,13 +989,20 @@ void KochaEngine::GamePlay::BackScreenEffect()
 			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingPeroParticle(starPosition);
 		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM3.wav", m_bgmVolume);
+		}
 		break;
 	default:
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingPeroParticle(starPosition);
+			m_pEmitter->BackStarParticle(starPosition, true);
 		}
 
 		break;

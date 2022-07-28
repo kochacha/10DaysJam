@@ -11,6 +11,7 @@ namespace KochaEngine
 	class JammingBoss : public GameObject
 	{
 	private:
+		ParticleEmitter* pEmitter;
 		GameObjectManager* gManager;
 		ItemManager* iManager;
 		Wall* pWall;
