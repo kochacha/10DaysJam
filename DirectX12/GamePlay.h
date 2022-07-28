@@ -80,7 +80,7 @@ namespace KochaEngine
 		bool m_isScroll;
 		bool m_isModeSelect;
 		bool m_isGameClear;
-		bool m_isOnceSpawnItemReset;//ボス登場したときアイテムを消す用
+		bool m_isItemSpawnStop;//ボス登場したときアイテムを消す用
 		bool m_isMoonAppear;
 		bool m_isRocketAppear;
 		bool m_isFlagAppear;

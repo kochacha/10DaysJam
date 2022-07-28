@@ -143,7 +143,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_isSpawnBoss = false;
 	m_isScroll = true;
 	m_bossSpawnInterval = 60;
-	m_isOnceSpawnItemReset = false;
+	m_isItemSpawnStop = false;
 
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
@@ -211,7 +211,7 @@ void KochaEngine::GamePlay::Update()
 	m_lightManager->Update();
 
 	
-	if (m_isInGame && !player->IsFinish())
+	if (m_isInGame && !player->IsFinish() && !m_isItemSpawnStop)
 	{
 		m_itemManager->Update();
 		m_scrollManager->Update();
@@ -576,6 +576,7 @@ void KochaEngine::GamePlay::NormalMode()
 	{
 		if (!m_isScroll && m_gManager->GetBoss()->IsSpawnEnd())
 		{
+			m_isItemSpawnStop = false;
 			m_isScroll = true;
 			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM2.wav", m_bgmVolume);
 		}
@@ -724,11 +725,7 @@ void KochaEngine::GamePlay::SpawnBoss()
 
 void KochaEngine::GamePlay::SpawnScroll()
 {
-	if (!m_isOnceSpawnItemReset)
-	{
-		m_gManager->RemoveItem();
-		m_isOnceSpawnItemReset = true;
-	}
+	
 	auto wall = m_gManager->GetWall();
 	auto player = m_gManager->GetPlayer();
 
@@ -736,6 +733,12 @@ void KochaEngine::GamePlay::SpawnScroll()
 	{
 		if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
 		{
+			if (!m_isItemSpawnStop)
+			{
+				m_gManager->RemoveItem();
+				m_isItemSpawnStop = true;
+			}
+
 			float pAddValue = 5.0f;
 
 			if (wall->GetMinPos().x < 0 && m_isScroll)
@@ -753,7 +756,7 @@ void KochaEngine::GamePlay::SpawnScroll()
 			}
 			else if (wall->GetMinPos().x > 0 && m_isScroll)
 			{
-				pAddValue = -6.0f;
+				pAddValue = -2.5f;
 
 				m_camera->MoveEye({ -5,0,0, });
 				wall->ScrollWall(-5);
