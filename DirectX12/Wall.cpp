@@ -2,6 +2,10 @@
 #include "GameObjectManager.h"
 #include "Util.h"
 
+const float DrawTagLength = 230.0f;
+const float DifferenceLimitToSpwanDeadLine = 15.0f;
+const float CloseDeadLineLength = DrawTagLength + DifferenceLimitToSpwanDeadLine;
+
 KochaEngine::Wall::Wall(GameObjectManager* arg_gManager, const Vector2& arg_minPos, const Vector2& arg_maxPos,const float& arg_limitLeftPosX, const float& arg_limitRightPosX)
 	:gManager(nullptr),
 	 minPos(Vector2()),
@@ -20,12 +24,19 @@ KochaEngine::Wall::Wall(GameObjectManager* arg_gManager, const Vector2& arg_minP
 	this->limitRightPosX = arg_limitRightPosX;
 	
 	obj = new Object("plane");
+
+	deadLineTag = new Object("plane");
+	deadLineTag->SetRotate(Vector3(0, 0, 0));
+	deadLineTag->SetTexture("Resources/deadTag.png");
+	deadLineTag->SetBillboardType(Object::BillboardType::BILLBOARD);
+
 	Initialize();
 }
 
 KochaEngine::Wall::~Wall()
 {
 	delete obj;
+	delete deadLineTag;
 }
 
 void KochaEngine::Wall::Initialize()
@@ -63,6 +74,11 @@ KochaEngine::GameObjectType KochaEngine::Wall::GetType()
 
 void KochaEngine::Wall::ObjDraw(Camera* arg_camera, LightManager* arg_lightManager)
 {
+	if (IsDrawDeadLineTag())
+	{
+		PreparationDeadLineTag();
+		deadLineTag->Draw(arg_camera, arg_lightManager);
+	}
 	obj->Draw(arg_camera, arg_lightManager);
 }
 
@@ -101,4 +117,18 @@ const float KochaEngine::Wall::GetLimitLeftPosX()
 const float KochaEngine::Wall::GetLimitRightPosX()
 {
 	return limitRightPosX;
+}
+
+bool KochaEngine::Wall::IsDrawDeadLineTag()
+{
+	return maxPos.x >= limitRightPosX - CloseDeadLineLength && maxPos.x <= limitRightPosX - DifferenceLimitToSpwanDeadLine;
+}
+
+void KochaEngine::Wall::PreparationDeadLineTag()
+{
+	float posRate = maxPos.x - limitRightPosX + CloseDeadLineLength;  //0`DrawTagLength
+	float posValue = Util::EaseOut(1.5f, 5.0f, posRate / DrawTagLength);
+	float scaleValue = Util::EaseOut(3.0f, 10.0f, posRate / DrawTagLength);
+	deadLineTag->SetPosition(Vector3(maxPos.x - posValue - 2.0f, 11.0f, -1.0f));
+	deadLineTag->SetScale(Vector3(-1.5f, 1.0f, 1.0f) * scaleValue);
 }

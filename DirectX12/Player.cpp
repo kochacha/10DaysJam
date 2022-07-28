@@ -276,10 +276,13 @@ void KochaEngine::Player::ShowGUI()
 	ImGui::InputInt("playerADScore", &addSmashScore);
 	ImGui::InputInt("ableHitAfterTouchWallCount", &ableHitAfterTouchWallCount);
 
-	float minpos = gManager->GetWall()->GetMinPos().x;
+	Wall* wall = gManager->GetWall();
+	float minpos = wall->GetMinPos().x;
+	float maxpos = wall->GetMaxPos().x;
 	float playerPosX = position.x;
 	float scrollAmount = ScrollManager::GetInstance()->GetScrollAmount();
 	ImGui::InputFloat("wallminPosX", &minpos);
+	ImGui::InputFloat("wallmaxPosX", &maxpos);
 	ImGui::InputFloat("playerPosX", &playerPosX);
 	ImGui::InputFloat("scrollAmount", &scrollAmount);
 }

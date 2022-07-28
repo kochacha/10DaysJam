@@ -22,6 +22,9 @@ namespace KochaEngine
 		//描画オブジェクト用の座標
 		Vector2 objectDrawPos;
 
+		//デッドライン出現予告
+		Object* deadLineTag;
+
 	public:
 		Wall(GameObjectManager* arg_gManager, const Vector2& minPos, const Vector2& maxPos, const float& limitLeftPos, const float& limitRightPos);
 		~Wall() override;
@@ -41,5 +44,9 @@ namespace KochaEngine
 		const Vector2 GetPlayableSize();
 		const float GetLimitLeftPosX();
 		const float GetLimitRightPosX();
+
+		//タグ表示用
+		bool IsDrawDeadLineTag();
+		void PreparationDeadLineTag();
 	};
 }
