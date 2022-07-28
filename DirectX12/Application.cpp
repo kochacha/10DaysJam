@@ -243,6 +243,14 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/peropero_1.png");
 	Dx12_Texture::LoadTexture(device, "Resources/peropero_2.png");
 	Dx12_Texture::LoadTexture(device, "Resources/peropero_3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/snowman_0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/snowman_1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/snowman_2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/snowman_3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/oldman_0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/oldman_1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/oldman_2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/oldman_3.png");
 	Dx12_Texture::LoadTexture(device, "Resources/arrow.png");
 	Dx12_Texture::LoadTexture(device, "Resources/way.png");
 	Dx12_Texture::LoadTexture(device, "Resources/smashLine.png");
@@ -273,6 +281,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/powerDOWNUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/toTitleUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/deadMark.png");
+	Dx12_Texture::LoadTexture(device, "Resources/snow.png");
 	
 	//.objのロード
 	Dx12_Object::LoadObject(device, "box");

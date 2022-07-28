@@ -64,6 +64,8 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_rocket = std::make_unique<Object>("plane");
 	m_uqp_flag = std::make_unique<Object>("plane");
 	m_uqp_peropero = std::make_unique<Object>("plane");
+	m_uqp_snowman = std::make_unique<Object>("plane");
+	m_uqp_oldman = std::make_unique<Object>("plane");
 }
 
 KochaEngine::GamePlay::~GamePlay()
@@ -89,6 +91,9 @@ void KochaEngine::GamePlay::Initialize()
 	m_isOnce = false;
 	m_isInGame = false;
 	m_isGameClear = false;
+
+	Application::paletteType = KochaEngine::PaletteType::GAMEBOY;
+	Application::isChange = true;
 
 	m_gManager->RemoveAll();	
 	
@@ -127,6 +132,8 @@ void KochaEngine::GamePlay::Initialize()
 	m_rocketTexNum = 0;
 	m_flagTexNum = 0;
 	m_peroperoTexNum = 0;
+	m_snowmanTexNum = 0;
+	m_oldmanTexNum = 0;
 	m_clearEffectRate = 0;
 	m_endCount = 180;
 	m_deathWaitCount = 300;
@@ -142,6 +149,8 @@ void KochaEngine::GamePlay::Initialize()
 	m_isRocketAppear = false;
 	m_isFlagAppear = false;
 	m_isPeroperoAppear = false;
+	m_isSnowmanAppear = false;
+	m_isOldmanAppear = false;
 	m_isSpawnBoss = false;
 	m_isScroll = true;
 	m_isItemSpawnStop = false;
@@ -173,6 +182,13 @@ void KochaEngine::GamePlay::Initialize()
 	m_uqp_peropero->SetScale(Vector3(24, 24, 1));
 	m_uqp_peropero->SetRotate(Vector3(0, 0, 0));
 	m_uqp_peropero->SetTexture("Resources/peropero_0.png");
+
+	m_uqp_snowman->SetScale(Vector3(-24, 24, 1));
+	m_uqp_snowman->SetTexture("Resources/snowman_0.png");
+
+	m_uqp_oldman->SetScale(Vector3(-32, 32, 1));
+	m_uqp_oldman->SetRotate(Vector3(0, 0, -10));
+	m_uqp_oldman->SetTexture("Resources/oldman_0.png");
 }
 
 void KochaEngine::GamePlay::Update()
@@ -438,6 +454,14 @@ void KochaEngine::GamePlay::AlphaObjDraw()
 	if (m_isPeroperoAppear)
 	{
 		m_uqp_peropero->Draw(m_camera, m_lightManager);
+	}
+	if (m_isSnowmanAppear)
+	{
+		m_uqp_snowman->Draw(m_camera, m_lightManager);
+	}
+	if (m_isOldmanAppear)
+	{
+		m_uqp_oldman->Draw(m_camera, m_lightManager);
 	}
 
 	for (int i = 0; i < 3; i++)
@@ -816,15 +840,19 @@ void KochaEngine::GamePlay::BackScreenEffect()
 
 	auto wallPosition = m_gManager->GetWall()->GetMinPos();
 	auto starPosition = Vector3(wallPosition.x + 80.0f, wallPosition.y, 0);
-	auto moonPosition = Vector3(wallPosition.x + 137.0f, wallPosition.y + 50.0f, 1.15f);
-	auto rocketPosition = Vector3(wallPosition.x + 25.0f, wallPosition.y + 5.0f, 1.16f);
-	auto flagPosition = Vector3(wallPosition.x + 133.0f, wallPosition.y + 50.0f, 1.17f);
-	auto peroperoPosition = Vector3(wallPosition.x + 135.0f, wallPosition.y + 5.0f, 1.18f);
+	auto moonPosition = Vector3(wallPosition.x + 137.0f, wallPosition.y + 50.0f, 1.11f);
+	auto rocketPosition = Vector3(wallPosition.x + 25.0f, wallPosition.y + 5.0f, 1.12f);
+	auto flagPosition = Vector3(wallPosition.x + 133.0f, wallPosition.y + 50.0f, 1.13f);
+	auto peroperoPosition = Vector3(wallPosition.x + 135.0f, wallPosition.y + 5.0f, 1.14f);
+	auto snowmanPosition = Vector3(wallPosition.x + 90.0f, wallPosition.y + 5.0f, 1.15f);
+	auto oldmanPosition = Vector3(wallPosition.x + 30.0f, wallPosition.y + 50.0f, 1.16f);
 
 	m_uqp_moon->SetPosition(moonPosition);
 	m_uqp_rocket->SetPosition(rocketPosition);
 	m_uqp_flag->SetPosition(flagPosition);
 	m_uqp_peropero->SetPosition(peroperoPosition);
+	m_uqp_snowman->SetPosition(snowmanPosition);
+	m_uqp_oldman->SetPosition(oldmanPosition);
 
 	bool isEmitt = false;
 	if (m_backScreenEffectRate < 20)
@@ -869,6 +897,20 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		auto pathStr = std::to_string(m_peroperoTexNum) + ".png";
 		m_uqp_peropero->SetTexture("Resources/peropero_" + pathStr);
 	}
+	else if (m_isSnowmanAppear && m_snowmanTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_snowmanTexNum++;
+		auto pathStr = std::to_string(m_snowmanTexNum) + ".png";
+		m_uqp_snowman->SetTexture("Resources/snowman_" + pathStr);
+	}
+	else if (m_isOldmanAppear && m_oldmanTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_oldmanTexNum++;
+		auto pathStr = std::to_string(m_oldmanTexNum) + ".png";
+		m_uqp_oldman->SetTexture("Resources/oldman_" + pathStr);
+	}
 
 	switch (m_scrollManager->GetScrollLevel())
 	{
@@ -878,6 +920,8 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		//m_isRocketAppear = true;
 		//m_isFlagAppear = true;
 		//m_isPeroperoAppear = true;
+		//m_isSnowmanAppear = true;
+		//m_isOldmanAppear = true;
 		//if (isEmitt)
 		//{
 		//	m_pEmitter->ShootingPeroParticle(starPosition);
@@ -1013,7 +1057,6 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
-			m_pEmitter->ShootingPeroParticle(starPosition);
 		}
 		if (m_scrollManager->IsBGMChange())
 		{
@@ -1022,13 +1065,58 @@ void KochaEngine::GamePlay::BackScreenEffect()
 			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM3.wav", m_bgmVolume);
 		}
 		break;
-	default:
+	case 15:
+		//降雪
 		if (isEmitt)
 		{
 			m_pEmitter->BackStarParticle(starPosition, false);
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->SnowParticle(starPosition);
+			m_pEmitter->SnowParticle(starPosition);
+		}
+		break;
+	case 16:
+		//雪だるま追加
+		if (isEmitt)
+		{
 			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->SnowParticle(starPosition);
+			m_pEmitter->SnowParticle(starPosition);
+		}
+		m_isSnowmanAppear = true;
+		break;
+	case 17:
+		//サンタクロース追加
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, false);
 			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->SnowParticle(starPosition);
+			m_pEmitter->SnowParticle(starPosition);
+		}
+		m_isOldmanAppear = true;
+		break;
+	case 18:
+		Application::paletteType = KochaEngine::PaletteType::PALETTE3;
+		Application::isChange = true;
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM2.wav", m_bgmVolume);
+		}
+		break;
+	default:
+		if (isEmitt)
+		{
+			m_pEmitter->BackStarParticle(starPosition, true);
+			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 
 		break;
