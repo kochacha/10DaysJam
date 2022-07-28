@@ -9,12 +9,10 @@ bool KochaEngine::InputManager::DashKey()
 
 bool KochaEngine::InputManager::SmashKey()
 {
-    bool result = 
-        Input::TriggerPadButton(XINPUT_GAMEPAD_RIGHT_SHOULDER) 
-        || Input::TriggerPadButton(XINPUT_GAMEPAD_LEFT_SHOULDER) 
-        || Input::CheckPadLeftTrigger()
-        || Input::CheckPadRightTrigger()
-        || Input::TriggerKey(DIK_RETURN);
+    bool result =
+        Input::TriggerPadRightTrigger() ||
+        Input::TriggerPadLeftTrigger() ||
+        Input::TriggerKey(DIK_RETURN);
     return result;
 }
 
