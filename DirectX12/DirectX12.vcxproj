@@ -206,6 +206,7 @@
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="JammingBoss.cpp" />
     <ClCompile Include="JammingSpine.cpp" />
+    <ClCompile Include="LevelSetKeeper.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -292,6 +293,8 @@
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="JammingBoss.h" />
     <ClInclude Include="JammingSpine.h" />
+    <ClInclude Include="LevelSet.h" />
+    <ClInclude Include="LevelSetKeeper.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MiniMap.h" />

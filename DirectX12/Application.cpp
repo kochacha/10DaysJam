@@ -23,6 +23,7 @@
 #include "LightManager.h"
 #include "GameSetting.h"
 #include "CSVReader.h"
+#include "LevelSetKeeper.h"
 
 #include <sstream>
 #include <mmsystem.h>
@@ -277,6 +278,13 @@ void KochaEngine::Application::Load()
 	Dx12_Object::LoadObject(device, "box");
 	Dx12_Object::LoadObject(device, "plane");
 
+	//csvのロード
+	CSVReader* csvReader = CSVReader::GetInstance();
+	csvReader->LoadCSV("Resources/LevelSet_Normal.csv", "LevelSet_Normal");
+	csvReader->LoadCSV("Resources/LevelSet_Endless.csv", "LevelSet_Endless");
+	csvReader->LoadCSV("Resources/LevelSet_Overall.csv", "LevelSet_Overall");
+	LevelSetKeeper* lsKepper = LevelSetKeeper::GetInstance();
+	lsKepper->StoreLevelSet();
 }
 
 void KochaEngine::Application::LoadScene()
