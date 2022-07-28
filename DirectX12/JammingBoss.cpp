@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "Audio.h"
 #include "GameSetting.h"
+#include "ScoreManager.h"
 
 void KochaEngine::JammingBoss::SetObjParam()
 {
@@ -13,17 +14,19 @@ void KochaEngine::JammingBoss::SetObjParam()
 	obj->SetPosition(position);
 }
 
-KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter,const Vector3& arg_position, ItemManager* arg_iManager, GameMode* arg_gameMode)
+KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, ItemManager* arg_iManager, GameMode* arg_gameMode)
 {
 	if (arg_camera == nullptr) return;
 	if (arg_gManager == nullptr) return;
 	if (arg_pEmitter == nullptr) return;
+	if (arg_sManager == nullptr) return;
 	if (arg_iManager == nullptr) return;
 
 	camera = arg_camera;
 	gManager = arg_gManager;
 	iManager = arg_iManager;
 	pEmitter = arg_pEmitter;
+	sManager = arg_sManager;
 	pWall = gManager->GetWall();
 
 	crrentGameMode = arg_gameMode;
@@ -56,11 +59,21 @@ void KochaEngine::JammingBoss::Initialize()
 
 	sphere.radius = 8.0f;
 
-	firstInterval = 200;
-	secondInterval = 60;
+	if (*crrentGameMode == GameMode::NORMALMODE)
+	{
+		firstInterval = 200;
+		secondInterval = 60;	
+		speed = 0.5f; //ボスの動くスピード
+	}
+	else
+	{
+		firstInterval = 0;
+		secondInterval = 30;
+		speed = 0.2f; //ボスの動くスピード
+	}
+
 	texChangeCount = 30;
 
-	speed = 0.5f;
 	velocity.Zero();
 	velocity.y = 1.0f;
 	easeCount = 0;
@@ -132,10 +145,7 @@ void KochaEngine::JammingBoss::Update()
 			position.x = leftWall + 20;
 		}
 
-		if (*crrentGameMode == GameMode::NORMALMODE)
-		{
-			MoveY();
-		}
+		MoveY();
 		
 
 		SetObjParam();
@@ -173,6 +183,7 @@ void KochaEngine::JammingBoss::Hit()
 void KochaEngine::JammingBoss::Dead()
 {
 	pEmitter->BossDeadParticle(position);
+	sManager->AddScore(777777);
 	isFinish = true;
 }
 
@@ -252,6 +263,10 @@ void KochaEngine::JammingBoss::Spawn()
 	
 	if (easeCount == 20)
 	{
+		if (*crrentGameMode == GameMode::NORMALMODE)
+		{
+			
+		}	
 		camera->SetShake(10, 3.0f);
 		se->PlayWave("Resources/Sound/don.wav", seVolume * 1.5f);
 	}
