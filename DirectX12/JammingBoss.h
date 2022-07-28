@@ -7,6 +7,7 @@ namespace KochaEngine
 	class GameObjectManager;
 	class ItemManager;
 	class Wall;
+	class Audio;
 
 	class JammingBoss : public GameObject
 	{
@@ -16,6 +17,9 @@ namespace KochaEngine
 		Wall* pWall;
 
 		GameMode* crrentGameMode;
+
+		Audio* se;
+		float seVolume;
 
 		bool isFinish;
 		bool isOnce;
@@ -31,6 +35,7 @@ namespace KochaEngine
 		void SetObjParam();
 
 	public:
+		//ゲームモードがノーマル::動く、スコアアタック::動かない
 		JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, const Vector3& arg_position, ItemManager* arg_iManager,GameMode* arg_gameMode);
 		~JammingBoss() override;
 
