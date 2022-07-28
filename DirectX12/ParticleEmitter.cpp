@@ -129,21 +129,18 @@ void KochaEngine::ParticleEmitter::SmashScore(const Vector3& arg_position)
 	ParticleParam param;
 	param.position = arg_position;
 
-	for (int i = 0; i < 2; i++)
-	{
-		auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
-		param.life = 30;
-		param.moveColor = Vector4(0, 0, 0, 0);
-		param.moveRotate = Vector3(0, 0, 0);
-		param.moveScale = Vector3(0, 0, 0);
-		param.scale = Vector3(9, 6, 1);
-		param.textureName = "Resources/wallPush.png";
-		param.velocity = Vector3(0, randY, 0);
-		param.color = Vector4(1, 1, 1, 1);
-		param.rotate = Vector3(0, 0, 180);
+	auto randY = (float)(Util::GetIntRand(0, 30) - 15) * 0.1f;
+	param.life = 30;
+	param.moveColor = Vector4(0, 0, 0, 0);
+	param.moveRotate = Vector3(0, 0, 0);
+	param.moveScale = Vector3(0, 0, 0);
+	param.scale = Vector3(9, 6, 1);
+	param.textureName = "Resources/wallPush.png";
+	param.velocity = Vector3(0, randY, 0);
+	param.color = Vector4(1, 1, 1, 1);
+	param.rotate = Vector3(0, 0, 180);
 
-		pManager->AddParticle(new Particle(param));
-	}
+	pManager->AddParticle(new Particle(param));
 
 }
 

@@ -68,6 +68,8 @@ namespace KochaEngine
 		std::unique_ptr<Object> m_uqp_rocket;
 		std::unique_ptr<Object> m_uqp_flag;
 		std::unique_ptr<Object> m_uqp_peropero;
+		std::unique_ptr<Object> m_uqp_snowman;
+		std::unique_ptr<Object> m_uqp_oldman;
 
 		bool m_isShowRank;
 		bool m_isFade;
@@ -85,6 +87,8 @@ namespace KochaEngine
 		bool m_isRocketAppear;
 		bool m_isFlagAppear;
 		bool m_isPeroperoAppear;
+		bool m_isSnowmanAppear;
+		bool m_isOldmanAppear;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;
@@ -104,6 +108,8 @@ namespace KochaEngine
 		int8_t m_rocketTexNum;
 		int8_t m_flagTexNum;
 		int8_t m_peroperoTexNum;
+		int8_t m_snowmanTexNum;
+		int8_t m_oldmanTexNum;
 
 		const int m_quotaScore = 7000000;
 		const float m_scrollAmount = 0.25f;
