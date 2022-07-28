@@ -217,7 +217,6 @@ void KochaEngine::Camera::CameraSpeedUp()
 	{
 		this->cameraSpeed += 0.5f;
 	}
-	
 }
 
 void KochaEngine::Camera::CameraSpeedDown()
@@ -248,11 +247,15 @@ void KochaEngine::Camera::Shake()
 	else
 	{
 		shakeFlag = false;
+		/*SetEye(preEye);
+		SetTarget(preTarget);*/
 	}
 }
 
 void KochaEngine::Camera::SetShake(const int arg_shakeTime, const float arg_power)
 {
+	preEye = eye;
+	preTarget = target;
 	shakeTime = arg_shakeTime;
 	shakePower = arg_power;
 	shakeFlag = true;

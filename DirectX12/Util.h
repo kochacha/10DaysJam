@@ -21,6 +21,9 @@ namespace KochaEngine
 		static float EaseOut(const float start, const float end, const float t);
 		static float EaseInOut(const float start, const float end, const float t);
 
+		//
+		static float EaseInQuad(const float& start, const float& end, const float& MaxTime, const float& nowCount);
+
 		//•¶š—ñŒ^•ÏŠ·ŠÖ”
 		static std::string WstringToString(std::wstring wstring);
 		static std::wstring StringToWstring(std::string string);

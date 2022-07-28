@@ -71,6 +71,13 @@ float KochaEngine::Util::EaseInOut(const float start, const float end, const flo
 	return Lerp(start, end, y);
 }
 
+float KochaEngine::Util::EaseInQuad(const float& start, const float& end, const float& MaxTime, const float& nowCount)
+{
+	float t = nowCount;
+	t /= MaxTime;
+	return Lerp(start, end, t * t);
+}
+
 std::string KochaEngine::Util::WstringToString(std::wstring wstring)
 {
 
