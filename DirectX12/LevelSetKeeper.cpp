@@ -4,6 +4,7 @@
 KochaEngine::LevelSetKeeper* KochaEngine::LevelSetKeeper::instance = nullptr;
 
 KochaEngine::LevelSetKeeper::LevelSetKeeper()
+	:mode(GameMode::SCOREATTAKMODE)
 {
 	vecLSAM.clear();
 	vecLSI_Normal.clear();
@@ -174,4 +175,14 @@ const std::vector<KochaEngine::LevelSetIndivisual>& KochaEngine::LevelSetKeeper:
 const std::vector<KochaEngine::LevelSetIndivisual>& KochaEngine::LevelSetKeeper::GetVecLSI_Endless() const
 {
 	return vecLSI_Endless;
+}
+
+KochaEngine::GameMode KochaEngine::LevelSetKeeper::GetGameMode() const
+{
+	return mode;
+}
+
+void KochaEngine::LevelSetKeeper::SetGameMode(const GameMode arg_mode)
+{
+	mode = arg_mode;
 }

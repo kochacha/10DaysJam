@@ -18,6 +18,7 @@
 #include "InputText.h"
 #include "JammingBoss.h"
 #include "Application.h"
+#include "LevelSetKeeper.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -140,7 +141,6 @@ void KochaEngine::GamePlay::Initialize()
 	m_pauseBackCount = 0;
 
 	m_bossSpawnInterval = 60;
-	
 	m_isDisplayRanking = false;
 	m_isShowRank = false;
 	m_isFade = true;
@@ -157,6 +157,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_fadeAlpha = 1;
 	
 	m_currentGameMode = GameMode::SCOREATTAKMODE;
+	LevelSetKeeper::GetInstance()->SetGameMode(m_currentGameMode);
 	
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
@@ -566,6 +567,7 @@ void KochaEngine::GamePlay::Title()
 		{
 			m_currentGameMode = GameMode::NORMALMODE;
 		}
+		LevelSetKeeper::GetInstance()->SetGameMode(m_currentGameMode);
 	}
 	auto wall = m_gManager->GetWall();
 	if (wall->GetMinPos().x <= wall->GetLimitLeftPosX())

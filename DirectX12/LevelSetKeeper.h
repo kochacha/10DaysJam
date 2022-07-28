@@ -1,5 +1,6 @@
 #pragma once
 #include "LevelSet.h"
+#include "GameMode.h"
 #include <vector>
 
 namespace KochaEngine
@@ -14,6 +15,8 @@ namespace KochaEngine
 		const std::vector<LevelSetAllMode>& GetVecLSAM()const;
 		const std::vector<LevelSetIndivisual>& GetVecLSI_Normal()const;
 		const std::vector<LevelSetIndivisual>& GetVecLSI_Endless()const;
+		GameMode GetGameMode()const;
+		void SetGameMode(const GameMode arg_mode);
 
 	private:
 		static LevelSetKeeper* instance;
@@ -25,5 +28,6 @@ namespace KochaEngine
 		std::vector<LevelSetAllMode> vecLSAM;
 		std::vector<LevelSetIndivisual> vecLSI_Normal;
 		std::vector<LevelSetIndivisual> vecLSI_Endless;
+		GameMode mode;
 	};
 }
