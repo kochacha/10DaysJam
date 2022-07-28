@@ -56,6 +56,7 @@ void KochaEngine::PauseManager::Initialize()
 	isPause = false;
 	isSoundMixer = false;
 	isReset = false;
+	isInGame = false;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -251,8 +252,15 @@ void KochaEngine::PauseManager::OptionTab()
 		}
 		if (InputManager::DecisionKey())
 		{ 
-			menuType = PauseManager::PauseUI::COLOR_TAB;
-			se->PlayWave("Resources/Sound/decision.wav", seVolume);
+			if (isInGame)
+			{
+				se->PlayWave("Resources/Sound/toge.wav", seVolume);
+			}
+			else
+			{
+				menuType = PauseManager::PauseUI::COLOR_TAB;
+				se->PlayWave("Resources/Sound/decision.wav", seVolume);
+			}
 		}
 		break;
 	case KochaEngine::PauseManager::SOUND_MIXER:

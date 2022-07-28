@@ -72,6 +72,7 @@ namespace KochaEngine
 
 		void SetValue(const float arg_value) { value = arg_value; }
 		void SetColorPalette(const PaletteType& arg_paletteType);
+		void UpdateColorPalette();
 		//void SetColor(const Vector4& arg_color) { color[0] = arg_color; }
 
 		static void StaticInit(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const SIZE winSize);
@@ -90,6 +91,7 @@ namespace KochaEngine
 		ComPtr<ID3D12Resource> constBuff;
 		ConstBufferDataB0* constMap;
 		Vector4 color[4];
+		Vector4 targetColor[4];
 		float value;
 		float time;
 

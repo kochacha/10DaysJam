@@ -76,6 +76,7 @@ void KochaEngine::Application::Run()
 		if (isLogoFlag)
 		{
 			sceneManager->Update();
+			peraEffect->UpdateColorPalette();
 		}
 		else
 		{
