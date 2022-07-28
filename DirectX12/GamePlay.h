@@ -57,7 +57,11 @@ namespace KochaEngine
 		std::unique_ptr<Texture2D> m_uqp_endlessPlateTexture;
 		std::unique_ptr<Texture2D> m_uqp_normalPlateTexture;
 		std::unique_ptr<Texture2D> m_uqp_finishTexture;
+		std::unique_ptr<Texture2D> m_uqp_congratulationTexture;
+		std::unique_ptr<Texture2D> m_uqp_gameOverTexture;
+		std::unique_ptr<Texture2D> m_uqp_toTitleTexture;
 		std::unique_ptr<InputText> m_uqp_iText;
+		
 
 		std::unique_ptr<Object> m_uqp_backLine[3];
 
@@ -71,6 +75,8 @@ namespace KochaEngine
 		bool m_isSpawnBoss; //ボスがスポーンしているか
 		bool m_isScroll;
 		bool m_isModeSelect;
+		bool m_isGameClear;
+		bool m_isOnceSpawnItemReset;//ボス登場したときアイテムを消す用
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;
@@ -82,6 +88,7 @@ namespace KochaEngine
 		int32_t m_displayRankingCount;
 		int32_t m_deathWaitCount;
 		int32_t m_pauseBackCount;
+		int32_t m_bossSpawnInterval;
 
 		const int m_quotaScore = 100000;
 		const float m_scrollAmount = 0.25f;
@@ -112,5 +119,7 @@ namespace KochaEngine
 		void NormalModeEnd();
 		//ボス登場演出処理
 		void SpawnBoss();
+		//ボス戦前の半分に戻るスクロール
+		void SpawnScroll();
 	};
 }
