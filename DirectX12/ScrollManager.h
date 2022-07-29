@@ -30,5 +30,6 @@ namespace KochaEngine
 		void SetIsBGMChange(const bool arg_isBGMChange) { isBGMChange = arg_isBGMChange; }
 		const float GetScrollAmount();
 		const int GetScrollLevel();
+		void AddScrollLevel(const int arg_add = 1);
 	};
 }

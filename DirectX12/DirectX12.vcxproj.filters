@@ -232,6 +232,9 @@
     <ClCompile Include="LevelSetKeeper.cpp">
       <Filter>Source\Object\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="BossSpawner.cpp">
+      <Filter>Source\Object\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -549,6 +552,9 @@
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="LevelSetKeeper.h">
+      <Filter>Header\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BossSpawner.h">
       <Filter>Header\Object\GameObject</Filter>
     </ClInclude>
   </ItemGroup>

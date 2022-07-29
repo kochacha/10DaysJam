@@ -9,6 +9,7 @@ KochaEngine::LevelSetKeeper::LevelSetKeeper()
 	vecLSAM.clear();
 	vecLSI_Normal.clear();
 	vecLSI_Endless.clear();
+	vecLSBSL.clear();
 }
 
 KochaEngine::LevelSetKeeper::~LevelSetKeeper()
@@ -16,6 +17,7 @@ KochaEngine::LevelSetKeeper::~LevelSetKeeper()
 	vecLSAM.clear();
 	vecLSI_Normal.clear();
 	vecLSI_Endless.clear();
+	vecLSBSL.clear();
 }
 
 KochaEngine::LevelSetKeeper* KochaEngine::LevelSetKeeper::GetInstance()
@@ -41,6 +43,7 @@ void KochaEngine::LevelSetKeeper::StoreLevelSet()
 	auto csvLSAM = CSVReader::GetInstance()->GetMapData("LevelSet_Overall");
 	auto csvLSI_Normal = CSVReader::GetInstance()->GetMapData("LevelSet_Normal");
 	auto csvLSI_Endless = CSVReader::GetInstance()->GetMapData("LevelSet_Endless");
+	auto csvLSBSL = CSVReader::GetInstance()->GetMapData("LevelSet_BossSpawnLevel");
 	//‘S‘Ì‰e‹¿
 	if (!csvLSAM.empty())
 	{
@@ -160,6 +163,12 @@ void KochaEngine::LevelSetKeeper::StoreLevelSet()
 			}
 		}
 	}
+
+	//ƒ{ƒX“oêƒŒƒxƒ‹
+	for (int i = 0; i < csvLSBSL.size(); i++)
+	{
+		vecLSBSL.push_back(csvLSBSL[i][0]);
+	}
 }
 
 const std::vector<KochaEngine::LevelSetAllMode>& KochaEngine::LevelSetKeeper::GetVecLSAM() const
@@ -194,6 +203,71 @@ const std::vector<KochaEngine::LevelSetIndivisual>& KochaEngine::LevelSetKeeper:
 		assert(0);
 		break;
 	}
+}
+
+const KochaEngine::LevelSetIndivisual KochaEngine::LevelSetKeeper::GetCurrentModeWithLevel(const int arg_level) const
+{
+	static LevelSetIndivisual answer = LevelSetIndivisual();
+
+	switch (mode)
+	{
+	case KochaEngine::TITLEMODE:
+		assert(0);
+		break;
+	case KochaEngine::NORMALMODE:
+		//ˆø”‚ÌƒŒƒxƒ‹‚Ìî•ñ‚ª“o˜^‚³‚ê‚Ä‚¢‚é
+		if (arg_level <= vecLSI_Normal.size())
+		{
+			answer = vecLSI_Normal[arg_level - 1];
+		}
+		//“o˜^‚³‚ê‚Ä‚¢‚È‚¢
+		else
+		{
+			answer = vecLSI_Normal[vecLSI_Normal.size() - 1];
+		}
+		break;
+	case KochaEngine::SCOREATTAKMODE:
+		//ˆø”‚ÌƒŒƒxƒ‹‚Ìî•ñ‚ª“o˜^‚³‚ê‚Ä‚¢‚é
+		if (arg_level <= vecLSI_Endless.size())
+		{
+			answer = vecLSI_Endless[arg_level - 1];
+		}
+		//“o˜^‚³‚ê‚Ä‚¢‚È‚¢
+		else
+		{
+			answer = vecLSI_Endless[vecLSI_Endless.size() - 1];
+		}
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	return answer;
+}
+
+const std::vector<int>& KochaEngine::LevelSetKeeper::GetVecLSBSL() const
+{
+	return vecLSBSL;
+}
+
+bool KochaEngine::LevelSetKeeper::IsSpawnBossThisLevel(const int arg_level) const
+{
+	for (auto lv : vecLSBSL)
+	{
+		//ˆê’v‚µ‚Ä‚¢‚é‚à‚Ì‚ª‚ ‚ê‚Îtrue
+		if (lv == arg_level)
+		{
+			return true;
+		}
+		//ˆø”‚ª©g‚æ‚è¬‚³‚¯‚ê‚ÎˆÈ~‚Í•K‚¸‘å‚«‚­‚È‚é‚Ì‚Åfalse
+		if (lv > arg_level)
+		{
+			return false;
+		}
+	}
+	//’è‹`‚³‚ê‚Ä‚¢‚éˆÈã‚ÌƒŒƒxƒ‹‚È‚çtrue
+	return true;
 }
 
 KochaEngine::GameMode KochaEngine::LevelSetKeeper::GetGameMode() const

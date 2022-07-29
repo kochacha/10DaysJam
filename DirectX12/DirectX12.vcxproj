@@ -166,6 +166,7 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BossSpawner.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionBlock.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Battle.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="BossSpawner.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionBlock.h" />
