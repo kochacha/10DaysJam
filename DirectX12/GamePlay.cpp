@@ -219,7 +219,7 @@ void KochaEngine::GamePlay::Update()
 	player->HitStopTimer();
 	if (player->IsHitStop()) return;
 
-	if (m_isScroll)
+	if (m_isScroll && !m_isItemSpawnStop)
 	{
 		Scroll();
 	}
@@ -613,7 +613,6 @@ void KochaEngine::GamePlay::NormalMode()
 		{
 			SpawnBoss();
 		}
-		
 	}
 
 	auto boss = m_gManager->GetBoss();
@@ -805,7 +804,7 @@ void KochaEngine::GamePlay::SpawnScroll()
 
 			if (wall->GetMinPos().x < 0 && m_isScroll)
 			{
-				pAddValue = 6.0f;
+				pAddValue = 5.5f;
 
 				m_camera->MoveEye({ 5,0,0, });
 				wall->ScrollWall(5);
