@@ -5,6 +5,7 @@
 #include "JammingSpine.h"
 #include "Wall.h"
 #include "ScrollManager.h"
+#include "LevelSetKeeper.h"
 
 KochaEngine::ItemManager::ItemManager(Camera* arg_camera, GameObjectManager* arg_gManager)
 	:camera(nullptr),
@@ -227,7 +228,7 @@ void KochaEngine::ItemManager::EmitItemsSmashing()
 void KochaEngine::ItemManager::GeneralEmitCommand(const ItemEmitPosition arg_emitPosition, const ItemEmitOption arg_emitOption)
 {
 	//アイテムとトゲのどちらを生成するか
-	const unsigned int rndMax = 20;
+	const unsigned int rndMax = 100;
 	const unsigned int rndCoefficient = GetEmitTypeCoefficient();
 	int rnd = Util::GetRandInt(rndMax);
 	hitCheckCount = 0;
@@ -385,7 +386,10 @@ const bool KochaEngine::ItemManager::IsHitExistingItems(const GameObjectType arg
 
 const unsigned int KochaEngine::ItemManager::GetMaxEmitInterval()
 {
-	unsigned int answerVal = 0;
+	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollManager->GetScrollLevel());
+	return lsi.frameObjectEmitInterval;
+
+	/*unsigned int answerVal = 0;
 	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
 	switch (scrollLevel)
 	{
@@ -406,12 +410,15 @@ const unsigned int KochaEngine::ItemManager::GetMaxEmitInterval()
 		break;
 	}
 
-	return answerVal;
+	return answerVal;*/
 }
 
 const unsigned int KochaEngine::ItemManager::GetEmitTypeCoefficient()
 {
-	unsigned int answerVal = 0;
+	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollManager->GetScrollLevel());
+	return lsi.percentageEmitItem;
+
+	/*unsigned int answerVal = 0;
 	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
 	switch (scrollLevel)
 	{
@@ -432,12 +439,15 @@ const unsigned int KochaEngine::ItemManager::GetEmitTypeCoefficient()
 		break;
 	}
 
-	return answerVal;
+	return answerVal;*/
 }
 
 const bool KochaEngine::ItemManager::GetIsSpineMove()
 {
-	unsigned int cofficient = 0;
+	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollManager->GetScrollLevel());
+	return Util::GetRandInt(100) < lsi.percentageSpineMove;
+
+	/*unsigned int cofficient = 0;
 	const unsigned int rndMax = 20;
 	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
 	switch (scrollLevel)
@@ -466,7 +476,7 @@ const bool KochaEngine::ItemManager::GetIsSpineMove()
 	else
 	{
 		return false;
-	}
+	}*/
 }
 
 void KochaEngine::ItemManager::CheckTagActivation()

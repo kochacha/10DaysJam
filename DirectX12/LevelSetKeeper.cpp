@@ -196,6 +196,47 @@ const std::vector<KochaEngine::LevelSetIndivisual>& KochaEngine::LevelSetKeeper:
 	}
 }
 
+const KochaEngine::LevelSetIndivisual KochaEngine::LevelSetKeeper::GetCurrentModeWithLevel(const int arg_level) const
+{
+	static LevelSetIndivisual answer = LevelSetIndivisual();
+
+	switch (mode)
+	{
+	case KochaEngine::TITLEMODE:
+		assert(0);
+		break;
+	case KochaEngine::NORMALMODE:
+		//ˆø”‚ÌƒŒƒxƒ‹‚Ìî•ñ‚ª“o˜^‚³‚ê‚Ä‚¢‚é
+		if (arg_level <= vecLSI_Normal.size())
+		{
+			answer = vecLSI_Normal[arg_level - 1];
+		}
+		//“o˜^‚³‚ê‚Ä‚¢‚È‚¢
+		else
+		{
+			answer = vecLSI_Normal[vecLSI_Normal.size() - 1];
+		}
+		break;
+	case KochaEngine::SCOREATTAKMODE:
+		//ˆø”‚ÌƒŒƒxƒ‹‚Ìî•ñ‚ª“o˜^‚³‚ê‚Ä‚¢‚é
+		if (arg_level <= vecLSI_Endless.size())
+		{
+			answer = vecLSI_Endless[arg_level - 1];
+		}
+		//“o˜^‚³‚ê‚Ä‚¢‚È‚¢
+		else
+		{
+			answer = vecLSI_Endless[vecLSI_Endless.size() - 1];
+		}
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	return answer;
+}
+
 KochaEngine::GameMode KochaEngine::LevelSetKeeper::GetGameMode() const
 {
 	return mode;

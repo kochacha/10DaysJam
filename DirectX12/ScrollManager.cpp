@@ -1,5 +1,6 @@
 #include "ScrollManager.h"
 #include "Input.h"
+#include "LevelSetKeeper.h"
 
 KochaEngine::ScrollManager* KochaEngine::ScrollManager::instance = nullptr;
 
@@ -47,9 +48,9 @@ void KochaEngine::ScrollManager::Initialize()
 
 void KochaEngine::ScrollManager::Update()
 {
-
+	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollLevel);
 	//指定秒数経ったら
-	if (time >= 20)
+	if (time >= lsi.secChangeScrollSpeedInterval)
 	{
 		//レベルを上げる
 		scrollLevel += 1;
@@ -69,35 +70,36 @@ void KochaEngine::ScrollManager::Update()
 
 void KochaEngine::ScrollManager::ScrollSpeedUp()
 {
-	//一応区間ごとに値を調整できるようにしといた
-	switch (scrollLevel)
-	{
-	case 1:
-		scrollAmount = 0.50f;
-		//何もなし
-		break;
-	case 2:
-		scrollAmount = 0.70f;
-		//星パチパチ
-		break;
-	case 3:
-		scrollAmount = 0.80f;
-		//星パチパチ強化
-		break;
-	case 4:
-		scrollAmount = 1.00f;
-		//月出現
-		break;
-	case 5:
-		scrollAmount = 1.20f;
-		//流れ星
-		break;
-	default:
-		scrollAmount = scrollAmount + 0.1f;
-		break;
-	}
+	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollLevel);
+	scrollAmount = lsi.scrollSpeedHundredfold * 0.01f;
 
-	//scrollAmount = scrollAmount + 0.05f;
+	//一応区間ごとに値を調整できるようにしといた
+	//switch (scrollLevel)
+	//{
+	//case 1:
+	//	scrollAmount = 0.50f;
+	//	//何もなし
+	//	break;
+	//case 2:
+	//	scrollAmount = 0.70f;
+	//	//星パチパチ
+	//	break;
+	//case 3:
+	//	scrollAmount = 0.80f;
+	//	//星パチパチ強化
+	//	break;
+	//case 4:
+	//	scrollAmount = 1.00f;
+	//	//月出現
+	//	break;
+	//case 5:
+	//	scrollAmount = 1.20f;
+	//	//流れ星
+	//	break;
+	//default:
+	//	scrollAmount = scrollAmount + 0.1f;
+	//	break;
+	//}
 }
 
 const float KochaEngine::ScrollManager::GetScrollAmount()
@@ -125,4 +127,9 @@ const float KochaEngine::ScrollManager::GetScrollAmount()
 const int KochaEngine::ScrollManager::GetScrollLevel()
 {
 	return scrollLevel;
+}
+
+void KochaEngine::ScrollManager::AddScrollLevel(const int arg_add)
+{
+	scrollLevel += arg_add;
 }
