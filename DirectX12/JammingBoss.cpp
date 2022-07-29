@@ -151,7 +151,7 @@ void KochaEngine::JammingBoss::Update()
 
 		SetObjParam();
 
-		if (!gManager->GetPlayer()->IsFinish())
+		if (!gManager->GetPlayer()->IsFinish()&& gManager->GetPlayer()->GetBackCount() <= 0)
 		{
 			gManager->HitObject(this, PLAYER);
 		}
