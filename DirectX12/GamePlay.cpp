@@ -19,6 +19,7 @@
 #include "JammingBoss.h"
 #include "Application.h"
 #include "LevelSetKeeper.h"
+#include "BossSpawner.h"
 
 KochaEngine::GamePlay::GamePlay()
 {
@@ -160,6 +161,7 @@ void KochaEngine::GamePlay::Initialize()
 	
 	m_currentGameMode = GameMode::SCOREATTAKMODE;
 	LevelSetKeeper::GetInstance()->SetGameMode(m_currentGameMode);
+	BossSpawner::GetInstance()->SetClass(m_camera, m_gManager, m_pEmitter, m_scoreManager, m_itemManager);
 	
 	m_bgmVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::bgmVolume * 0.1f);
 	m_seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
