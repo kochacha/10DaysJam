@@ -5,9 +5,9 @@
 #include "Util.h"
 
 const int MOVE_FRAME = 15;
-const float DEAD_X = 120.0f;
-const float CUT_OFF_X = 10.0f;
-const float SURVIVE_LENGTH = DEAD_X - CUT_OFF_X;
+float KochaEngine::JammingSpine::DEAD_X = 0.0f;
+float KochaEngine::JammingSpine::CUT_OFF_X = 0.0f;
+float KochaEngine::JammingSpine::SURVIVE_LENGTH = 0.0f;
 
 KochaEngine::JammingSpine::JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove)
 	:gManager(nullptr),
@@ -249,4 +249,11 @@ KochaEngine::Vector3 KochaEngine::JammingSpine::GetTagScale() const
 	float posRate = (pWall->GetMinPos().x - position.x) - CUT_OFF_X;  //0Å`SURVIVE_LENGTHÇ…Ç»ÇÈÇÕÇ∏
 	float scaleValue = Util::EaseOut(10.0f, 3.0f, posRate / SURVIVE_LENGTH);
 	return Vector3(-1.5f, 1.0f, 1.0f) * scaleValue;
+}
+
+void KochaEngine::JammingSpine::SetDeadLength(const int arg_length)
+{
+	DEAD_X = arg_length;
+	CUT_OFF_X = 10.0f;
+	SURVIVE_LENGTH = DEAD_X - CUT_OFF_X;
 }

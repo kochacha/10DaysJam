@@ -29,6 +29,11 @@ namespace KochaEngine
 		//ã‰ºˆÚ“®‚Ì‘¬“xŒˆ’è
 		const float GetVerticalMoveSpeed();
 
+		//Œ©Ø‚ê‹——£—p
+		static float DEAD_X;
+		static float CUT_OFF_X;
+		static float SURVIVE_LENGTH;
+
 	public:
 		JammingSpine(Camera* arg_camera, GameObjectManager* arg_gManager, const Vector3& arg_position, ItemManager* arg_iManager, const ItemEmitOption arg_option, const bool arg_isVMove);
 		~JammingSpine() override;
@@ -45,5 +50,7 @@ namespace KochaEngine
 		//ItemManager‚Å‚Ì•`‰æİ’è—p
 		Vector3 GetTagPosition()const;
 		Vector3 GetTagScale()const;
+
+		static void SetDeadLength(const int arg_length);
 	};
 }

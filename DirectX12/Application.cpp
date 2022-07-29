@@ -24,6 +24,7 @@
 #include "GameSetting.h"
 #include "CSVReader.h"
 #include "LevelSetKeeper.h"
+#include "JammingSpine.h"
 
 #include <sstream>
 #include <mmsystem.h>
@@ -325,6 +326,8 @@ void KochaEngine::Application::LoadGameSettings()
 	GameSetting::isScoreData = gameSetData[5];
 	GameSetting::isVibData = gameSetData[6];
 	GameSetting::isShowPowerData = gameSetData[7];
+
+	JammingSpine::SetDeadLength(LevelSetKeeper::GetInstance()->GetVecLSAM()[0].lengthSpineHide);
 }
 
 void KochaEngine::Application::SaveGameSettings()

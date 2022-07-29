@@ -47,6 +47,7 @@ void KochaEngine::ScrollManager::Initialize()
 
 void KochaEngine::ScrollManager::Update()
 {
+
 	//Žw’è•b”Œo‚Á‚½‚ç
 	if (time >= 20)
 	{
