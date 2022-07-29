@@ -208,8 +208,8 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 		break;
 	case KochaEngine::SEPIA:
 		targetColor[0] = Vector4(0.20f, 0.11f, 0.00f, 1.0f);
-		targetColor[1] = Vector4(0.36f, 0.20f, 0.00f, 1.0f);
-		targetColor[2] = Vector4(0.54f, 0.30f, 0.00f, 1.0f);
+		targetColor[1] = Vector4(0.46f, 0.25f, 0.00f, 1.0f);
+		targetColor[2] = Vector4(0.64f, 0.35f, 0.00f, 1.0f);
 		targetColor[3] = Vector4(1.00f, 0.92f, 0.82f, 1.0f);
 		break;
 	case KochaEngine::PALETTE1:
