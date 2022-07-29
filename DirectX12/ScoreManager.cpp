@@ -65,6 +65,10 @@ void KochaEngine::ScoreManager::Draw(bool arg_isShow)
 		for (int i = 0; i < RANK_COUNT; i++)
 		{
 			rankNumTex[i]->Draw(i + 1);
+			if (rankScore[i] > 100000000)
+			{
+				rankScore[i] = 99999999;
+			}
 			rankScoreTex[i]->Draw(rankScore[i]);
 		}
 	}
@@ -83,6 +87,10 @@ void KochaEngine::ScoreManager::DrawOnlineRinking(bool arg_isShow, std::vector<s
 		for (int i = 0; i < RANK_COUNT; i++)
 		{
 			rankNumTex[i]->Draw(Vector2(350, 180 + 70 * i), i + 1);
+			if (rankScores[i] > 100000000)
+			{
+				rankScores[i] = 99999999;
+			}
 			rankScoreTex[i]->Draw(Vector2(450, 180 + 70 * i),rankScores[i]);
 			
 			nameTexts[i]->SetText(arg_rankNames[i].c_str());
@@ -104,6 +112,10 @@ void KochaEngine::ScoreManager::DrawResultRanking(bool arg_isShow, std::vector<s
 		for (int i = 0; i < RANK_COUNT; i++)
 		{
 			rankNumTex[i]->Draw(Vector2(350, 180 + 48 * i),i + 1);
+			if (rankScores[i] > 100000000)
+			{
+				rankScores[i] = 99999999;
+			}
 			rankScoreTex[i]->Draw(Vector2(450, 180 + 48 * i), rankScores[i]);
 
 			nameTexts[i]->SetText(arg_rankNames[i].c_str());
@@ -150,6 +162,10 @@ void KochaEngine::ScoreManager::UpdateRanking(const int arg_score)
 void KochaEngine::ScoreManager::AddScore(const int arg_addScore)
 {
 	score += arg_addScore;
+	if (score > 100000000)
+	{
+		score = 99999999;
+	}
 }
 
 void KochaEngine::ScoreManager::SaveScore()
