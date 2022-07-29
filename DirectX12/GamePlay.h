@@ -111,7 +111,7 @@ namespace KochaEngine
 		int8_t m_snowmanTexNum;
 		int8_t m_oldmanTexNum;
 
-		const int m_quotaScore = 7000000;
+		int m_quotaScore;
 		const float m_scrollAmount = 0.25f;
 	public:
 		GamePlay();

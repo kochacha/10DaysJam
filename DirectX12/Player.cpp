@@ -7,6 +7,7 @@
 #include "InputManager.h"
 #include "PauseManager.h"
 #include "ScrollManager.h"
+#include "LevelSetKeeper.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 	:gManager(nullptr),
@@ -294,12 +295,13 @@ KochaEngine::GameObjectType KochaEngine::Player::GetType()
 
 void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 {
+	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
 	//アイテム取得時
 	if (arg_objectType == KochaEngine::GameObjectType::ENHANCEMENT_ITEM)
 	{
 		if (*inGame)
 		{
-			sManager->AddScore(1500);
+			sManager->AddScore(lsam.scoreGetItem);
 			if (GameSetting::isScoreData)
 			{
 				pEmitter->HitScore(position, false);
@@ -327,7 +329,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 	{
 		if (*inGame)
 		{
-			sManager->AddScore(7777);
+			sManager->AddScore(lsam.scoreSmashSpine);
 			if (GameSetting::isScoreData)
 			{
 				pEmitter->HitScore(position, true);
@@ -351,7 +353,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 
 			if (IsAbleHitSpine())
 			{
-				backCount += 15.0f;
+				backCount += lsam.amountReductionSpine;
 			}
 			else
 			{
@@ -633,6 +635,7 @@ void KochaEngine::Player::InputForMove()
 
 void KochaEngine::Player::Move()
 {
+	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
 	//壁押し戻し距離が残っているなら
 	if (backCount > 0)
 	{
@@ -656,7 +659,7 @@ void KochaEngine::Player::Move()
 		if (*inGame)
 		{
 			//スコア加算
-			sManager->AddScore(addSmashScore * 300);
+			sManager->AddScore(addSmashScore * lsam.scoreGainSmashing);
 			if (GameSetting::isScoreData)
 			{
 				pEmitter->SmashScore(position);
@@ -674,7 +677,7 @@ void KochaEngine::Player::Move()
 			position.x = wallPosX;
 			if (*inGame)
 			{
-				backCount = (smashPower * 5.0f) + (overDirveSmashPower * 20.0f); //ここの倍率で戻る量が変わる
+				backCount = (smashPower * lsam.amountReductionItem) + (overDirveSmashPower * lsam.amountReductionSpine); //ここの倍率で戻る量が変わる
 			}
 			else
 			{
@@ -758,6 +761,7 @@ void KochaEngine::Player::MoveY()
 
 void KochaEngine::Player::ProcessingAfterUpdatePosition()
 {
+	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
 	float wallPosX = gManager->GetWall()->GetMinPos().x;
 	//押し戻し中でなく,Wallより左にいれば
 	if (backCount <= 0)
@@ -810,7 +814,7 @@ void KochaEngine::Player::ProcessingAfterUpdatePosition()
 			pEmitter->LeftWallHitParticle(Vector3(-510, 11, 0));
 			if (*inGame)
 			{
-				sManager->AddScore(500000);
+				sManager->AddScore(lsam.scoreSmashLeftLimit);
 				pEmitter->BonusParticle(Vector3(position.x + 30.0f, 0, position.z));
 				se->PlayWave("Resources/Sound/bonus.wav", seVolume);
 			}

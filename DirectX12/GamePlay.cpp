@@ -67,6 +67,8 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_peropero = std::make_unique<Object>("plane");
 	m_uqp_snowman = std::make_unique<Object>("plane");
 	m_uqp_oldman = std::make_unique<Object>("plane");
+
+	m_quotaScore = LevelSetKeeper::GetInstance()->GetVecLSAM()[0].quotaAppearBoss;
 }
 
 KochaEngine::GamePlay::~GamePlay()

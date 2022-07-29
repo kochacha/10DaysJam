@@ -7,6 +7,7 @@
 #include "Audio.h"
 #include "GameSetting.h"
 #include "ScoreManager.h"
+#include "LevelSetKeeper.h"
 
 void KochaEngine::JammingBoss::SetObjParam()
 {
@@ -182,8 +183,9 @@ void KochaEngine::JammingBoss::Hit()
 
 void KochaEngine::JammingBoss::Dead()
 {
+	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
 	pEmitter->BossDeadParticle(position);
-	sManager->AddScore(777777);
+	sManager->AddScore(lsam.scoreDefeatBoss);
 	isFinish = true;
 }
 

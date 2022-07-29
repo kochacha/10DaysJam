@@ -177,6 +177,25 @@ const std::vector<KochaEngine::LevelSetIndivisual>& KochaEngine::LevelSetKeeper:
 	return vecLSI_Endless;
 }
 
+const std::vector<KochaEngine::LevelSetIndivisual>& KochaEngine::LevelSetKeeper::GetLSI_CurrentMode() const
+{
+	switch (mode)
+	{
+	case KochaEngine::TITLEMODE:
+		assert(0);
+		break;
+	case KochaEngine::NORMALMODE:
+		return vecLSI_Normal;
+		break;
+	case KochaEngine::SCOREATTAKMODE:
+		return vecLSI_Endless;
+		break;
+	default:
+		assert(0);
+		break;
+	}
+}
+
 KochaEngine::GameMode KochaEngine::LevelSetKeeper::GetGameMode() const
 {
 	return mode;

@@ -15,6 +15,7 @@ namespace KochaEngine
 		const std::vector<LevelSetAllMode>& GetVecLSAM()const;
 		const std::vector<LevelSetIndivisual>& GetVecLSI_Normal()const;
 		const std::vector<LevelSetIndivisual>& GetVecLSI_Endless()const;
+		const std::vector<LevelSetIndivisual>& GetLSI_CurrentMode()const;
 		GameMode GetGameMode()const;
 		void SetGameMode(const GameMode arg_mode);
 
