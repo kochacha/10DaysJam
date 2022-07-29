@@ -9,6 +9,7 @@ KochaEngine::LevelSetKeeper::LevelSetKeeper()
 	vecLSAM.clear();
 	vecLSI_Normal.clear();
 	vecLSI_Endless.clear();
+	vecLSBSL.clear();
 }
 
 KochaEngine::LevelSetKeeper::~LevelSetKeeper()
@@ -16,6 +17,7 @@ KochaEngine::LevelSetKeeper::~LevelSetKeeper()
 	vecLSAM.clear();
 	vecLSI_Normal.clear();
 	vecLSI_Endless.clear();
+	vecLSBSL.clear();
 }
 
 KochaEngine::LevelSetKeeper* KochaEngine::LevelSetKeeper::GetInstance()
@@ -41,6 +43,7 @@ void KochaEngine::LevelSetKeeper::StoreLevelSet()
 	auto csvLSAM = CSVReader::GetInstance()->GetMapData("LevelSet_Overall");
 	auto csvLSI_Normal = CSVReader::GetInstance()->GetMapData("LevelSet_Normal");
 	auto csvLSI_Endless = CSVReader::GetInstance()->GetMapData("LevelSet_Endless");
+	auto csvLSBSL = CSVReader::GetInstance()->GetMapData("LevelSet_BossSpawnLevel");
 	//全体影響
 	if (!csvLSAM.empty())
 	{
@@ -160,6 +163,12 @@ void KochaEngine::LevelSetKeeper::StoreLevelSet()
 			}
 		}
 	}
+
+	//ボス登場レベル
+	for (int i = 0; i < csvLSBSL.size(); i++)
+	{
+		vecLSBSL.push_back(csvLSBSL[i][0]);
+	}
 }
 
 const std::vector<KochaEngine::LevelSetAllMode>& KochaEngine::LevelSetKeeper::GetVecLSAM() const
@@ -235,6 +244,30 @@ const KochaEngine::LevelSetIndivisual KochaEngine::LevelSetKeeper::GetCurrentMod
 	}
 
 	return answer;
+}
+
+const std::vector<int>& KochaEngine::LevelSetKeeper::GetVecLSBSL() const
+{
+	return vecLSBSL;
+}
+
+bool KochaEngine::LevelSetKeeper::IsSpawnBossThisLevel(const int arg_level) const
+{
+	for (auto lv : vecLSBSL)
+	{
+		//一致しているものがあればtrue
+		if (lv == arg_level)
+		{
+			return true;
+		}
+		//引数が自身より小さければ以降は必ず大きくなるのでfalse
+		if (lv > arg_level)
+		{
+			return false;
+		}
+	}
+	//定義されている以上のレベルならtrue
+	return true;
 }
 
 KochaEngine::GameMode KochaEngine::LevelSetKeeper::GetGameMode() const

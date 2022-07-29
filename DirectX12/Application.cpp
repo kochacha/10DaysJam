@@ -293,6 +293,7 @@ void KochaEngine::Application::Load()
 	csvReader->LoadCSV("Resources/LevelSet_Normal.csv", "LevelSet_Normal");
 	csvReader->LoadCSV("Resources/LevelSet_Endless.csv", "LevelSet_Endless");
 	csvReader->LoadCSV("Resources/LevelSet_Overall.csv", "LevelSet_Overall");
+	csvReader->LoadCSV("Resources/LevelSet_BossSpawnLevel.csv", "LevelSet_BossSpawnLevel");
 	LevelSetKeeper* lsKepper = LevelSetKeeper::GetInstance();
 	lsKepper->StoreLevelSet();
 }

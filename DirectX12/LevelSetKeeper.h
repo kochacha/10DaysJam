@@ -17,6 +17,8 @@ namespace KochaEngine
 		const std::vector<LevelSetIndivisual>& GetVecLSI_Endless()const;
 		const std::vector<LevelSetIndivisual>& GetLSI_CurrentMode()const;
 		const LevelSetIndivisual GetCurrentModeWithLevel(const int arg_level)const;
+		const std::vector<int>& GetVecLSBSL()const;
+		bool IsSpawnBossThisLevel(const int arg_level)const;
 		GameMode GetGameMode()const;
 		void SetGameMode(const GameMode arg_mode);
 
@@ -30,6 +32,7 @@ namespace KochaEngine
 		std::vector<LevelSetAllMode> vecLSAM;
 		std::vector<LevelSetIndivisual> vecLSI_Normal;
 		std::vector<LevelSetIndivisual> vecLSI_Endless;
+		std::vector<int> vecLSBSL;
 		GameMode mode;
 	};
 }
