@@ -388,95 +388,18 @@ const unsigned int KochaEngine::ItemManager::GetMaxEmitInterval()
 {
 	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollManager->GetScrollLevel());
 	return lsi.frameObjectEmitInterval;
-
-	/*unsigned int answerVal = 0;
-	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
-	switch (scrollLevel)
-	{
-	case 1:
-		answerVal = 240;
-		break;
-	case 2:
-		answerVal = 200;
-		break;
-	case 3:
-		answerVal = 160;
-		break;
-	case 4:
-		answerVal = 120;
-		break;
-	default:
-		answerVal = 120;
-		break;
-	}
-
-	return answerVal;*/
 }
 
 const unsigned int KochaEngine::ItemManager::GetEmitTypeCoefficient()
 {
 	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollManager->GetScrollLevel());
 	return lsi.percentageEmitItem;
-
-	/*unsigned int answerVal = 0;
-	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
-	switch (scrollLevel)
-	{
-	case 1:
-		answerVal = 16;
-		break;
-	case 2:
-		answerVal = 16;
-		break;
-	case 3:
-		answerVal = 16;
-		break;
-	case 4:
-		answerVal = 16;
-		break;
-	default:
-		answerVal = 16;
-		break;
-	}
-
-	return answerVal;*/
 }
 
 const bool KochaEngine::ItemManager::GetIsSpineMove()
 {
 	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollManager->GetScrollLevel());
 	return Util::GetRandInt(100) < lsi.percentageSpineMove;
-
-	/*unsigned int cofficient = 0;
-	const unsigned int rndMax = 20;
-	const int scrollLevel = scrollManager->GetScrollLevel() / 2 + 1;
-	switch (scrollLevel)
-	{
-	case 1:
-		cofficient = 17;
-		break;
-	case 2:
-		cofficient = 15;
-		break;
-	case 3:
-		cofficient = 13;
-		break;
-	case 4:
-		cofficient = 11;
-		break;
-	default:
-		cofficient = 9;
-		break;
-	}
-
-	if (Util::GetRandInt(rndMax) > cofficient)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}*/
 }
 
 void KochaEngine::ItemManager::CheckTagActivation()

@@ -1,6 +1,7 @@
 #include "ScrollManager.h"
 #include "Input.h"
 #include "LevelSetKeeper.h"
+#include "BossSpawner.h"
 
 KochaEngine::ScrollManager* KochaEngine::ScrollManager::instance = nullptr;
 
@@ -70,36 +71,20 @@ void KochaEngine::ScrollManager::Update()
 
 void KochaEngine::ScrollManager::ScrollSpeedUp()
 {
-	LevelSetIndivisual lsi = LevelSetKeeper::GetInstance()->GetCurrentModeWithLevel(scrollLevel);
+	LevelSetKeeper* keeper = LevelSetKeeper::GetInstance();
+	LevelSetIndivisual lsi = keeper->GetCurrentModeWithLevel(scrollLevel);
 	scrollAmount = lsi.scrollSpeedHundredfold * 0.01f;
 
-	//一応区間ごとに値を調整できるようにしといた
-	//switch (scrollLevel)
-	//{
-	//case 1:
-	//	scrollAmount = 0.50f;
-	//	//何もなし
-	//	break;
-	//case 2:
-	//	scrollAmount = 0.70f;
-	//	//星パチパチ
-	//	break;
-	//case 3:
-	//	scrollAmount = 0.80f;
-	//	//星パチパチ強化
-	//	break;
-	//case 4:
-	//	scrollAmount = 1.00f;
-	//	//月出現
-	//	break;
-	//case 5:
-	//	scrollAmount = 1.20f;
-	//	//流れ星
-	//	break;
-	//default:
-	//	scrollAmount = scrollAmount + 0.1f;
-	//	break;
-	//}
+	//エンドレスモードのみボス出現
+	if (keeper->GetGameMode() != GameMode::SCOREATTAKMODE)
+	{
+		return;
+	}
+
+	if (keeper->IsSpawnBossThisLevel(scrollLevel))
+	{
+		BossSpawner::GetInstance()->SpawnBoss();
+	}
 }
 
 const float KochaEngine::ScrollManager::GetScrollAmount()
