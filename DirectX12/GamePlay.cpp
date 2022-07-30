@@ -277,6 +277,7 @@ void KochaEngine::GamePlay::Update()
 		break;
 	case KochaEngine::GameMode::NORMALMODE:
 		NormalMode();
+		BackScreenEffect();
 		break;
 	case KochaEngine::GameMode::SCOREATTAKMODE:
 		ScoreAttackMode();
@@ -1044,13 +1045,16 @@ void KochaEngine::GamePlay::BackScreenEffect()
 
 		break;
 	case 4:
-		Application::paletteType = KochaEngine::PaletteType::SEPIA;
-		Application::isChange = true;
-		if (m_scrollManager->IsBGMChange())
+		if (m_currentGameMode != KochaEngine::GameMode::NORMALMODE)
 		{
-			m_scrollManager->SetIsBGMChange(false);
-			m_uqp_bgm->Stop();
-			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM6.wav", m_bgmVolume);
+			Application::paletteType = KochaEngine::PaletteType::SEPIA;
+			Application::isChange = true;
+			if (m_scrollManager->IsBGMChange())
+			{
+				m_scrollManager->SetIsBGMChange(false);
+				m_uqp_bgm->Stop();
+				m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM6.wav", m_bgmVolume);
+			}
 		}
 		if (isEmitt)
 		{
@@ -1085,19 +1089,21 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		}
 		break;
 	case 8:
-		Application::paletteType = KochaEngine::PaletteType::PALETTE1;
-		Application::isChange = true;
+		if (m_currentGameMode != KochaEngine::GameMode::NORMALMODE)
+		{
+			Application::paletteType = KochaEngine::PaletteType::PALETTE1;
+			Application::isChange = true;
+			if (m_scrollManager->IsBGMChange())
+			{
+				m_scrollManager->SetIsBGMChange(false);
+				m_uqp_bgm->Stop();
+				m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM4.wav", m_bgmVolume);
+			}
+		}
 		if (isEmitt)
 		{
 			m_pEmitter->ShootingStarParticle(starPosition, false);
 		}
-		if (m_scrollManager->IsBGMChange())
-		{
-			m_scrollManager->SetIsBGMChange(false);
-			m_uqp_bgm->Stop();
-			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM4.wav", m_bgmVolume);
-		}
-
 		break;
 	case 9:
 		//ロケット出現
