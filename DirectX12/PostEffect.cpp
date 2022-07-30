@@ -261,10 +261,14 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 		targetColor[3] = Vector4(0.68f, 0.72f, 0.76f, 1.0f);
 		break;
 	case KochaEngine::PALETTE9:
-		targetColor[0] = Vector4(0.12f, 0.28f, 0.41f, 1.0f);
-		targetColor[1] = Vector4(0.03f, 1.00f, 0.78f, 1.0f);
-		targetColor[2] = Vector4(0.85f, 0.85f, 0.85f, 1.0f);
-		targetColor[3] = Vector4(1.00f, 0.96f, 0.96f, 1.0f);
+		//targetColor[0] = Vector4(0.12f, 0.28f, 0.41f, 1.0f);
+		//targetColor[1] = Vector4(0.03f, 1.00f, 0.78f, 1.0f);
+		//targetColor[2] = Vector4(0.85f, 0.85f, 0.85f, 1.0f);
+		//targetColor[3] = Vector4(1.00f, 0.96f, 0.96f, 1.0f);
+		targetColor[0] = Vector4(0.95f, 0.95f, 0.95f, 1.0f);
+		targetColor[1] = Vector4(0.05f, 0.05f, 0.05f, 1.0f);
+		targetColor[2] = Vector4(0.95f, 0.95f, 0.95f, 1.0f);
+		targetColor[3] = Vector4(0.05f, 0.05f, 0.05f, 1.0f);
 		break;
 
 	case KochaEngine::PALETTE10:
@@ -278,7 +282,19 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 		targetColor[2] = Vector4(rand[6], rand[7], rand[8], 1.0f);
 		targetColor[3] = Vector4(rand[9], rand[10], rand[11], 1.0f);
 		break;
+	case KochaEngine::PALETTE11:
+
+		targetColor[0] = Vector4(0.90f, 0.00f, 0.05f, 1.0f);
+		targetColor[1] = Vector4(0.05f, 0.05f, 0.05f, 1.0f);
+		targetColor[2] = Vector4(0.95f, 0.95f, 0.95f, 1.0f);
+		targetColor[3] = Vector4(0.05f, 0.05f, 0.05f, 1.0f);
+
+		break;
 	default:
+		targetColor[0] = Vector4(0.06f, 0.22f, 0.06f, 1.0f);
+		targetColor[1] = Vector4(0.19f, 0.38f, 0.19f, 1.0f);
+		targetColor[2] = Vector4(0.45f, 0.60f, 0.06f, 1.0f);
+		targetColor[3] = Vector4(0.60f, 0.74f, 0.06f, 1.0f);
 		break;
 	}
 }

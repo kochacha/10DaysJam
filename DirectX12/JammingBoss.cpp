@@ -64,7 +64,7 @@ void KochaEngine::JammingBoss::Initialize()
 	{
 		firstInterval = 200;
 		secondInterval = 60;	
-		speed = 0.5f; //ボスの動くスピード
+		speed = 0.25f; //ボスの動くスピード
 	}
 	else
 	{

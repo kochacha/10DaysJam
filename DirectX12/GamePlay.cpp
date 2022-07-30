@@ -801,6 +801,7 @@ void KochaEngine::GamePlay::NormalModeEnd()
 	{
 		if (!m_isOnce)
 		{
+			m_uqp_se->PlayWave("Resources/Sound/bossDestroy.wav", m_seVolume);
 			m_isGameClear = true;
 			m_isOnce = true;
 			player->Finish();
@@ -837,28 +838,29 @@ void KochaEngine::GamePlay::SpawnScroll()
 			}
 
 			float pAddValue = 5.0f;
+			const float spawnPoint = -265.0f;
 
-			if (wall->GetMinPos().x < 0 && m_isScroll)
+			if (wall->GetMinPos().x < spawnPoint && m_isScroll)
 			{
 				pAddValue = 5.5f;
 
 				m_camera->MoveEye({ 5,0,0, });
 				wall->ScrollWall(5);
 				player->AddPlayerPosX(pAddValue);
-				if (wall->GetMinPos().x >= 0)
+				if (wall->GetMinPos().x >= spawnPoint)
 				{
 					m_isScroll = false;
 					m_uqp_bgm->Stop();
 				}
 			}
-			else if (wall->GetMinPos().x > 0 && m_isScroll)
+			else if (wall->GetMinPos().x > spawnPoint && m_isScroll)
 			{
 				pAddValue = -2.5f;
 
 				m_camera->MoveEye({ -5,0,0, });
 				wall->ScrollWall(-5);
 				player->AddPlayerPosX(pAddValue);
-				if (wall->GetMinPos().x <= 0)
+				if (wall->GetMinPos().x <= spawnPoint)
 				{
 					m_isScroll = false;
 					m_uqp_bgm->Stop();
@@ -1201,18 +1203,15 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		m_isGhostAppear = true;
 		break;
 	case 22:
-		if (isEmitt)
+		Application::paletteType = KochaEngine::PaletteType::PALETTE11;
+		Application::isChange = true;
+		if (m_scrollManager->IsBGMChange())
 		{
-			m_pEmitter->ShootingStarParticle(starPosition, true);
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
 		}
-
 		break;
 	default:
-		if (isEmitt)
-		{
-			m_pEmitter->ShootingStarParticle(starPosition, true);
-		}
-
 		break;
 	}
 }
