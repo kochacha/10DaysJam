@@ -401,7 +401,7 @@ void KochaEngine::Player::SuspendSmash()
 	velocity.x = 1;
 	velocity.y = 0;
 	velocity.normalize();
-	speed = 8.0f;
+	speed = 12.0f;
 	isStun = true;
 }
 
@@ -416,7 +416,7 @@ void KochaEngine::Player::HitJammingBoss()
 	velocity.x = 1;
 	velocity.y = 0;
 	velocity.normalize();
-	speed = 8.0f;
+	speed = 16.0f;
 	isStun = true;
 }
 
