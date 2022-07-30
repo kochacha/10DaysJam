@@ -264,6 +264,10 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/ghost_1.png");
 	Dx12_Texture::LoadTexture(device, "Resources/ghost_2.png");
 	Dx12_Texture::LoadTexture(device, "Resources/ghost_3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/reaper_0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/reaper_1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/reaper_2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/reaper_3.png");
 	Dx12_Texture::LoadTexture(device, "Resources/arrow.png");
 	Dx12_Texture::LoadTexture(device, "Resources/way.png");
 	Dx12_Texture::LoadTexture(device, "Resources/smashLine.png");
