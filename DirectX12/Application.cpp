@@ -252,6 +252,18 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/oldman_1.png");
 	Dx12_Texture::LoadTexture(device, "Resources/oldman_2.png");
 	Dx12_Texture::LoadTexture(device, "Resources/oldman_3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/bat_0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/bat_1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/bat_2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/bat_3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/stone_0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/stone_1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/stone_2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/stone_3.png");
+	Dx12_Texture::LoadTexture(device, "Resources/ghost_0.png");
+	Dx12_Texture::LoadTexture(device, "Resources/ghost_1.png");
+	Dx12_Texture::LoadTexture(device, "Resources/ghost_2.png");
+	Dx12_Texture::LoadTexture(device, "Resources/ghost_3.png");
 	Dx12_Texture::LoadTexture(device, "Resources/arrow.png");
 	Dx12_Texture::LoadTexture(device, "Resources/way.png");
 	Dx12_Texture::LoadTexture(device, "Resources/smashLine.png");

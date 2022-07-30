@@ -70,6 +70,9 @@ namespace KochaEngine
 		std::unique_ptr<Object> m_uqp_peropero;
 		std::unique_ptr<Object> m_uqp_snowman;
 		std::unique_ptr<Object> m_uqp_oldman;
+		std::unique_ptr<Object> m_uqp_bat;
+		std::unique_ptr<Object> m_uqp_stone;
+		std::unique_ptr<Object> m_uqp_ghost;
 
 		bool m_isShowRank;
 		bool m_isFade;
@@ -89,6 +92,9 @@ namespace KochaEngine
 		bool m_isPeroperoAppear;
 		bool m_isSnowmanAppear;
 		bool m_isOldmanAppear;
+		bool m_isBatAppear;
+		bool m_isStoneAppear;
+		bool m_isGhostAppear;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;
@@ -110,6 +116,9 @@ namespace KochaEngine
 		int8_t m_peroperoTexNum;
 		int8_t m_snowmanTexNum;
 		int8_t m_oldmanTexNum;
+		int8_t m_batTexNum;
+		int8_t m_stoneTexNum;
+		int8_t m_ghostTexNum;
 
 		int m_quotaScore;
 		const float m_scrollAmount = 0.25f;

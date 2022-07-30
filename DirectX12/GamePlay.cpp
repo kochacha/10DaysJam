@@ -68,6 +68,9 @@ KochaEngine::GamePlay::GamePlay()
 	m_uqp_peropero = std::make_unique<Object>("plane");
 	m_uqp_snowman = std::make_unique<Object>("plane");
 	m_uqp_oldman = std::make_unique<Object>("plane");
+	m_uqp_bat = std::make_unique<Object>("plane");
+	m_uqp_stone = std::make_unique<Object>("plane");
+	m_uqp_ghost = std::make_unique<Object>("plane");
 
 	m_quotaScore = LevelSetKeeper::GetInstance()->GetVecLSAM()[0].quotaAppearBoss;
 }
@@ -138,6 +141,9 @@ void KochaEngine::GamePlay::Initialize()
 	m_peroperoTexNum = 0;
 	m_snowmanTexNum = 0;
 	m_oldmanTexNum = 0;
+	m_batTexNum = 0;
+	m_stoneTexNum = 0;
+	m_ghostTexNum = 0;
 	m_clearEffectRate = 0;
 	m_endCount = 180;
 	m_deathWaitCount = 300;
@@ -154,6 +160,9 @@ void KochaEngine::GamePlay::Initialize()
 	m_isPeroperoAppear = false;
 	m_isSnowmanAppear = false;
 	m_isOldmanAppear = false;
+	m_isBatAppear = false;
+	m_isStoneAppear = false;
+	m_isGhostAppear = false;
 	m_isSpawnBoss = false;
 	m_isScroll = true;
 	m_isItemSpawnStop = false;
@@ -181,7 +190,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_uqp_rocket->SetScale(Vector3(24, 24, 1));
 	m_uqp_rocket->SetTexture("Resources/rocket_0.png");
 
-	m_uqp_flag->SetScale(Vector3(-14, 14, 1));
+	m_uqp_flag->SetScale(Vector3(-16, 16, 1));
 	m_uqp_flag->SetTexture("Resources/flag_0.png");
 	
 	m_uqp_peropero->SetScale(Vector3(24, 24, 1));
@@ -194,6 +203,15 @@ void KochaEngine::GamePlay::Initialize()
 	m_uqp_oldman->SetScale(Vector3(-32, 32, 1));
 	m_uqp_oldman->SetRotate(Vector3(0, 0, -10));
 	m_uqp_oldman->SetTexture("Resources/oldman_0.png");
+
+	m_uqp_bat->SetScale(Vector3(-24, 24, 1));
+	m_uqp_bat->SetTexture("Resources/bat_0.png");
+
+	m_uqp_stone->SetScale(Vector3(24, 24, 1));
+	m_uqp_stone->SetTexture("Resources/stone_0.png");
+
+	m_uqp_ghost->SetScale(Vector3(-24, 24, 1));
+	m_uqp_ghost->SetTexture("Resources/ghost_0.png");
 }
 
 void KochaEngine::GamePlay::Update()
@@ -467,6 +485,18 @@ void KochaEngine::GamePlay::AlphaObjDraw()
 	if (m_isOldmanAppear)
 	{
 		m_uqp_oldman->Draw(m_camera, m_lightManager);
+	}
+	if (m_isBatAppear)
+	{
+		m_uqp_bat->Draw(m_camera, m_lightManager);
+	}
+	if (m_isStoneAppear)
+	{
+		m_uqp_stone->Draw(m_camera, m_lightManager);
+	}
+	if (m_isGhostAppear)
+	{
+		m_uqp_ghost->Draw(m_camera, m_lightManager);
 	}
 
 	for (int i = 0; i < 3; i++)
@@ -847,10 +877,13 @@ void KochaEngine::GamePlay::BackScreenEffect()
 	auto starPosition = Vector3(wallPosition.x + 80.0f, wallPosition.y, 0);
 	auto moonPosition = Vector3(wallPosition.x + 137.0f, wallPosition.y + 50.0f, 1.11f);
 	auto rocketPosition = Vector3(wallPosition.x + 25.0f, wallPosition.y + 5.0f, 1.12f);
-	auto flagPosition = Vector3(wallPosition.x + 133.0f, wallPosition.y + 50.0f, 1.13f);
+	auto flagPosition = Vector3(wallPosition.x + 135.0f, wallPosition.y + 51.0f, 1.13f);
 	auto peroperoPosition = Vector3(wallPosition.x + 135.0f, wallPosition.y + 5.0f, 1.14f);
-	auto snowmanPosition = Vector3(wallPosition.x + 90.0f, wallPosition.y + 5.0f, 1.15f);
+	auto snowmanPosition = Vector3(wallPosition.x + 95.0f, wallPosition.y + 5.0f, 1.15f);
 	auto oldmanPosition = Vector3(wallPosition.x + 30.0f, wallPosition.y + 50.0f, 1.16f);
+	auto batPosition = Vector3(wallPosition.x + 90.0f, wallPosition.y + 60.0f, 1.17f);
+	auto stonePosition = Vector3(wallPosition.x + 60.0f, wallPosition.y + 5.0f, 1.18f);
+	auto ghostPosition = Vector3(wallPosition.x + 75.0f, wallPosition.y + 35.0f, 1.19f);
 
 	m_uqp_moon->SetPosition(moonPosition);
 	m_uqp_rocket->SetPosition(rocketPosition);
@@ -858,6 +891,9 @@ void KochaEngine::GamePlay::BackScreenEffect()
 	m_uqp_peropero->SetPosition(peroperoPosition);
 	m_uqp_snowman->SetPosition(snowmanPosition);
 	m_uqp_oldman->SetPosition(oldmanPosition);
+	m_uqp_bat->SetPosition(batPosition);
+	m_uqp_stone->SetPosition(stonePosition);
+	m_uqp_ghost->SetPosition(ghostPosition);
 
 	bool isEmitt = false;
 	if (m_backScreenEffectRate < 20)
@@ -916,6 +952,27 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		auto pathStr = std::to_string(m_oldmanTexNum) + ".png";
 		m_uqp_oldman->SetTexture("Resources/oldman_" + pathStr);
 	}
+	else if (m_isBatAppear && m_batTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_batTexNum++;
+		auto pathStr = std::to_string(m_batTexNum) + ".png";
+		m_uqp_bat->SetTexture("Resources/bat_" + pathStr);
+	}
+	else if (m_isStoneAppear && m_stoneTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_stoneTexNum++;
+		auto pathStr = std::to_string(m_stoneTexNum) + ".png";
+		m_uqp_stone->SetTexture("Resources/stone_" + pathStr);
+	}
+	else if (m_isGhostAppear && m_ghostTexNum < 3)
+	{
+		m_backObjUpdateCount = 0;
+		m_ghostTexNum++;
+		auto pathStr = std::to_string(m_ghostTexNum) + ".png";
+		m_uqp_ghost->SetTexture("Resources/ghost_" + pathStr);
+	}
 
 	switch (m_scrollManager->GetScrollLevel())
 	{
@@ -927,6 +984,9 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		//m_isPeroperoAppear = true;
 		//m_isSnowmanAppear = true;
 		//m_isOldmanAppear = true;
+		//m_isBatAppear = true;
+		//m_isStoneAppear = true;
+		//m_isGhostAppear = true;
 		//if (isEmitt)
 		//{
 		//	m_pEmitter->ShootingPeroParticle(starPosition);
@@ -1107,7 +1167,6 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		Application::isChange = true;
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 		if (m_scrollManager->IsBGMChange())
@@ -1117,10 +1176,40 @@ void KochaEngine::GamePlay::BackScreenEffect()
 			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM2.wav", m_bgmVolume);
 		}
 		break;
+	case 19:
+		//コウモリ出現
+		if (isEmitt)
+		{
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isBatAppear = true;
+		break;
+	case 20:
+		//墓石出現
+		if (isEmitt)
+		{
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isStoneAppear = true;
+		break;
+	case 21:
+		//お化け出現
+		if (isEmitt)
+		{
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+		m_isGhostAppear = true;
+		break;
+	case 22:
+		if (isEmitt)
+		{
+			m_pEmitter->ShootingStarParticle(starPosition, true);
+		}
+
+		break;
 	default:
 		if (isEmitt)
 		{
-			m_pEmitter->BackStarParticle(starPosition, true);
 			m_pEmitter->ShootingStarParticle(starPosition, true);
 		}
 
