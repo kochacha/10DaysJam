@@ -84,7 +84,13 @@ void KochaEngine::ScoreManager::DrawOnlineRinking(bool arg_isShow, std::vector<s
 		std::vector<std::string> rankNames = arg_rankNames;
 		std::vector<int> rankScores = arg_rankScores;
 
-		for (int i = 0; i < RANK_COUNT; i++)
+		int rankDrawNum = rankNames.size();
+		if (rankDrawNum > RANK_COUNT)
+		{
+			rankDrawNum = RANK_COUNT;
+		}
+
+		for (int i = 0; i < rankDrawNum; i++)
 		{
 			rankNumTex[i]->Draw(Vector2(350, 180 + 70 * i), i + 1);
 			if (rankScores[i] > 100000000)
@@ -109,7 +115,13 @@ void KochaEngine::ScoreManager::DrawResultRanking(bool arg_isShow, std::vector<s
 		std::vector<std::string> rankNames = arg_rankNames;
 		std::vector<int> rankScores = arg_rankScores;
 
-		for (int i = 0; i < RANK_COUNT; i++)
+		int rankDrawNum = rankNames.size();
+		if (rankDrawNum > RANK_COUNT)
+		{
+			rankDrawNum = RANK_COUNT;
+		}
+
+		for (int i = 0; i < rankDrawNum; i++)
 		{
 			rankNumTex[i]->Draw(Vector2(350, 180 + 48 * i),i + 1);
 			if (rankScores[i] > 100000000)
