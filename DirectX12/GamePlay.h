@@ -97,6 +97,7 @@ namespace KochaEngine
 		bool m_isStoneAppear;
 		bool m_isGhostAppear;
 		bool m_isReaperAppear;
+		bool m_isOnceRemover;
 		float m_fadeAlpha;
 		float m_bgmVolume;
 		float m_seVolume;

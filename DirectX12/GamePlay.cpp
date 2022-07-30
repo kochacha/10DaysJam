@@ -166,6 +166,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_isStoneAppear = false;
 	m_isGhostAppear = false;
 	m_isReaperAppear = false;
+	m_isOnceRemover = false;
 	m_isSpawnBoss = false;
 	m_isScroll = true;
 	m_isItemSpawnStop = false;
@@ -769,6 +770,7 @@ void KochaEngine::GamePlay::ScoreAttackEnd()
 			m_gManager->RemoveItem();
 			player->Finish();
 			m_scoreDBAccessDev->Disconnect();
+			m_uqp_bgm->Stop();
 		}
 	}
 }
@@ -792,6 +794,7 @@ void KochaEngine::GamePlay::NormalModeEnd()
 			m_gManager->RemoveItem();
 			player->Finish();
 			m_scoreDBAccessDev->Disconnect();
+			m_uqp_bgm->Stop();
 		}
 	}
 	//クリア後演出
@@ -1012,6 +1015,7 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		//m_isBatAppear = true;
 		//m_isStoneAppear = true;
 		//m_isGhostAppear = true;
+		//m_isReaperAppear = true;
 		//if (isEmitt)
 		//{
 		//	m_pEmitter->ShootingPeroParticle(starPosition);
@@ -1198,7 +1202,7 @@ void KochaEngine::GamePlay::BackScreenEffect()
 		{
 			m_scrollManager->SetIsBGMChange(false);
 			m_uqp_bgm->Stop();
-			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM2.wav", m_bgmVolume);
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/BGM7.wav", m_bgmVolume);
 		}
 		break;
 	case 19:
@@ -1237,10 +1241,26 @@ void KochaEngine::GamePlay::BackScreenEffect()
 	case 23:
 		//死神出現
 		m_isReaperAppear = true;
+		if (!m_isOnceRemover)
+		{
+			m_gManager->RemoveItem();
+			m_isOnceRemover = true;
+		}
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/Noise.wav", m_bgmVolume);
+		}
 		break;
 	case 24:
 		//オワリ
-
+		if (m_scrollManager->IsBGMChange())
+		{
+			m_scrollManager->SetIsBGMChange(false);
+			m_uqp_bgm->Stop();
+			m_uqp_bgm->LoopPlayWave("Resources/Sound/Error.wav", m_bgmVolume);
+		}
 		break;
 	default:
 		break;
