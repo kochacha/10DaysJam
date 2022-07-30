@@ -167,6 +167,7 @@ void KochaEngine::GamePlay::Initialize()
 	m_isGhostAppear = false;
 	m_isReaperAppear = false;
 	m_isOnceRemover = false;
+	m_isDrawReaper = false;
 	m_isSpawnBoss = false;
 	m_isScroll = true;
 	m_isItemSpawnStop = false;
@@ -472,7 +473,10 @@ void KochaEngine::GamePlay::AlphaObjDraw()
 
 	if (m_isReaperAppear)
 	{
-		m_uqp_reaper->Draw(m_camera, m_lightManager);
+		if (!m_isDrawReaper)
+		{
+			m_uqp_reaper->Draw(m_camera, m_lightManager);
+		}
 	}
 	else
 	{
@@ -771,6 +775,7 @@ void KochaEngine::GamePlay::ScoreAttackEnd()
 			player->Finish();
 			m_scoreDBAccessDev->Disconnect();
 			m_uqp_bgm->Stop();
+			m_isDrawReaper = true;
 		}
 	}
 }

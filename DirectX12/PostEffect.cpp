@@ -219,9 +219,9 @@ void KochaEngine::PostEffect::SetColorPalette(const PaletteType& arg_paletteType
 		targetColor[3] = Vector4(0.89f, 0.87f, 0.87f, 1.0f);
 		break;
 	case KochaEngine::PALETTE2:
-		targetColor[0] = Vector4(0.71f, 0.53f, 0.69f, 1.0f);
-		targetColor[1] = Vector4(0.83f, 0.64f, 0.81f, 1.0f);
-		targetColor[2] = Vector4(0.97f, 0.73f, 0.86f, 1.0f);
+		targetColor[0] = Vector4(0.54f, 0.40f, 0.53f, 1.0f);
+		targetColor[1] = Vector4(0.80f, 0.62f, 0.79f, 1.0f);
+		targetColor[2] = Vector4(0.95f, 0.72f, 0.85f, 1.0f);
 		targetColor[3] = Vector4(1.00f, 0.94f, 0.67f, 1.0f);
 		break;
 	case KochaEngine::PALETTE3:
