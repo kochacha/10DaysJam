@@ -610,7 +610,7 @@ void KochaEngine::GamePlay::Title()
 {
 	auto player = m_gManager->GetPlayer();
 	Vector3 pos = player->GetPosition();
-	if (player->IsSmashing())
+	if (player->IsSmashing() || player->GetBackCount() > 0)
 	{
 		m_scoreManager->Initialize();
 		if (player->GetPosition().y < 10)
