@@ -18,12 +18,12 @@ namespace KochaEngine
 		ItemManager* iManager;
 		ScoreManager* sManager;
 		Wall* pWall;
-
 		GameMode* crrentGameMode;
 
 		Audio* se;
-		float seVolume;
 
+		Vector3 scale;
+		
 		bool isFinish;
 		bool isOnce;
 		bool isSpawnEnd;
@@ -32,10 +32,12 @@ namespace KochaEngine
 		int secondInterval;
 		int easeCount;
 		int texChangeCount;
-
+		
 		float speed;
+		float seVolume;
 		
 		void SetObjParam();
+		void ScaleAnimation();
 
 	public:
 		//ゲームモードがノーマル::動く、スコアアタック::動かない

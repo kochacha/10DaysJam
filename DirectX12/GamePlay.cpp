@@ -636,11 +636,14 @@ void KochaEngine::GamePlay::Title()
 void KochaEngine::GamePlay::ScoreAttackMode()
 {
 	//デバッグキー
-	//if (Input::TriggerKey(DIK_S))
-	//{
-	//	auto wall = m_gManager->GetWall();
-	//	m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, m_scoreManager, { wall->GetPosition().x,0,0 }, m_itemManager, &m_currentGameMode));
-	//}
+#ifdef _DEBUG
+	if (Input::TriggerKey(DIK_S))
+	{
+		auto wall = m_gManager->GetWall();
+		m_gManager->AddObject(new JammingBoss(m_camera, m_gManager, m_pEmitter, m_scoreManager, { wall->GetPosition().x,0,0 }, m_itemManager, &m_currentGameMode));
+	}
+#endif // DEBUG
+
 	auto player = m_gManager->GetPlayer();
 	//ゲーム終了時に名前入力画面を表示
 	if (player->IsFinish() && !m_pauseManager->IsReset())

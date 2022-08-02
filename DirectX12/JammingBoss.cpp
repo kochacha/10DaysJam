@@ -15,6 +15,8 @@ void KochaEngine::JammingBoss::SetObjParam()
 	obj->SetPosition(position);
 }
 
+
+
 KochaEngine::JammingBoss::JammingBoss(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, ItemManager* arg_iManager, GameMode* arg_gameMode)
 {
 	if (arg_camera == nullptr) return;
@@ -54,6 +56,8 @@ void KochaEngine::JammingBoss::Initialize()
 	isOnce = false;
 	isSpawnEnd = false;
 
+	scale = Vector3(10, 25, 10);
+
 	se->Init();
 
 	velocity.Zero();
@@ -80,9 +84,9 @@ void KochaEngine::JammingBoss::Initialize()
 	easeCount = 0;
 
 	SetObjParam();
-
+	
 	obj->SetRotate(Vector3(0, 0, 180));
-	obj->SetScale(Vector3(10, 25, 10));
+	obj->SetScale(scale);
 	obj->SetTexture("Resources/boss.png");
 	obj->SetBillboardType(KochaEngine::Object::BILLBOARD);
 
@@ -155,7 +159,8 @@ void KochaEngine::JammingBoss::Update()
 		{
 			gManager->HitObject(this, PLAYER);
 		}
-	
+		
+		ScaleAnimation();
 
 		//プレイヤーが一番左まで到達した時(ボスが死ぬ時)
 		if (gManager->GetPlayer()->IsLeftLimit())
@@ -169,7 +174,7 @@ void KochaEngine::JammingBoss::Update()
 void KochaEngine::JammingBoss::Hit()
 {
 	auto player = gManager->GetPlayer();
-	//通常時なら
+	//スマッシュ中なら
 	if (player->IsSmashing())
 	{
 		//プレイヤーはパワーダウン
@@ -179,6 +184,8 @@ void KochaEngine::JammingBoss::Hit()
 	{
 		player->HitJammingBoss();
 	}
+
+	scale = { 20,50,10 };
 }
 
 void KochaEngine::JammingBoss::Dead()
@@ -285,4 +292,12 @@ void KochaEngine::JammingBoss::Spawn()
 		isSpawnEnd = true;
 	}
 	
+}
+
+void KochaEngine::JammingBoss::ScaleAnimation()
+{
+	scale.x = Util::EaseIn(scale.x, 10, 0.4f);
+	scale.y = Util::EaseIn(scale.y, 25, 0.4f);
+
+	obj->SetScale(scale);
 }
