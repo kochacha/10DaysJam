@@ -28,7 +28,7 @@ void KochaEngine::Number::Init()
 	
 }
 
-void KochaEngine::Number::SetColor(DirectX::XMFLOAT4 color)
+void KochaEngine::Number::SetColor(const Vector4& color)
 {
 	for (int i = 0; i < maxDigit; i++)
 	{
