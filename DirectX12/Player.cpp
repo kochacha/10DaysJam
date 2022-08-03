@@ -60,6 +60,7 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	smashLine = new Object("plane");
 	for (int i = 0; i < MAX_SMASHPOWER; i++)
 	{
+		powarGaugeSize[i] = 0.0f;
 		smashPowerObj[i] = new Object("plane");
 		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
 		emptyGauge[i] = new Texture2D("Resources/emptyGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
@@ -67,6 +68,8 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 		{
 			overDriveGauge[i] = new Texture2D("Resources/gauge.png", Vector2(0, 720), Vector2(65, 55), 0);
 		}
+		powarGaugeSize[i] = 0.0f;
+		powerGaugeEndSize[i] = 0;
 	}
 
 	position = arg_position;
@@ -152,6 +155,7 @@ void KochaEngine::Player::Initialize()
 
 	isStun = false;	
 	isLeftLimit = false;
+
 
 	velocity.Zero();
 	sphere.radius = 5.0f;
@@ -321,6 +325,7 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 		//スマッシュパワー加算
 		if (smashPower < MAX_SMASHPOWER)
 		{
+			powerGaugeEndSize[smashPower] = 55; //ゲージのsize
 			pEmitter->PowerUp(position);
 			smashPower++;
 		}
@@ -830,6 +835,14 @@ void KochaEngine::Player::ScaleAnimation()
 	}
 	scale.x = Util::EaseIn(scale.x, endScale.x, 0.4f);
 	scale.y = Util::EaseIn(scale.y, endScale.y, 0.4f);
+
+	//ゲージのスケールアニメーション
+	for (int i = 0; i < MAX_SMASHPOWER; i++)
+	{
+		powarGaugeSize[i] = Util::EaseIn(powarGaugeSize[i], powerGaugeEndSize[i], 0.4f);
+		powarGauge[i]->SetSize({ 65,powarGaugeSize[i] });	
+	}
+
 }
 
 void KochaEngine::Player::SetObjParam()
@@ -872,4 +885,8 @@ void KochaEngine::Player::ResetPower()
 {
 	smashPower = 0;
 	overDirveSmashPower = 0;
+	for (int i = 0; i < MAX_SMASHPOWER; i++)
+	{
+		powerGaugeEndSize[i] = 0;
+	}
 }

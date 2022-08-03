@@ -298,6 +298,5 @@ void KochaEngine::JammingBoss::ScaleAnimation()
 {
 	scale.x = Util::EaseIn(scale.x, 10, 0.4f);
 	scale.y = Util::EaseIn(scale.y, 25, 0.4f);
-
 	obj->SetScale(scale);
 }

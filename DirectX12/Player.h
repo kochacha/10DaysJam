@@ -89,7 +89,10 @@ namespace KochaEngine
 
 		//スタン関連
 		//スタンしているかどうか
-		bool isStun;				
+		bool isStun;			
+
+		float powarGaugeSize[10];
+		float powerGaugeEndSize[10];
 
 		void PrepareInput();
 		void InputForMove();
