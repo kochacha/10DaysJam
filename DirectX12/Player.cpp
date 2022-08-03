@@ -62,7 +62,8 @@ KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager,
 	{
 		powarGaugeSize[i] = 0.0f;
 		smashPowerObj[i] = new Object("plane");
-		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
+		powarGauge[i] = new Texture2D("Resources/normalGauge.png", Vector2(150 + 70 * i, 775), Vector2(65, 55), 0);
+		powarGauge[i]->SetAnchorPoint(Vector2(0, 1));
 		emptyGauge[i] = new Texture2D("Resources/emptyGauge.png", Vector2(150 + 70 * i, 720), Vector2(65, 55), 0);
 		if (i < 5)
 		{
@@ -839,7 +840,7 @@ void KochaEngine::Player::ScaleAnimation()
 	//ゲージのスケールアニメーション
 	for (int i = 0; i < MAX_SMASHPOWER; i++)
 	{
-		powarGaugeSize[i] = Util::EaseIn(powarGaugeSize[i], powerGaugeEndSize[i], 0.4f);
+		powarGaugeSize[i] = Util::EaseIn(powarGaugeSize[i], powerGaugeEndSize[i], 0.6f);
 		powarGauge[i]->SetSize({ 65,powarGaugeSize[i] });	
 	}
 
