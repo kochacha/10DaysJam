@@ -22,6 +22,8 @@ namespace KochaEngine
 		//スケールアニメーション用
 		Vector3 scale;
 		Vector3 endScale;
+		//スマッシュしたときの移動予定位置
+		Vector3 afterSmashPos;
 		//移動方向の矢印表示用
 		Object* wayObj;
 		//プレイヤー周りに表示する用
@@ -145,6 +147,7 @@ namespace KochaEngine
 		const bool IsSmashing();
 		const bool IsStuning();
 		const int GetBackCount();
+		const Vector3 GetAfterSmashPos();
 		const bool IsHitWall();
 		const bool IsAbleHitSpine();
 

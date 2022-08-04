@@ -106,6 +106,7 @@ void KochaEngine::Player::Initialize()
 	se->Init();
 	seVolume = ((float)GameSetting::masterVolume * 0.1f) * ((float)GameSetting::seVolume * 0.1f);
 	
+	afterSmashPos = Vector3(0, 0, 0);
 	//•\Ž¦—p
 	scale = Vector3(0, 0, 10);
 	endScale = Vector3(10, 10, 10);
@@ -489,9 +490,16 @@ const bool KochaEngine::Player::IsHitWall()
 	return isHitWall;
 }
 
+
+
 const bool KochaEngine::Player::IsAbleHitSpine()
 {
 	return ableHitAfterTouchWallCount > 0;
+}
+
+const KochaEngine::Vector3 KochaEngine::Player::GetAfterSmashPos()
+{
+	return afterSmashPos;
 }
 
 void KochaEngine::Player::PrepareInput()
@@ -723,6 +731,11 @@ void KochaEngine::Player::UpdatePosition()
 void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
+
+	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
+	int bCount = (smashPower * lsam.amountReductionItem) + (overDirveSmashPower * lsam.amountReductionSpine); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+	afterSmashPos = position;
+	afterSmashPos.x = (velocity.x * 10) * bCount;
 
 	float leftWall = gManager->GetWall()->GetMinPos().x;
 	float rightWall = gManager->GetWall()->GetMaxPos().x;
