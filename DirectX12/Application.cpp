@@ -299,6 +299,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/toTitleUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/deadMark.png");
 	Dx12_Texture::LoadTexture(device, "Resources/snow.png");
+	Dx12_Texture::LoadTexture(device, "Resources/yosokuUI.png");
 	
 	//.objのロード
 	Dx12_Object::LoadObject(device, "box");

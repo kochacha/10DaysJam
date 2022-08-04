@@ -13,9 +13,11 @@ namespace KochaEngine
 		//表示用の画像
 		Texture2D* mapBar;
 		Texture2D* mapPlayer;
+		Texture2D* mapAfterSmash;
 		//表示座標
 		Vector2 miniMapPos;
 		Vector2 mapPlayerPos;
+		Vector2 mapAfterSmashPos;
 		//ミニマップを表示するピクセルサイズ
 		Vector2 miniMapSize;
 		//ミニマップの左端

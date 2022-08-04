@@ -148,6 +148,8 @@ namespace KochaEngine
 		const bool IsStuning();
 		const int GetBackCount();
 		const Vector3 GetAfterSmashPos();
+		//スマッシュして左側に到達するならtrue
+		const bool IsReachSmashWall();
 		const bool IsHitWall();
 		const bool IsAbleHitSpine();
 
