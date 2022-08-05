@@ -270,6 +270,7 @@ void KochaEngine::Application::Load()
 	Dx12_Texture::LoadTexture(device, "Resources/reaper_3.png");
 	Dx12_Texture::LoadTexture(device, "Resources/arrow.png");
 	Dx12_Texture::LoadTexture(device, "Resources/way.png");
+	Dx12_Texture::LoadTexture(device, "Resources/leftLimitUI.png");
 	Dx12_Texture::LoadTexture(device, "Resources/smashLine.png");
 	Dx12_Texture::LoadTexture(device, "Resources/wallPush.png");
 	Dx12_Texture::LoadTexture(device, "Resources/togeGet.png");
