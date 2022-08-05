@@ -26,6 +26,7 @@ KochaEngine::MiniMap::MiniMap(Camera* arg_camera,GameObjectManager* arg_gManager
 	mapBar = new Texture2D("Resources/mapUI.png", miniMapPos, miniMapSize, 0);
 	mapPlayer = new Texture2D("Resources/playerUI.png", Vector2(100, 805), Vector2(50, 50), 0);
 	mapAfterSmash = new Texture2D("Resources/yosokuUI.png", Vector2(100, 805), Vector2(50, 50), 0);
+	mapLeftLimitUI = new Texture2D("Resources/leftLimitUI.png", Vector2(50, 805), Vector2(50, 50), 0);
 	
 	auto wall = gManager->GetWall();
 	mapStartX = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
@@ -41,6 +42,7 @@ KochaEngine::MiniMap::~MiniMap()
 	delete mapBar;
 	delete mapPlayer;
 	delete mapAfterSmash;
+	delete mapLeftLimitUI;
 }
 
 void KochaEngine::MiniMap::Initialize()
@@ -79,6 +81,11 @@ void KochaEngine::MiniMap::SpriteDraw()
 	mapBar->Draw();
 	mapAfterSmash->Draw(mapAfterSmashPos);
 	mapPlayer->Draw(mapPlayerPos);
+	if (gManager->GetPlayer()->IsReachSmashWall())
+	{
+		mapLeftLimitUI->Draw();
+	}
+
 }
 
 void KochaEngine::MiniMap::ShowGUI()

@@ -14,6 +14,7 @@ namespace KochaEngine
 		Texture2D* mapBar;
 		Texture2D* mapPlayer;
 		Texture2D* mapAfterSmash;
+		Texture2D* mapLeftLimitUI;
 		//ï\é¶ç¿ïW
 		Vector2 miniMapPos;
 		Vector2 mapPlayerPos;
