@@ -1,5 +1,6 @@
 #include "MiniMap.h"
 #include "GameObjectManager.h"
+#include "Player.h"
 
 KochaEngine::MiniMap::MiniMap(Camera* arg_camera,GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter)
 	:gManager(nullptr),
@@ -57,6 +58,19 @@ void KochaEngine::MiniMap::Update()
 	mapPlayerPos.x *= miniMapSize.x;
 	mapPlayerPos.x += miniMapPos.x;
 	mapPlayerPos.x -= 25.0f;
+
+	//Playerがスマッシュしている間は右に向ける
+	Player* player = gManager->GetPlayer();
+	if (player->IsSmashing() || player->GetBackCount() > 0)
+	{
+		mapPlayer->SetSize(Vector2(-50, 50));
+		mapPlayer->SetAnchorPoint(Vector2(1, 0));
+	}
+	else
+	{
+		mapPlayer->SetSize(Vector2(50, 50));
+		mapPlayer->SetAnchorPoint(Vector2());
+	}
 
 	float afterSmashPos = gManager->GetPlayer()->GetAfterSmashPos().x;
 	float afterSmashRatio = afterSmashPos + fabs(mapStartX);
