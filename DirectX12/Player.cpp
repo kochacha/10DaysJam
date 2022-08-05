@@ -8,12 +8,14 @@
 #include "PauseManager.h"
 #include "ScrollManager.h"
 #include "LevelSetKeeper.h"
+#include "MiniMap.h"
 
 KochaEngine::Player::Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position, bool* inGameFlag)
 	:gManager(nullptr),
 	 pEmitter(nullptr),
 	 sManager(nullptr),
 	 pManager(nullptr),
+	 pMiniMap(nullptr),
 	 se(nullptr),
 	 seVolume(0.1f),
 	 scale(Vector3()),
@@ -366,6 +368,8 @@ void KochaEngine::Player::PowerUp(const GameObjectType arg_objectType)
 			{
 				overDirveSmashPower += 1;
 			}
+			UpdateAfterSmashPos();
+			pMiniMap->Update();
 		}		
 	}
 }
@@ -468,6 +472,11 @@ void KochaEngine::Player::SetPauseManager(PauseManager* arg_pManager)
 {
 	if (arg_pManager == nullptr) return;
 	pManager = arg_pManager;
+}
+
+void KochaEngine::Player::SetMiniMap(MiniMap* arg_miniMap)
+{
+	pMiniMap = arg_miniMap;
 }
 
 const bool KochaEngine::Player::IsSmashing()
@@ -737,33 +746,10 @@ void KochaEngine::Player::UpdatePosition()
 void KochaEngine::Player::MoveX()
 {
 	position.x += velocity.x * speed;
-	static const float SMASH_VEC_X = -1.0f;
-	static const float SMASH_SPEED = 10.0f;
 	Wall* wall = gManager->GetWall();
-	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
 
 	//ƒXƒ}ƒbƒVƒ…“ž’B—\‘ª‚ÌŒvŽZ
-	int bCount = (smashPower * lsam.amountReductionItem) + (overDirveSmashPower * lsam.amountReductionSpine); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
-	if (backCount > 0)
-	{
-		bCount = backCount;
-	}
-	float smashP = 0;
-	smashP = position.x + (SMASH_VEC_X * SMASH_SPEED * bCount);
-	afterSmashPos = position;
-	if (smashP <= wall->GetLimitLeftPosX())
-	{
-		afterSmashPos.x = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
-	}
-	else
-	{
-		afterSmashPos.x = wall->GetCenterPos().x + (SMASH_VEC_X * SMASH_SPEED * bCount);
-	}
-	//ˆê‰ž
-	if (IsReachSmashWall())
-	{
-		afterSmashPos.x = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
-	}
+	UpdateAfterSmashPos();
 
 	float leftWall = wall->GetMinPos().x;
 	float rightWall = wall->GetMaxPos().x;
@@ -930,5 +916,40 @@ void KochaEngine::Player::ResetPower()
 	for (int i = 0; i < MAX_SMASHPOWER; i++)
 	{
 		powerGaugeEndSize[i] = 0;
+	}
+}
+
+void KochaEngine::Player::UpdateAfterSmashPos()
+{
+	static const float SMASH_VEC_X = -1.0f;
+	static const float SMASH_SPEED = 10.0f;
+	Wall* wall = gManager->GetWall();
+	LevelSetAllMode lsam = LevelSetKeeper::GetInstance()->GetVecLSAM()[0];
+
+	int bCount = (smashPower * lsam.amountReductionItem) + (overDirveSmashPower * lsam.amountReductionSpine); //‚±‚±‚Ì”{—¦‚Å–ß‚é—Ê‚ª•Ï‚í‚é
+	if (backCount > 0)
+	{
+		bCount = backCount;
+	}
+	//ƒQ[ƒ€ŠJŽn‘O
+	if (bCount > 0 && !(*inGame))
+	{
+		bCount = 10000;
+	}
+	float smashP = 0;
+	smashP = position.x + (SMASH_VEC_X * SMASH_SPEED * bCount);
+	afterSmashPos = position;
+	if (smashP <= wall->GetLimitLeftPosX())
+	{
+		afterSmashPos.x = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
+	}
+	else
+	{
+		afterSmashPos.x = wall->GetCenterPos().x + (SMASH_VEC_X * SMASH_SPEED * bCount);
+	}
+	//ˆê‰ž
+	if (IsReachSmashWall())
+	{
+		afterSmashPos.x = wall->GetLimitLeftPosX() + wall->GetPlayableSize().x / 2;
 	}
 }

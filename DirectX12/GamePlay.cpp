@@ -115,9 +115,10 @@ void KochaEngine::GamePlay::Initialize()
 	m_gManager->AddObject(new Wall(m_gManager, { -80,-23 }, { 80,45 }, -STAGE_SIZE, STAGE_SIZE)); //rightlimit‚Íƒfƒbƒhƒ‰ƒCƒ“{‚P‚U‚O
 	m_gManager->AddObject(new DeadLine(m_camera, m_gManager, m_pEmitter, { STAGE_SIZE - 5.0f,0,0.1f, }));
 	MiniMap* miniMap = new MiniMap(m_camera, m_gManager, m_pEmitter);
-	m_gManager->AddObject(miniMap);
 	m_gManager->GetWall()->ScrollWall(miniMap->GetCorrectionValue());
-	m_gManager->AddObject(new Player(m_camera, m_gManager, m_pEmitter,m_scoreManager, Vector3(miniMap->GetCorrectionValue(), 0, 0),&m_isInGame));
+	Player* player = new Player(m_camera, m_gManager, m_pEmitter, m_scoreManager, Vector3(miniMap->GetCorrectionValue(), 0, 0), &m_isInGame);
+	m_gManager->AddObject(player);
+	m_gManager->AddObject(miniMap);
 	m_itemManager->Initialize(m_scrollManager);
 	m_itemManager->AddEnhItem(Vector3(110, 10, 0), ItemEmitPosition::FROM_CENTER);
 	m_pauseManager->Initialize();
@@ -128,7 +129,8 @@ void KochaEngine::GamePlay::Initialize()
 	m_scoreDBAccessDev->Initialize();
 	m_isSend = false;
 
-	m_gManager->GetPlayer()->SetPauseManager(m_pauseManager);
+	player->SetPauseManager(m_pauseManager);
+	player->SetMiniMap(miniMap);
 
 	m_frameCount = 0;
 	m_seconds = 0;

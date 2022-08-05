@@ -9,6 +9,7 @@ namespace KochaEngine
 	class ItemManager;
 	class ScoreManager;
 	class PauseManager;
+	class MiniMap;
 
 	class Player : public GameObject
 	{
@@ -17,6 +18,7 @@ namespace KochaEngine
 		ParticleEmitter* pEmitter;
 		ScoreManager* sManager;
 		PauseManager* pManager;
+		MiniMap* pMiniMap;
 		Audio* se;
 		float seVolume;
 		//スケールアニメーション用
@@ -110,6 +112,8 @@ namespace KochaEngine
 		void CommonVib(const int arg_time);
 		//パワーのリセット
 		void ResetPower();
+		//スマッシュ後の地点をミニマップに表示させるための変数の更新
+		void UpdateAfterSmashPos();
 
 	public:
 		Player(Camera* arg_camera, GameObjectManager* arg_gManager, ParticleEmitter* arg_pEmitter, ScoreManager* arg_sManager, const Vector3& arg_position,bool* inGameFlag);
@@ -142,6 +146,7 @@ namespace KochaEngine
 		void HitStopTimer();
 		const bool IsInGame();
 		void SetPauseManager(PauseManager* arg_pManager);
+		void SetMiniMap(MiniMap* arg_miniMap);
 
 		//スマッシュしているかどうか
 		const bool IsSmashing();
