@@ -290,10 +290,12 @@ void KochaEngine::Player::ShowGUI()
 	float maxpos = wall->GetMaxPos().x;
 	float playerPosX = position.x;
 	float scrollAmount = ScrollManager::GetInstance()->GetScrollAmount();
+	int scrollLevel = ScrollManager::GetInstance()->GetScrollLevel();
 	ImGui::InputFloat("wallminPosX", &minpos);
 	ImGui::InputFloat("wallmaxPosX", &maxpos);
 	ImGui::InputFloat("playerPosX", &playerPosX);
 	ImGui::InputFloat("scrollAmount", &scrollAmount);
+	ImGui::InputInt("scrollLevel", &scrollLevel);
 }
 
 KochaEngine::GameObjectType KochaEngine::Player::GetType()

@@ -863,13 +863,13 @@ void KochaEngine::GamePlay::SpawnScroll()
 	auto wall = m_gManager->GetWall();
 	auto player = m_gManager->GetPlayer();
 
-	if (player->GetBackCount() <= 0)
+	if (player->GetBackCount() <= 0 && !player->IsSmashing());
 	{
 		if (!m_isSpawnBoss && (m_scoreManager->GetScore() > m_quotaScore))
 		{
 			if (!m_isItemSpawnStop)
 			{
-				m_gManager->RemoveItem();
+				m_gManager->RemoveSpine();
 				m_isItemSpawnStop = true;
 			}
 

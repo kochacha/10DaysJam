@@ -41,6 +41,7 @@ namespace KochaEngine
 
 		void Remove();
 		void RemoveItem();
+		void RemoveSpine();
 		void RemoveAll();
 	};
 }

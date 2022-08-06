@@ -164,6 +164,21 @@ void KochaEngine::GameObjectManager::RemoveItem()
 	}
 }
 
+void KochaEngine::GameObjectManager::RemoveSpine()
+{
+	for (auto it = gameObjects.begin(); it != gameObjects.end();)
+	{
+		if ((*it)->GetType() != GameObjectType::JAMMING_SPINE)
+		{
+			++it;
+			continue;
+		}
+		(*it)->Dead();
+		delete* it;
+		it = gameObjects.erase(it);
+	}
+}
+
 void KochaEngine::GameObjectManager::RemoveAll()
 {
 	auto end = gameObjects.end();
