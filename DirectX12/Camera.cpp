@@ -254,6 +254,7 @@ void KochaEngine::Camera::Shake()
 
 void KochaEngine::Camera::SetShake(const int arg_shakeTime, const float arg_power)
 {
+	if (shakeFlag) { return; }
 	preEye = eye;
 	preTarget = target;
 	shakeTime = arg_shakeTime;
