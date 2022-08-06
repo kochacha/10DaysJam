@@ -612,6 +612,13 @@ void KochaEngine::GamePlay::Title()
 {
 	auto player = m_gManager->GetPlayer();
 	Vector3 pos = player->GetPosition();
+
+	//デバッグキーM　スコア登録名をクリア
+	if (Input::TriggerKey(DIK_M))
+	{
+		m_uqp_iText->ClearName();
+	}
+
 	if (player->IsSmashing() || player->GetBackCount() > 0)
 	{
 		m_scoreManager->Initialize();

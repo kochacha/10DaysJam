@@ -81,6 +81,16 @@ char* KochaEngine::InputText::GetName()
 	return name;
 }
 
+void KochaEngine::InputText::ClearName()
+{
+	for (int i = 0; i < MAX_INDEX_NUM; i++)
+	{
+		name[i] = '\0';
+		text[i]->SetLeadText(67);
+	}
+	indexNum = 0;
+}
+
 void KochaEngine::InputText::FixNumbers()
 {
 	if (texNum > MAX_TEX_NUM)

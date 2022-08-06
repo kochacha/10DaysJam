@@ -42,6 +42,8 @@ namespace KochaEngine
 		void Draw();
 
 		char* GetName();
+		//デバッグキー押下で名前をクリア
+		void ClearName();
 		bool IsNext() { return isNext; }
 	};
 }
